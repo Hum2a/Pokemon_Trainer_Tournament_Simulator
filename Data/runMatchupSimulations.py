@@ -8,6 +8,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -233,27 +234,31 @@ def main():
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
 
+    print("Stage 1/4: Loading dex data (species, learnsets)...", flush=True)
     species_list, learnsets = load_dex()
+    print(f"  Loaded {len(species_list)} species.", flush=True)
 
-    # Build matchup list
+    print("Stage 2/4: Building matchup list...", flush=True)
     matchups = []
     if mode == "head-to-head" and pokemon1 and pokemon2:
         matchups = [(pokemon1, pokemon2)]
+        print(f"  Mode: Head-to-head ({pokemon1} vs {pokemon2})", flush=True)
     else:
-        # Matrix mode: filter species
         filtered = filter_species(species_list, learnsets, m)
         filtered = [s.get("name", s.get("id", "")) for s in filtered if s.get("name")]
         filtered = filtered[:pool_limit]
         for i, a in enumerate(filtered):
-            for b in filtered[i + 1 :]:  # no self, no duplicate (a,b) and (b,a)
+            for b in filtered[i + 1 :]:
                 matchups.append((a, b))
+        print(f"  Mode: Matrix. Pool: {len(filtered)} Pokemon -> {len(matchups)} matchup(s)", flush=True)
 
     if not matchups:
-        print("No matchups to run. For head-to-head, set pokemon1 and pokemon2. For matrix, check pool settings.")
+        print("No matchups to run. For head-to-head, set pokemon1 and pokemon2. For matrix, check pool settings.", flush=True)
         return
 
-    print(f"Running {len(matchups)} matchup(s), {n_battles} battles each = {len(matchups) * n_battles} total battles")
-    print(f"Threads: {threads}, Level: {level}")
+    total_battles = len(matchups) * n_battles
+    print(f"Stage 3/4: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
+    print(f"  Threads: {threads}, Level: {level}", flush=True)
 
     results = {}
     thread_names = list(range(1, threads + 1))
@@ -280,10 +285,12 @@ def main():
                 results[key] = {"p1": p1, "p2": p2, "p1_wins": w1, "p2_wins": w2, "total": w1 + w2}
                 done += 1
                 if done % 10 == 0 or done == len(matchups):
-                    print(f"  Completed {done}/{len(matchups)}")
+                    pct = 100 * done // len(matchups)
+                    print(f"  Completed {done}/{len(matchups)} ({pct}%)", flush=True)
             except Exception as e:
-                print(f"  Error: {e}")
+                print(f"  Error: {e}", flush=True)
 
+    print("Stage 4/4: Writing results...", flush=True)
     OUTPUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
@@ -298,7 +305,7 @@ def main():
             rate = v["p1_wins"] / total
             f.write(f"{v['p1']},{v['p2']},{v['p1_wins']},{v['p2_wins']},{rate:.3f}\n")
 
-    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}")
+    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}", flush=True)
 
 
 if __name__ == "__main__":
