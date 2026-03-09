@@ -27,7 +27,7 @@ function downloadBlob(blob: Blob, filename: string) {
 }
 
 export function Outputs() {
-  const { refreshOutputsTrigger, triggerOutputsRefresh, appendLog } = useApp();
+  const { refreshOutputsTrigger, triggerOutputsRefresh, appendLog, config } = useApp();
   const [files, setFiles] = useState<OutputFile[]>([]);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
@@ -189,7 +189,7 @@ export function Outputs() {
               </button>
             </div>
           </div>
-          <MatchupAnalytics refreshTrigger={refreshOutputsTrigger} />
+          <MatchupAnalytics refreshTrigger={refreshOutputsTrigger} smogonFormat={config?.matchups?.smogonFormat} />
         </div>
       )}
 
