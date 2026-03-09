@@ -2,6 +2,8 @@
 
 This app uses [Supabase](https://supabase.com) for authentication and per-user storage (config, simulation results).
 
+**Guest mode:** Users can run simulations and download outputs without signing in. Sign in is only required to **save results to their account**.
+
 ## 1. Create a Supabase Project
 
 1. Go to [supabase.com](https://supabase.com) and create a project

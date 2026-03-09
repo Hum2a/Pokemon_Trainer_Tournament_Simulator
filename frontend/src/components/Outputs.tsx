@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Panel } from "./Panel";
 import { useApp } from "../context/AppContext";
+import { useAuth } from "../context/AuthContext";
+import { useOpenAuthModal } from "../context/AuthModalContext";
 import { api } from "../api";
 import { MatchupAnalytics } from "./MatchupAnalytics";
 import { cn } from "../lib/utils";
@@ -28,6 +30,8 @@ function downloadBlob(blob: Blob, filename: string) {
 
 export function Outputs() {
   const { refreshOutputsTrigger, triggerOutputsRefresh, appendLog, config } = useApp();
+  const { user } = useAuth();
+  const openAuthModal = useOpenAuthModal();
   const [files, setFiles] = useState<OutputFile[]>([]);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
@@ -179,18 +183,29 @@ export function Outputs() {
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h3 className="font-display font-semibold text-[var(--primary)]">Matchup Analytics</h3>
             <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={handleSaveToAccount}
-                disabled={saving}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
-                  "bg-[var(--accent)]/20 text-[var(--accent)] hover:bg-[var(--accent)]/30",
-                  "disabled:opacity-50 disabled:cursor-not-allowed"
-                )}
-              >
-                {saving ? "Saving…" : "Save to my account"}
-              </button>
+              {user ? (
+                <button
+                  type="button"
+                  onClick={handleSaveToAccount}
+                  disabled={saving}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                    "bg-[var(--accent)]/20 text-[var(--accent)] hover:bg-[var(--accent)]/30",
+                    "disabled:opacity-50 disabled:cursor-not-allowed"
+                  )}
+                >
+                  {saving ? "Saving…" : "Save to my account"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={openAuthModal}
+                  className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-[var(--accent)]/20 text-[var(--accent)] hover:bg-[var(--accent)]/30"
+                  title="Sign in to save results to your account"
+                >
+                  Sign in to save
+                </button>
+              )}
               <button
                 type="button"
                 onClick={handleExportAnalyticsJson}

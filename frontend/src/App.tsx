@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { setAuthTokenGetter } from "./api";
 import { AppProvider, useApp } from "./context/AppContext";
 import { Modal } from "./components/Modal";
-import { AuthGuard } from "./components/AuthGuard";
+import { AuthModal } from "./components/AuthModal";
+import { OpenAuthModalContext } from "./context/AuthModalContext";
 import { TournamentPage } from "./pages/TournamentPage";
 import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 
@@ -25,29 +26,44 @@ function AuthTokenBridge() {
   return null;
 }
 
-function UserMenu() {
+function UserMenu({ onSignInClick }: { onSignInClick: () => void }) {
   const { user, signOut } = useAuth();
-  if (!user) return null;
+  if (user) {
+    return (
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-[var(--text-muted)] truncate max-w-[140px]" title={user.email ?? ""}>
+          {user.email}
+        </span>
+        <button
+          onClick={() => signOut()}
+          className="text-sm text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-[var(--text-muted)] truncate max-w-[140px]" title={user.email ?? ""}>
-        {user.email}
-      </span>
-      <button
-        onClick={() => signOut()}
-        className="text-sm text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"
-      >
-        Sign out
-      </button>
-    </div>
+    <button
+      onClick={onSignInClick}
+      className="text-sm text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
+    >
+      Sign in
+    </button>
   );
 }
 
 function AppContent() {
   const { status, modal, hideModal } = useApp();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   return (
-    <>
+    <OpenAuthModalContext.Provider value={() => setAuthModalOpen(true)}>
       <AuthTokenBridge />
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        onSuccess={() => setAuthModalOpen(false)}
+      />
       {modal && (
         <Modal
           isOpen
@@ -106,21 +122,19 @@ function AppContent() {
                 <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
                 <span className="text-sm font-medium">{status.text}</span>
               </div>
-              <UserMenu />
+              <UserMenu onSignInClick={() => setAuthModalOpen(true)} />
             </div>
           </header>
             <main>
-              <AuthGuard>
-                <Routes>
-                  <Route path="/" element={<MatchupSimulatorPage />} />
-                  <Route path="/tournament" element={<TournamentPage />} />
-                </Routes>
-              </AuthGuard>
+              <Routes>
+                <Route path="/" element={<MatchupSimulatorPage />} />
+                <Route path="/tournament" element={<TournamentPage />} />
+              </Routes>
             </main>
           </motion.div>
         </div>
       </BrowserRouter>
-    </>
+    </OpenAuthModalContext.Provider>
   );
 }
 
