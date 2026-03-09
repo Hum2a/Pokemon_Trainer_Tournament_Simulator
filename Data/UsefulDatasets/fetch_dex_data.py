@@ -14,11 +14,19 @@ OUT.mkdir(exist_ok=True)
 REGIONS = [(1, "Kanto"), (152, "Johto"), (252, "Hoenn"), (387, "Sinnoh"),
            (494, "Unova"), (650, "Kalos"), (722, "Alola"), (810, "Galar"), (906, "Paldea")]
 
+GEN_BOUNDS = [(1, 1), (152, 2), (252, 3), (387, 4), (494, 5), (650, 6), (722, 7), (810, 8), (906, 9)]
+
 def _num_to_region(num):
     for start, name in reversed(REGIONS):
         if num >= start:
             return name
     return "Other"
+
+def _num_to_generation(num):
+    for start, gen in reversed(GEN_BOUNDS):
+        if num >= start:
+            return gen
+    return 1
 
 def _stats_to_role(stats):
     hp = stats.get("hp", 0) or 0
@@ -53,16 +61,42 @@ def main():
             continue
         stats = data.get("baseStats", {})
         num = data.get("num", 0)
+        prevo = data.get("prevo", "") or ""
+        evos = data.get("evos", []) or []
+        types_list = data.get("types", [])
+        other_formes = data.get("otherFormes", []) or []
+        tags_list = data.get("tags", []) or []
+        # Evolution stage: base (no prevo), middle (has prevo + evos), final (has prevo, no evos)
+        if not prevo:
+            evolution_stage = "base"
+        elif evos:
+            evolution_stage = "middle"
+        else:
+            evolution_stage = "final"
+        bst = sum(stats.values()) if stats else 0
+        can_mega = any("mega" in (f or "").lower() for f in other_formes)
         species.append({
             "id": sid,
             "name": data.get("name", sid),
             "baseSpecies": data.get("baseSpecies", data.get("name", sid)),
             "num": num,
-            "types": data.get("types", []),
+            "types": types_list,
             "baseStats": stats,
             "abilities": data.get("abilities", {}),
             "region": _num_to_region(num),
             "role": _stats_to_role(stats),
+            "prevo": prevo,
+            "evos": evos,
+            "evolutionStage": evolution_stage,
+            "bst": bst,
+            "color": data.get("color", "Unknown"),
+            "eggGroups": data.get("eggGroups", []),
+            "weightkg": data.get("weightkg"),
+            "heightm": data.get("heightm"),
+            "tags": tags_list,
+            "canMega": can_mega,
+            "typeCount": len(types_list) if types_list else 1,
+            "generation": _num_to_generation(num),
         })
     (OUT / "species.json").write_text(json.dumps(species), encoding="utf-8")
     print(f"  {len(species)} species")
