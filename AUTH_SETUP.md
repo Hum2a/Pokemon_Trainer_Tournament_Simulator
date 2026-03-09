@@ -51,14 +51,23 @@ VITE_SUPABASE_URL=https://xxxxx.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
 
-## 5. Enable Email Auth (Optional)
+## 5. Google Sign-In (Optional)
+
+To enable "Sign in with Google":
+
+1. In **Supabase**: **Authentication** → **Providers** → **Google** → enable and add your Client ID + Client Secret (from [Google Cloud Console](https://console.cloud.google.com/apis/credentials))
+2. In **Supabase**: **Authentication** → **URL Configuration** → add your app URLs to **Redirect URLs**:
+   - Local: `http://localhost:5173`
+   - Production: `https://your-domain.com`
+3. In **Google Cloud Console**: add the Supabase callback URL to Authorized redirect URIs: `https://<your-project-ref>.supabase.co/auth/v1/callback`
+
+## 6. Enable Email Auth (Optional)
 
 By default Supabase allows email signup. To customize:
 
 - **Authentication** → **Providers** → **Email**: enable/disable, set email templates
-- **Authentication** → **URL Configuration**: add your site URL for redirects
 
-## 6. Deploy (Render)
+## 7. Deploy (Render)
 
 Add these as environment variables in Render:
 

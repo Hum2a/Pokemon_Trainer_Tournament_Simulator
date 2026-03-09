@@ -13,7 +13,7 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
 
   if (!isOpen) return null;
 
@@ -74,6 +74,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
               onSuccess={onSuccess}
               onSwitchMode={() => setMode((m) => (m === "signin" ? "signup" : "signin"))}
               onSubmit={handleSubmit}
+              onGoogleClick={signInWithGoogle}
             />
           </motion.div>
         </div>
