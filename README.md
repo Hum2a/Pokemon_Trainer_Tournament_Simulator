@@ -24,6 +24,23 @@ Here we have an environment for running large amounts of Pokémon simulations in
 
 
 ## Running Simulations Yourself
+
+### Web UI (Recommended)
+A web interface is available to run all simulator functions through buttons and settings:
+
+1. Install dependencies: `pip install -r requirements.txt`
+2. From the project root, run: `python app.py`
+3. Open http://127.0.0.1:5000 in your browser
+
+The UI lets you build battles, run trainer or Pokemon simulations, parse results to PNG/CSV, and download outputs—all configurable via the Settings panel.
+
+**Team Builder:** To use the Team Builder (pick any Pokemon, moves, abilities, items), run once:
+```
+cd Data/UsefulDatasets && python fetch_dex_data.py
+```
+This fetches dex data from Pokemon Showdown's CDN. Then build Pokemon in the UI and export to the editor.
+
+### Command Line
 See [manual.md](https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/blob/main/manual.md).
 Since there is a submodule in the repo, make sure to clone using `git clone --recursive https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator`. If you wish to run a set of simulations, everything you need is located in the 'Data' directory.
 
