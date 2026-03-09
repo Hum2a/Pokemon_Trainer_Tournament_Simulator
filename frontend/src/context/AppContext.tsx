@@ -14,6 +14,17 @@ export interface Config {
   };
   pokemon?: { noOfThreads?: number; n?: number };
   parse?: { output_file?: string };
+  matchups?: {
+    noOfThreads?: number;
+    setLevel?: number;
+    battlesPerMatchup?: number;
+    mode?: "head-to-head" | "matrix";
+    poolFilter?: "all" | "type";
+    poolType?: string;
+    poolLimit?: number;
+    pokemon1?: string;
+    pokemon2?: string;
+  };
 }
 
 interface AppState {

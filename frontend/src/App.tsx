@@ -1,12 +1,8 @@
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { AppProvider } from "./context/AppContext";
-import { Header } from "./components/Header";
-import { Settings } from "./components/Settings";
-import { FileEditor } from "./components/FileEditor";
-import { TeamBuilder } from "./components/TeamBuilder";
-import { Actions } from "./components/Actions";
-import { Log } from "./components/Log";
-import { Outputs } from "./components/Outputs";
+import { AppProvider, useApp } from "./context/AppContext";
+import { TournamentPage } from "./pages/TournamentPage";
+import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,14 +12,10 @@ const container = {
   },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0 },
-};
-
-export default function App() {
+function AppContent() {
+  const { status } = useApp();
   return (
-    <AppProvider>
+    <BrowserRouter>
       <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
         <motion.div
           className="max-w-[1000px] mx-auto"
@@ -31,19 +23,59 @@ export default function App() {
           initial="hidden"
           animate="show"
         >
-          <motion.div variants={item}>
-            <Header />
+          <header className="flex items-center justify-between mb-8 pb-6 border-b border-[var(--border)] backdrop-blur-sm">
+            <div className="flex items-center gap-6">
+              <NavLink to="/" className="text-2xl font-display font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[var(--accent)] via-[var(--primary)] to-[var(--amber)] no-underline">
+                Pokemon Battle Simulator
+              </NavLink>
+              <nav className="flex gap-2">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                    }`
+                  }
+                >
+                  Matchup Simulator
+                </NavLink>
+                <NavLink
+                  to="/tournament"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                    }`
+                  }
+                >
+                  Trainer Tournament
+                </NavLink>
+              </nav>
+            </div>
+            <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--bg-panel)] border border-[var(--border)]">
+              <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
+              <span className="text-sm font-medium">{status.text}</span>
+            </div>
+          </header>
+            <main>
+              <Routes>
+                <Route path="/" element={<MatchupSimulatorPage />} />
+                <Route path="/tournament" element={<TournamentPage />} />
+              </Routes>
+            </main>
           </motion.div>
-          <main className="space-y-0 mt-2">
-            <motion.div variants={item}><Settings /></motion.div>
-            <motion.div variants={item}><FileEditor /></motion.div>
-            <motion.div variants={item}><TeamBuilder /></motion.div>
-            <motion.div variants={item}><Actions /></motion.div>
-            <motion.div variants={item}><Log /></motion.div>
-            <motion.div variants={item}><Outputs /></motion.div>
-          </main>
-        </motion.div>
-      </div>
+        </div>
+      </BrowserRouter>
+  );
+}
+
+export default function App() {
+  return (
+    <AppProvider>
+      <AppContent />
     </AppProvider>
   );
 }
