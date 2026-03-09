@@ -172,6 +172,7 @@ def write_matchup_config():
         "poolLimit": cfg.get("poolLimit", 50),
         "useSmogonSets": cfg.get("useSmogonSets", True),
         "smogonFormat": cfg.get("smogonFormat", "gen9ou"),
+        "customSets": cfg.get("customSets", {}),
         "pokemon1": cfg.get("pokemon1", ""),
         "pokemon2": cfg.get("pokemon2", ""),
     })
