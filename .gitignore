@@ -43,6 +43,7 @@ instance/
 
 # Node.js (pokemon-showdown)
 node_modules/
+pokemon-showdown/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
