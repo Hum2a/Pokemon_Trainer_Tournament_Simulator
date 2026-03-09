@@ -19,12 +19,14 @@ This creates `user_configs`, `simulation_runs`, and `simulation_results` tables 
 
 ## 3. Get Your API Keys
 
-In Supabase: **Project Settings** → **API**
+In Supabase: **Project Settings** → **API** (or **API Keys**)
 
 - **Project URL** → `SUPABASE_URL` (backend) and `VITE_SUPABASE_URL` (frontend)
-- **anon public** → `VITE_SUPABASE_ANON_KEY` (frontend)
-- **service_role** → `SUPABASE_SERVICE_ROLE_KEY` (backend only; keep secret)
-- **JWT Secret** → `SUPABASE_JWT_SECRET` (backend; under "JWT Settings")
+- **Publishable key** (`sb_publishable_...`) → `VITE_SUPABASE_PUBLISHABLE_KEY` (frontend)
+- **Secret key** (`sb_secret_...`) → `SUPABASE_SECRET_KEY` (backend only; keep secret)
+- **JWT Secret** → `SUPABASE_JWT_SECRET` (backend; under "JWT Settings" for verifying auth tokens)
+
+Legacy keys still work: `anon` → `VITE_SUPABASE_ANON_KEY`, `service_role` → `SUPABASE_SERVICE_ROLE_KEY`.
 
 ## 4. Configure Environment Variables
 
@@ -35,7 +37,7 @@ Create `.env` in the project root:
 ```
 SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_JWT_SECRET=your-jwt-secret
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SUPABASE_SECRET_KEY=your-secret-key
 ```
 
 ### Frontend
@@ -44,7 +46,7 @@ Create `frontend/.env`:
 
 ```
 VITE_SUPABASE_URL=https://xxxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
 
 ## 5. Enable Email Auth (Optional)
@@ -60,11 +62,11 @@ Add these as environment variables in Render:
 
 - `SUPABASE_URL`
 - `SUPABASE_JWT_SECRET`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SECRET_KEY`
 
 For the frontend build, add:
 
 - `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 (Vite bakes these into the build at build time.)

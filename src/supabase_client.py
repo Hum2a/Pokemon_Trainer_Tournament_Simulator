@@ -1,6 +1,6 @@
 """
 Supabase client for server-side config and simulation storage.
-Uses service_role key to bypass RLS for backend writes.
+Uses secret key (sb_secret_...) or legacy service_role key to bypass RLS.
 """
 
 import os
@@ -10,11 +10,11 @@ _supabase = None
 
 
 def get_supabase():
-    """Lazy-init Supabase client with service_role key."""
+    """Lazy-init Supabase client with secret key."""
     global _supabase
     if _supabase is None:
         url = os.environ.get("SUPABASE_URL", "")
-        key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
+        key = os.environ.get("SUPABASE_SECRET_KEY") or os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
         if url and key:
             from supabase import create_client
             _supabase = create_client(url, key)

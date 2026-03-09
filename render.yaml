@@ -3,8 +3,8 @@
 # Docs: https://render.com/docs/infrastructure-as-code
 #
 # Required env vars (add in Render dashboard):
-#   SUPABASE_URL, SUPABASE_JWT_SECRET, SUPABASE_SERVICE_ROLE_KEY
-#   VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY (for frontend build)
+#   SUPABASE_URL, SUPABASE_JWT_SECRET, SUPABASE_SECRET_KEY
+#   VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY (for frontend build)
 
 services:
   - type: web
