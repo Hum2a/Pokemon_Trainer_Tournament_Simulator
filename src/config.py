@@ -60,8 +60,8 @@ def _flat_to_nested(flat):
         "parse": {"output_file": flat.get("output_file", "output.txt")},
         "matchups": {
             "noOfThreads": flat.get("noOfThreads", 4),
-            "setLevel": flat.get("setLevel", 50),
-            "battlesPerMatchup": flat.get("battlesPerMatchup", 100),
+            "setLevel": flat.get("setLevel", 100),
+            "battlesPerMatchup": flat.get("battlesPerMatchup", 5),
             "mode": flat.get("mode", "head-to-head"),
             "poolFilter": flat.get("poolFilter", "all"),
             "poolType": flat.get("poolType", ""),
@@ -105,8 +105,8 @@ def default_config():
         },
         "matchups": {
             "noOfThreads": 4,
-            "setLevel": 50,
-            "battlesPerMatchup": 100,
+            "setLevel": 100,
+            "battlesPerMatchup": 5,
             "mode": "head-to-head",
             "poolFilter": "all",
             "poolType": "",
