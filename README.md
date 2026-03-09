@@ -28,17 +28,21 @@ Here we have an environment for running large amounts of Pokémon simulations in
 ### Web UI (Recommended)
 A web interface is available to run all simulator functions through buttons and settings:
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. From the project root, run: `python app.py`
-3. Open http://127.0.0.1:5000 in your browser
+1. Install Python dependencies: `pip install -r requirements.txt`
+2. Build the frontend: `cd frontend && npm install && npm run build`
+3. From the project root, run: `python app.py`
+4. Open http://127.0.0.1:5000 in your browser
+
+**Development mode** (hot reload): Run Flask and Vite in separate terminals:
+- Terminal 1: `python app.py` (API on port 5000)
+- Terminal 2: `cd frontend && npm run dev` (UI on port 5173, proxies API to 5000)
 
 The UI lets you build battles, run trainer or Pokemon simulations, parse results to PNG/CSV, and download outputs—all configurable via the Settings panel.
 
 **Project structure:** The codebase is modular. See `.cursorrules` for conventions. Key directories:
 - `app.py` – entry point
 - `src/` – backend (config, security, services, routes)
-- `static/js/` – frontend modules (api, config, file-editor, teambuilder, actions, outputs)
-- `templates/` – Jinja2 templates with partials
+- `frontend/` – React + Vite + Tailwind frontend (builds to `frontend/dist/`)
 
 **Team Builder:** To use the Team Builder (pick any Pokemon, moves, abilities, items), run once:
 ```
