@@ -1,0 +1,40 @@
+---
+description: Python backend conventions (Flask, src/)
+globs: app.py, src/**/*.py
+alwaysApply: false
+---
+
+# Python Backend
+
+## Style
+
+- PEP 8. Max line length 100.
+- Type hints for public functions. Docstrings for modules and public APIs.
+- snake_case for functions and variables.
+
+## Structure
+
+- `app.py`: Create Flask app, register blueprints, security headers.
+- `src/config.py`: Paths, config loading, constants.
+- `src/security.py`: Validation, path sanitization. Use these helpers; do not bypass.
+- `src/services.py`: Script execution, background tasks, config writing.
+- `src/routes/api.py`: API endpoints. Keep routes thin; delegate to services.
+
+## Error Handling
+
+```python
+# API: Return JSON with error key and appropriate status
+return jsonify({"error": "Invalid config"}), 400
+
+# Subprocess: Catch TimeoutExpired, OSError. Log; don't expose stack traces.
+try:
+    result = subprocess.run(...)
+except subprocess.TimeoutExpired:
+    logger.error("Script timed out")
+    return jsonify({"error": "Task timed out"}), 500
+```
+
+## Imports
+
+- Use absolute imports from `src.` (e.g. `from src.security import ...`).
+- Group: stdlib, third-party, local.

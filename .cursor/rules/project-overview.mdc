@@ -1,0 +1,47 @@
+---
+description: Project overview and codebase structure
+alwaysApply: true
+---
+
+# Pokemon Battle Simulator - Project Overview
+
+## What This Project Does
+
+Large-scale Pokemon Showdown simulations: trainer vs trainer, Pokemon vs leaders. Parses results to PNG/CSV. Web UI for config, team building, and running simulations.
+
+## Codebase Structure
+
+```
+Pokemon_Trainer_Tournament_Simulator/
+├── app.py                    # Flask entry point
+├── src/
+│   ├── config.py             # Paths, config loading
+│   ├── security.py           # Validation, path sanitization
+│   ├── services.py           # Script execution, task state
+│   └── routes/
+│       ├── pages.py          # Page routes (index)
+│       └── api.py            # API routes
+├── frontend/                 # React + Vite + Tailwind SPA
+│   ├── src/
+│   │   ├── components/       # React components
+│   │   ├── context/          # AppContext
+│   │   ├── api.ts            # API client
+│   │   └── lib/utils.ts      # cn() utility
+│   └── dist/                 # Built SPA (served by Flask)
+├── Data/                     # Simulator scripts, inputs, outputs
+│   ├── Inputs/               # Input files (configurable)
+│   ├── Outputs/              # Generated outputs
+│   └── UsefulDatasets/       # Dex fetch script
+└── pokemon-showdown/         # Modified sim submodule
+```
+
+## Run Commands
+
+- **Production**: `python app.py` (serves from `frontend/dist/`)
+- **Dev**: `npm run dev` (root) runs Flask + Vite concurrently
+- **Dex data**: `cd Data/UsefulDatasets && python fetch_dex_data.py`
+
+## Do Not Modify
+
+- `pokemon-showdown/` except for documented sim modifications
+- Existing API contracts without updating frontend `api.ts`

@@ -1,3 +1,5 @@
+import json
+import os
 import re
 from collections import defaultdict
 import matplotlib.pyplot as plt
@@ -191,7 +193,14 @@ def save_matrix_to_csv(battle_matrix, filename):
             writer.writerow(row)
 
 # Use the function and print the results
-file_path = 'output.txt'
+config = {}
+if os.path.exists('config.json'):
+    try:
+        with open('config.json') as f:
+            config = json.load(f)
+    except Exception:
+        pass
+file_path = config.get('output_file', 'output.txt')
 result, matrix = parse_battles(file_path)
 
 # Save the results to a CSV file

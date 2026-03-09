@@ -1,0 +1,29 @@
+---
+description: Data directory, scripts, and file handling
+globs: Data/**/*
+alwaysApply: false
+---
+
+# Data & Files
+
+## Structure
+
+- `Data/Inputs/`: Input files (GymLeaderPokemon.txt, GymLeaderTeams.json, etc.). Paths configurable in Settings.
+- `Data/Outputs/`: Generated PNG, CSV. Only allowlisted files are served.
+- `Data/UsefulDatasets/`: Dex fetch script. Run once for Team Builder.
+
+## Config
+
+- Simulator scripts read `config.json` (flat format) when run. Written by `services.py`.
+- Do not commit `config.json` if it contains user-specific paths. Add to .gitignore if needed.
+
+## Scripts
+
+- Python scripts in `Data/` are invoked by `services.run_script()` or `run_script_background()`.
+- They run from `Data/` as cwd. Use relative paths from `Data/`.
+
+## Performance
+
+- Long-running simulations run in background. Frontend polls `/api/status`.
+- Avoid loading entire output.txt into memory; stream if possible for very large files.
+- Dex JSON files: keep reasonably sized. Load on demand by frontend.

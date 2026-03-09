@@ -1,0 +1,40 @@
+---
+description: API error handling and response format
+globs: src/routes/api.py, frontend/src/api.ts
+alwaysApply: false
+---
+
+# API Conventions
+
+## Response Format
+
+- **Success**: `{"ok": true}` or `{"key": value}`. Use 200.
+- **Error**: `{"error": "message"}`. Use 400 (bad request), 403 (forbidden), 404 (not found), 500 (server error).
+
+## Backend (Flask)
+
+```python
+# Validation failure
+return jsonify({"error": err}), 400
+
+# Not found
+return jsonify({"error": "File not found"}), 404
+
+# Success with data
+return jsonify({"content": content})
+```
+
+## Frontend (api.ts)
+
+- Catch fetch errors. Log via `appendLog(..., "error")`.
+- Do not expose raw stack traces to the user.
+- Show user-friendly messages (e.g. "Is Flask running? Start with: python app.py").
+
+## Endpoints
+
+- `/api/config` GET/POST
+- `/api/dex/*` (species, moves, abilities, items, learnsets, natures)
+- `/api/files/read`, `/api/files/write`
+- `/api/build-trainer`, `/api/build-pokemon`, `/api/run-trainer`, `/api/run-pokemon`
+- `/api/parse-png`, `/api/parse-csv`
+- `/api/status`, `/api/outputs`, `/api/outputs/<name>`

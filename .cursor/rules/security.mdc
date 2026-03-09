@@ -1,0 +1,30 @@
+---
+description: Security validation and path handling
+globs: src/**/*.py, app.py
+alwaysApply: false
+---
+
+# Security
+
+## Path Validation
+
+- **All file paths** must be validated. Use `resolve_input_path()` in `security.py` for paths under `Data/Inputs/`.
+- Reject: `..`, absolute paths, invalid chars (`<>"|?*`), paths outside `Inputs/`.
+- Never serve arbitrary paths. Output files: use `validate_output_filename()` and only serve from `ALLOWED_OUTPUT_FILES`.
+
+## Config Validation
+
+- Use `validate_config()` before saving. Threads: 1–64. Battle caps: non-negative.
+- File content size: max 10 MB (`MAX_FILE_SIZE_BYTES`). Use `validate_file_content_size()`.
+
+## Dex Endpoints
+
+- Use `validate_dex_type()` for dex resource types (species, moves, etc.).
+
+## Headers
+
+- X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy are set in `app.py`. Do not remove.
+
+## Request Size
+
+- `MAX_CONTENT_LENGTH` limits request body. Do not increase without justification.

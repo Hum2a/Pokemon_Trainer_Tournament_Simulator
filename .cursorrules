@@ -1,0 +1,13 @@
+# Pokemon Battle Simulator - Project Rules
+
+Project rules have been moved to `.cursor/rules/` for better organization.
+
+See:
+- `.cursor/rules/project-overview.mdc` - Structure, run commands
+- `.cursor/rules/python-backend.mdc` - Flask, src/
+- `.cursor/rules/security.mdc` - Path validation, config validation
+- `.cursor/rules/frontend-react.mdc` - React, Vite, Tailwind
+- `.cursor/rules/api-conventions.mdc` - API responses, error handling
+- `.cursor/rules/code-style.mdc` - Naming, formatting
+- `.cursor/rules/data-files.mdc` - Data/, scripts, config
+- `.cursor/rules/accessibility-ux.mdc` - A11y, form labels, feedback

@@ -1,3 +1,5 @@
+import json
+import os
 import re
 from collections import defaultdict
 import matplotlib.pyplot as plt
@@ -166,7 +168,14 @@ def plot_battle_matrix(battle_matrix):
     plt.close(fig)
 
 # Use the function and print the results
-file_path = 'output.txt'
+config = {}
+if os.path.exists('config.json'):
+    try:
+        with open('config.json') as f:
+            config = json.load(f)
+    except Exception:
+        pass
+file_path = config.get('output_file', 'output.txt')
 result, matrix = parse_battles(file_path)
 for trainer, record in result:
     print(f"{trainer}: {record['wins']} Wins, {record['losses']} Losses, {record['ties']} Ties, Win/Loss Ratio: {record['win_loss_ratio']:.2f}")
