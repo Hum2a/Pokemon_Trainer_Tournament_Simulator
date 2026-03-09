@@ -1,0 +1,17 @@
+{
+  "trainer": {
+    "noOfThreads": 4,
+    "setLevel": 50,
+    "RandomiseTeams": false,
+    "n": 100,
+    "run_n_times": 100,
+    "filename": "Inputs/GymLeaderPokemon.txt"
+  },
+  "pokemon": {
+    "noOfThreads": 4,
+    "n": 2000
+  },
+  "parse": {
+    "output_file": "output.txt"
+  }
+}
