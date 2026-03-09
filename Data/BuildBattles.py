@@ -1,9 +1,9 @@
 import json
+import os
 from itertools import combinations
 
-def generate_tournament_matchups(input_file, output_file):
-    # How many times to run each battle
-    RUN_N_TIMES = 100
+def generate_tournament_matchups(input_file, output_file, run_n_times=100):
+    RUN_N_TIMES = run_n_times
 
     # Read the JSON data from the input file
     with open(input_file, 'r') as file:
@@ -22,6 +22,11 @@ def generate_tournament_matchups(input_file, output_file):
     with open(output_file, 'w') as file:
         json.dump(matchups, file, indent=2)
 
-# Example usage:
-# generate_tournament_matchups('Inputs/tournament_battles/Badge7Battles.json', 'Inputs/tournament_battles.json')
-generate_tournament_matchups('Inputs/GymLeaderTeams.json', 'Inputs/tournament_battles.json')
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default="Inputs/GymLeaderTeams.json")
+    parser.add_argument("--output", default="Inputs/tournament_battles.json")
+    parser.add_argument("--runs", type=int, default=100, help="Battles per matchup")
+    args = parser.parse_args()
+    generate_tournament_matchups(args.input, args.output, args.runs)
