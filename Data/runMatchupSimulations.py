@@ -29,8 +29,113 @@ def load_dex():
     learnsets = {}
     if learnsets_path.exists():
         with open(learnsets_path, encoding="utf-8") as f:
-            learnsets = json.load(f)
+            raw = json.load(f)
+        for sid, data in raw.items():
+            if isinstance(data, list):
+                learnsets[sid] = data
+            elif isinstance(data, dict) and "learnset" in data:
+                learnsets[sid] = list(data["learnset"].keys())
+            else:
+                learnsets[sid] = []
     return species, learnsets
+
+
+def _matches_bst(bst, range_key):
+    """Check if BST matches the given range."""
+    if not range_key or range_key == "any":
+        return True
+    if range_key == "under400":
+        return bst < 400
+    if range_key == "400-500":
+        return 400 <= bst < 500
+    if range_key == "500-600":
+        return 500 <= bst < 600
+    if range_key == "600+":
+        return bst >= 600
+    return True
+
+
+def _matches_weight(weightkg, range_key):
+    """Check if weight matches the given range."""
+    if not range_key or range_key == "any":
+        return True
+    w = weightkg if weightkg is not None else 0
+    if range_key == "light":
+        return w < 50
+    if range_key == "medium":
+        return 50 <= w <= 150
+    if range_key == "heavy":
+        return w > 150
+    return True
+
+
+def _matches_height(heightm, range_key):
+    """Check if height matches the given range."""
+    if not range_key or range_key == "any":
+        return True
+    h = heightm if heightm is not None else 0
+    if range_key == "small":
+        return h < 1
+    if range_key == "medium":
+        return 1 <= h <= 2
+    if range_key == "large":
+        return h > 2
+    return True
+
+
+def filter_species(species_list, learnsets, m):
+    """Filter species by pool criteria. m = matchups config dict."""
+    filtered = list(species_list)
+    pool_filter = m.get("poolFilter", "all")
+    if pool_filter == "all":
+        return filtered
+    if pool_filter == "type" and m.get("poolType"):
+        filtered = [s for s in filtered if m["poolType"] in (s.get("types") or [])]
+    elif pool_filter == "region" and m.get("poolRegion"):
+        filtered = [s for s in filtered if s.get("region") == m["poolRegion"]]
+    elif pool_filter == "evolution" and m.get("poolEvolutionStage"):
+        filtered = [s for s in filtered if s.get("evolutionStage") == m["poolEvolutionStage"]]
+    elif pool_filter == "ability" and m.get("poolAbility"):
+        filtered = [s for s in filtered if m["poolAbility"] in (s.get("abilities") or {}).values()]
+    elif pool_filter == "move" and m.get("poolMove"):
+        move_id = m["poolMove"].lower().replace(" ", "").replace("-", "")
+        result = []
+        for s in filtered:
+            sid = (s.get("id") or "").lower().replace(" ", "").replace("-", "")
+            base_id = (s.get("baseSpecies") or s.get("id") or "").lower().replace(" ", "").replace("-", "")
+            moves = learnsets.get(sid, learnsets.get(base_id, []))
+            if isinstance(moves, list) and move_id in moves:
+                result.append(s)
+        filtered = result
+    elif pool_filter == "role" and m.get("poolRole"):
+        filtered = [s for s in filtered if s.get("role") == m["poolRole"]]
+    elif pool_filter == "bst" and m.get("poolBst") and m.get("poolBst") != "any":
+        filtered = [s for s in filtered if _matches_bst(s.get("bst", 0), m["poolBst"])]
+    elif pool_filter == "typeCount" and m.get("poolTypeCount"):
+        tc = 2 if m["poolTypeCount"] == "dual" else 1
+        filtered = [s for s in filtered if s.get("typeCount", 1) == tc]
+    elif pool_filter == "tags" and m.get("poolTags"):
+        tag = m["poolTags"]
+        filtered = [s for s in filtered if tag in (s.get("tags") or [])]
+    elif pool_filter == "eggGroup" and m.get("poolEggGroup"):
+        eg = m["poolEggGroup"]
+        filtered = [s for s in filtered if eg in (s.get("eggGroups") or [])]
+    elif pool_filter == "color" and m.get("poolColor"):
+        filtered = [s for s in filtered if s.get("color") == m["poolColor"]]
+    elif pool_filter == "generation" and m.get("poolGeneration"):
+        try:
+            gen = int(m["poolGeneration"])
+            filtered = [s for s in filtered if s.get("generation") == gen]
+        except (ValueError, TypeError):
+            pass
+    elif pool_filter == "weight" and m.get("poolWeight") and m.get("poolWeight") != "any":
+        filtered = [s for s in filtered if _matches_weight(s.get("weightkg"), m["poolWeight"])]
+    elif pool_filter == "height" and m.get("poolHeight") and m.get("poolHeight") != "any":
+        filtered = [s for s in filtered if _matches_height(s.get("heightm"), m["poolHeight"])]
+    elif pool_filter == "canMega" and m.get("poolCanMega"):
+        want_mega = m["poolCanMega"] == "yes"
+        filtered = [s for s in filtered if bool(s.get("canMega")) == want_mega]
+    return filtered
 
 
 def get_default_set(species_name, learnsets, species_list, level=50):
@@ -124,8 +229,6 @@ def main():
     n_battles = m.get("battlesPerMatchup", 100)
     threads = m.get("noOfThreads", 4)
     mode = m.get("mode", "head-to-head")
-    pool_filter = m.get("poolFilter", "all")
-    pool_type = m.get("poolType", "")
     pool_limit = m.get("poolLimit", 50)
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
@@ -138,9 +241,7 @@ def main():
         matchups = [(pokemon1, pokemon2)]
     else:
         # Matrix mode: filter species
-        filtered = species_list
-        if pool_filter == "type" and pool_type:
-            filtered = [s for s in species_list if pool_type in (s.get("types") or [])]
+        filtered = filter_species(species_list, learnsets, m)
         filtered = [s.get("name", s.get("id", "")) for s in filtered if s.get("name")]
         filtered = filtered[:pool_limit]
         for i, a in enumerate(filtered):
