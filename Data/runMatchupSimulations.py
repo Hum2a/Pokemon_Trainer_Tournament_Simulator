@@ -500,7 +500,22 @@ def main():
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
 
-    print("Stage 1/4: Loading dex data (species, learnsets)...", flush=True)
+    print("Stage 0/4: Building pokemon-showdown...", flush=True)
+    ps_dir = Path(__file__).parent.parent / "pokemon-showdown"
+    build_result = subprocess.run(
+        ["node", "build"],
+        cwd=str(ps_dir),
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if build_result.returncode != 0:
+        err = (build_result.stdout or "") + (build_result.stderr or "")
+        print(f"  Build failed: {err[:500]}", flush=True)
+        sys.exit(1)
+    print("  Build complete.", flush=True)
+
+    print("Stage 1/5: Loading dex data (species, learnsets)...", flush=True)
     species_list, learnsets = load_dex()
     print(f"  Loaded {len(species_list)} species.", flush=True)
 
@@ -510,7 +525,7 @@ def main():
         smogon_sets = load_smogon_sets(smogon_format)
         print(f"  Loaded {len(smogon_sets)} species from Smogon.", flush=True)
 
-    print("Stage 2/4: Building matchup list...", flush=True)
+    print("Stage 2/5: Building matchup list...", flush=True)
     matchups = []
     if mode == "head-to-head" and pokemon1 and pokemon2:
         matchups = [(pokemon1, pokemon2)]
@@ -530,7 +545,7 @@ def main():
 
     total_battles = len(matchups) * n_battles
     sim_format = _format_to_gen(smogon_format)
-    print(f"Stage 3/4: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
+    print(f"Stage 3/5: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
     print(f"  Threads: {threads}, Level: {level}, Sim format: {sim_format}", flush=True)
 
     results = {}
@@ -565,7 +580,7 @@ def main():
             except Exception as e:
                 print(f"  Error: {e}", flush=True)
 
-    print("Stage 4/4: Writing results...", flush=True)
+    print("Stage 4/5: Writing results...", flush=True)
     OUTPUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
