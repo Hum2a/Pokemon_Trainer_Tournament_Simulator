@@ -11,6 +11,7 @@ import json
 from src.config import DATA_DIR, CONFIG_PATH, get_config
 
 current_task = None
+current_proc = None
 task_output = []
 task_lock = threading.Lock()
 
@@ -39,13 +40,14 @@ def run_script(script_name, args=None, capture=True):
 
 def run_script_background(script_name, args=None):
     """Run script in background, appending output to task_output."""
-    global current_task, task_output
+    global current_task, current_proc, task_output
 
     def run():
-        global current_task, task_output
+        global current_task, current_proc, task_output
         with task_lock:
             task_output = []
             current_task = script_name
+            current_proc = None
 
         cmd = ["python", script_name]
         if args:
@@ -59,16 +61,37 @@ def run_script_background(script_name, args=None):
             text=True,
             bufsize=1,
         )
-        for line in iter(proc.stdout.readline, ""):
-            with task_lock:
-                task_output.append(line)
-        proc.wait()
         with task_lock:
+            current_proc = proc
+        try:
+            for line in iter(proc.stdout.readline, ""):
+                with task_lock:
+                    task_output.append(line)
+        finally:
+            proc.wait()
+        with task_lock:
+            current_proc = None
             current_task = None
 
     t = threading.Thread(target=run, daemon=True)
     t.start()
     return True
+
+
+def terminate_task():
+    """Terminate the currently running background task. Returns True if a task was terminated."""
+    with task_lock:
+        proc = current_proc
+    if proc is not None:
+        try:
+            proc.terminate()
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        except Exception:
+            pass
+        return True
+    return False
 
 
 def get_task_status():
