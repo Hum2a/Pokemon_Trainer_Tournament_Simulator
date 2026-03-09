@@ -1,0 +1,62 @@
+<section class="panel teambuilder-panel">
+  <h2 class="panel-title" data-toggle="teambuilder">
+    <span>Team Builder</span>
+    <span class="toggle">▼</span>
+  </h2>
+  <div class="panel-content" id="teambuilderContent">
+    <p class="editor-hint">Build Pokemon in Showdown format. Pick species, ability, moves, item, nature. Add to team and export to the editor above.</p>
+    <div class="builder-form">
+      <div class="builder-row">
+        <label>
+          <span>Pokemon</span>
+          <input type="text" id="builderSpecies" placeholder="Search species (e.g. Pikachu)">
+          <div id="builderSpeciesList" class="dropdown-list"></div>
+        </label>
+        <label>
+          <span>Level</span>
+          <input type="number" id="builderLevel" value="50" min="1" max="100">
+        </label>
+      </div>
+      <div class="builder-row">
+        <label>
+          <span>Ability</span>
+          <select id="builderAbility"></select>
+        </label>
+        <label>
+          <span>Item</span>
+          <select id="builderItem"></select>
+        </label>
+        <label>
+          <span>Nature</span>
+          <select id="builderNature"></select>
+        </label>
+      </div>
+      <div class="builder-row">
+        <label>
+          <span>Move 1</span>
+          <select id="builderMove1"></select>
+        </label>
+        <label>
+          <span>Move 2</span>
+          <select id="builderMove2"></select>
+        </label>
+        <label>
+          <span>Move 3</span>
+          <select id="builderMove3"></select>
+        </label>
+        <label>
+          <span>Move 4</span>
+          <select id="builderMove4"></select>
+        </label>
+      </div>
+      <div class="builder-row builder-actions">
+        <button type="button" class="btn btn-accent" id="builderAdd">Add to Team</button>
+        <button type="button" class="btn btn-primary" id="builderExport">Export to Editor</button>
+      </div>
+    </div>
+    <div class="builder-team">
+      <h4>Current Team</h4>
+      <div id="builderTeamList"></div>
+    </div>
+  </div>
+</section>
