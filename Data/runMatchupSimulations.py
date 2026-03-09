@@ -405,15 +405,23 @@ def get_default_set(species_name, learnsets, species_list, level=50):
     return "\n".join(lines)
 
 
-def run_single_battle(p1_set, p2_set, thread_no, level):
-    """Run one 1v1 battle. Returns 'p1' or 'p2' for winner."""
+def _format_to_gen(smogon_format):
+    """Extract gen from smogon format: gen5ou -> gen5, gen9 -> gen9."""
+    if not smogon_format:
+        return "gen9"
+    m = re.match(r"^(gen\d+)", str(smogon_format).lower())
+    return m.group(1) if m else "gen9"
+
+
+def run_single_battle(p1_set, p2_set, thread_no, level, sim_format="gen9"):
+    """Run one 1v1 battle. Returns ('p1'|'p2'|None, battle_log)."""
     WORKER_FILES.mkdir(exist_ok=True)
     f1 = WORKER_FILES / f"{thread_no}1.txt"
     f2 = WORKER_FILES / f"{thread_no}2.txt"
     f1.write_text(p1_set, encoding="utf-8")
     f2.write_text(p2_set, encoding="utf-8")
 
-    cmd = f"cd {Path(__file__).parent.parent / 'pokemon-showdown'} && node ./dist/sim/examples/Simulation-test-1 {thread_no} 0 0"
+    cmd = f"cd {Path(__file__).parent.parent / 'pokemon-showdown'} && node ./dist/sim/examples/Simulation-test-1 {thread_no} 0 0 {sim_format}"
     try:
         result = subprocess.run(
             cmd,
@@ -425,15 +433,16 @@ def run_single_battle(p1_set, p2_set, thread_no, level):
         )
         out = (result.stdout or "") + (result.stderr or "")
     except subprocess.TimeoutExpired:
-        return None
-    except Exception:
-        return None
+        return None, "(timeout)"
+    except Exception as e:
+        return None, f"(error: {e})"
 
+    winner = None
     if "|win|Bot 1" in out:
-        return "p1"
-    if "|win|Bot 2" in out:
-        return "p2"
-    return None
+        winner = "p1"
+    elif "|win|Bot 2" in out:
+        winner = "p2"
+    return winner, out
 
 
 def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets=None):
@@ -453,20 +462,22 @@ def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_s
     return get_default_set(species_name, learnsets, species_list, level)
 
 
-def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level, smogon_sets=None, use_smogon=True, custom_sets=None):
-    """Run n_battles between p1 and p2. Returns (p1_wins, p2_wins)."""
+def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level, smogon_sets=None, use_smogon=True, custom_sets=None, sim_format="gen9"):
+    """Run n_battles between p1 and p2. Returns (p1_wins, p2_wins, battle_logs)."""
     p1_set = get_set_for_battle(p1_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
     p2_set = get_set_for_battle(p2_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
 
     p1_wins = 0
     p2_wins = 0
-    for _ in range(n_battles):
-        winner = run_single_battle(p1_set, p2_set, thread_no, level)
+    logs = []
+    for i in range(n_battles):
+        winner, log = run_single_battle(p1_set, p2_set, thread_no, level, sim_format)
+        logs.append({"winner": winner, "log": log})
         if winner == "p1":
             p1_wins += 1
         elif winner == "p2":
             p2_wins += 1
-    return p1_wins, p2_wins
+    return p1_wins, p2_wins, logs
 
 
 def main():
@@ -518,10 +529,12 @@ def main():
         return
 
     total_battles = len(matchups) * n_battles
+    sim_format = _format_to_gen(smogon_format)
     print(f"Stage 3/4: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
-    print(f"  Threads: {threads}, Level: {level}", flush=True)
+    print(f"  Threads: {threads}, Level: {level}, Sim format: {sim_format}", flush=True)
 
     results = {}
+    battle_logs = {}
     thread_names = list(range(1, threads + 1))
     lock = threading.Lock()
 
@@ -530,8 +543,8 @@ def main():
         with lock:
             tn = thread_names.pop(0) if thread_names else 1
         try:
-            w1, w2 = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon, custom_sets)
-            return (p1, p2, w1, w2)
+            w1, w2, logs = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon, custom_sets, sim_format)
+            return (p1, p2, w1, w2, logs)
         finally:
             with lock:
                 thread_names.append(tn)
@@ -541,9 +554,10 @@ def main():
         done = 0
         for f in as_completed(futures):
             try:
-                p1, p2, w1, w2 = f.result()
+                p1, p2, w1, w2, logs = f.result()
                 key = f"{p1} vs {p2}"
                 results[key] = {"p1": p1, "p2": p2, "p1_wins": w1, "p2_wins": w2, "total": w1 + w2}
+                battle_logs[key] = logs
                 done += 1
                 if done % 10 == 0 or done == len(matchups):
                     pct = 100 * done // len(matchups)
@@ -556,6 +570,11 @@ def main():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
+    # Write battle logs
+    logs_path = Path(__file__).parent / "matchup_battle_logs.json"
+    with open(logs_path, "w", encoding="utf-8") as f:
+        json.dump(battle_logs, f, indent=2)
+
     # Write CSV for matrix view
     csv_path = Path(__file__).parent / "matchup_matrix.csv"
     species_names = sorted(set(r["p1"] for r in results.values()) | set(r["p2"] for r in results.values()))
@@ -566,7 +585,7 @@ def main():
             rate = v["p1_wins"] / total
             f.write(f"{v['p1']},{v['p2']},{v['p1_wins']},{v['p2_wins']},{rate:.3f}\n")
 
-    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}", flush=True)
+    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}, {logs_path}", flush=True)
 
 
 if __name__ == "__main__":
