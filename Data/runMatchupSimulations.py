@@ -21,6 +21,19 @@ WORKER_OUTPUTS = Path(__file__).parent / "WorkerOutputs"
 OUTPUT_FILE = Path(__file__).parent / "matchup_results.json"
 SMOGON_SETS_URL = "https://data.pkmn.cc/sets"
 
+# Priority order for "newest" mode: try formats newest-to-oldest, use first set found per species
+NEWEST_FORMAT_PRIORITY = [
+    "gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9",
+    "gen8ou", "gen8uu", "gen8ru", "gen8nu", "gen8pu", "gen8zu", "gen8",
+    "gen7ou", "gen7uu", "gen7ru", "gen7nu", "gen7pu", "gen7zu", "gen7",
+    "gen6ou", "gen6uu", "gen6ru", "gen6nu", "gen6pu", "gen6zu", "gen6",
+    "gen5ou", "gen5uu", "gen5ru", "gen5nu", "gen5pu", "gen5zu", "gen5",
+    "gen4ou", "gen4uu", "gen4ru", "gen4nu", "gen4pu", "gen4zu", "gen4",
+    "gen3ou", "gen3uu", "gen3ru", "gen3nu", "gen3pu", "gen3zu", "gen3",
+    "gen2ou", "gen2uu", "gen2nu", "gen2pu", "gen2zu", "gen2",
+    "gen1ou", "gen1uu", "gen1nu", "gen1pu", "gen1zu", "gen1",
+]
+
 
 def load_dex():
     """Load species and learnsets from dex-export."""
@@ -258,6 +271,18 @@ def smogon_to_showdown(species_name, smogon_set, level=100):
 
 def load_smogon_sets(format_id="gen9ou"):
     """Fetch Smogon sets from data.pkmn.cc. Returns {species: {setName: setData}}."""
+    if format_id == "newest":
+        merged = {}
+        for fmt in NEWEST_FORMAT_PRIORITY:
+            try:
+                data = load_smogon_sets(fmt)
+                for species, sets in data.items():
+                    if species not in merged and isinstance(sets, dict) and sets:
+                        set_names = list(sets.keys())
+                        merged[species] = {set_names[0]: sets[set_names[0]]}
+            except Exception:
+                continue
+        return merged
     url = f"{SMOGON_SETS_URL}/{format_id}.json"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
