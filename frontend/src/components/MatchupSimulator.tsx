@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Panel } from "./Panel";
+import { PoolSets } from "./PoolSets";
 import { useApp, type Config } from "../context/AppContext";
 import { api } from "../api";
 import { cn } from "../lib/utils";
@@ -340,6 +341,74 @@ export function MatchupSimulator() {
     if (tc === "single") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 1);
     else if (tc === "dual") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 2);
     return filtered.length;
+  }, [species, learnsets, m, ensureList]);
+
+  const getFilteredPool = useCallback((): string[] => {
+    const matchesBst = (bst: number, key: string) => {
+      if (!key || key === "any") return true;
+      if (key === "under400") return bst < 400;
+      if (key === "400-500") return 400 <= bst && bst < 500;
+      if (key === "500-600") return 500 <= bst && bst < 600;
+      if (key === "600+") return bst >= 600;
+      return true;
+    };
+    const matchesWeight = (w: number | undefined, key: string) => {
+      if (!key || key === "any") return true;
+      const val = w ?? 0;
+      if (key === "light") return val < 50;
+      if (key === "medium") return val >= 50 && val <= 150;
+      if (key === "heavy") return val > 150;
+      return true;
+    };
+    const matchesHeight = (h: number | undefined, key: string) => {
+      if (!key || key === "any") return true;
+      const val = h ?? 0;
+      if (key === "small") return val < 1;
+      if (key === "medium") return val >= 1 && val <= 2;
+      if (key === "large") return val > 2;
+      return true;
+    };
+    let filtered = [...species];
+    const evo = ensureList(m.poolEvolutionStages);
+    if (evo.length) filtered = filtered.filter((s) => evo.includes(s.evolutionStage ?? ""));
+    const types = ensureList(m.poolTypes);
+    if (types.length) filtered = filtered.filter((s) => (s.types ?? []).some((t) => types.includes(t)));
+    const cat = m.poolCategory ?? "all";
+    if (cat === "legendary") filtered = filtered.filter((s) => (s.tags ?? []).length > 0);
+    else if (cat === "regular") filtered = filtered.filter((s) => (s.tags ?? []).length === 0);
+    const mega = m.poolCanMega ?? "all";
+    if (mega === "yes") filtered = filtered.filter((s) => s.canMega);
+    else if (mega === "no") filtered = filtered.filter((s) => !s.canMega);
+    const regions = ensureList(m.poolRegions);
+    if (regions.length) filtered = filtered.filter((s) => regions.includes(s.region ?? ""));
+    if (m.poolBst && m.poolBst !== "any") filtered = filtered.filter((s) => matchesBst(s.bst ?? 0, m.poolBst as string));
+    const roles = ensureList(m.poolRoles);
+    if (roles.length) filtered = filtered.filter((s) => roles.includes(s.role ?? ""));
+    if (m.poolAbility) filtered = filtered.filter((s) => Object.values(s.abilities ?? {}).includes(m.poolAbility as string));
+    if (m.poolMove) {
+      const moveId = (m.poolMove as string).toLowerCase().replace(/[\s-]/g, "");
+      filtered = filtered.filter((s) => {
+        const sid = (s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
+        const baseId = (s.baseSpecies ?? s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
+        const moves = learnsets[sid] ?? learnsets[baseId] ?? [];
+        return Array.isArray(moves) && moves.includes(moveId);
+      });
+    }
+    const tags = ensureList(m.poolTags);
+    if (tags.length) filtered = filtered.filter((s) => (s.tags ?? []).some((t) => tags.includes(t)));
+    const eggGroups = ensureList(m.poolEggGroups);
+    if (eggGroups.length) filtered = filtered.filter((s) => (s.eggGroups ?? []).some((eg) => eggGroups.includes(eg)));
+    const colors = ensureList(m.poolColors);
+    if (colors.length) filtered = filtered.filter((s) => colors.includes(s.color ?? ""));
+    const gens = ensureList(m.poolGenerations).map((g) => parseInt(g, 10)).filter((g) => !isNaN(g));
+    if (gens.length) filtered = filtered.filter((s) => gens.includes(s.generation ?? 0));
+    if (m.poolWeight && m.poolWeight !== "any") filtered = filtered.filter((s) => matchesWeight(s.weightkg, m.poolWeight as string));
+    if (m.poolHeight && m.poolHeight !== "any") filtered = filtered.filter((s) => matchesHeight(s.heightm, m.poolHeight as string));
+    const tc = m.poolTypeCount;
+    if (tc === "single") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 1);
+    else if (tc === "dual") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 2);
+    const limit = m.poolLimit ?? 50;
+    return filtered.slice(0, limit).map((s) => s.name).sort();
   }, [species, learnsets, m, ensureList]);
 
   const getMatchupCount = useCallback((): number => {
@@ -812,6 +881,7 @@ export function MatchupSimulator() {
                 onChange={(e) => updateMatchup({ smogonFormat: e.target.value })}
                 className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
               >
+                <option value="newest">Newest (most recent set per Pokemon)</option>
                 {["gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9"].map((f) => (
                   <option key={f} value={f}>{f}</option>
                 ))}
@@ -884,6 +954,29 @@ export function MatchupSimulator() {
             </div>
           )}
         </dl>
+      </div>
+
+      <div className="mb-6 p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border)]">
+        <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Pool & Sets</h3>
+        <p className="text-sm text-[var(--text-muted)] mb-3">
+          Pokemon that will compete and their sets. Click a card to expand and view set details before running.
+        </p>
+        <PoolSets
+          pokemon={
+            (m.mode ?? "head-to-head") === "head-to-head"
+              ? [m.pokemon1, m.pokemon2].filter((x): x is string => !!x)
+              : getFilteredPool()
+          }
+          format={m.smogonFormat ?? "gen9ou"}
+          onFormatChange={(f) => updateMatchup({ smogonFormat: f })}
+          customSets={m.customSets ?? {}}
+          onCustomSetChange={(species, set) => {
+            const prev = m.customSets ?? {};
+            const next = set ? { ...prev, [species]: set } : (() => { const n = { ...prev }; delete n[species]; return n; })();
+            updateMatchup({ customSets: next });
+          }}
+          editable
+        />
       </div>
 
       {(m.mode ?? "head-to-head") === "head-to-head" && (
