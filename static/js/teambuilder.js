@@ -264,6 +264,13 @@ const TeamBuilder = {
     document.getElementById('builderAdd').addEventListener('click', () => this.addToTeam());
     document.getElementById('builderExport').addEventListener('click', () => this.exportToEditor());
 
+    document.querySelectorAll('.btn-level').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const level = parseInt(btn.dataset.level, 10);
+        document.getElementById('builderLevel').value = level;
+      });
+    });
+
     this.loadDexData();
   },
 };

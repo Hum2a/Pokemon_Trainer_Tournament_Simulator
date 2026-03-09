@@ -67,7 +67,11 @@
         </label>
         <label>
           <span>Level</span>
-          <input type="number" id="builderLevel" value="50" min="1" max="100">
+          <div class="builder-level-row">
+            <input type="number" id="builderLevel" value="50" min="1" max="100">
+            <button type="button" class="btn btn-secondary btn-level" data-level="50">50</button>
+            <button type="button" class="btn btn-secondary btn-level" data-level="100">100</button>
+          </div>
         </label>
       </div>
       <div id="builderStats" class="builder-stats" aria-label="Base stats">

@@ -402,6 +402,22 @@ body {
   min-width: 120px;
 }
 
+.builder-level-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.builder-level-row input {
+  width: 4rem;
+}
+
+.btn-level {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8125rem;
+  min-width: 2.5rem;
+}
+
 .builder-stats {
   display: flex;
   flex-wrap: wrap;
