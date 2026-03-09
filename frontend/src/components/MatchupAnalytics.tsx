@@ -658,6 +658,98 @@ function BattleLogsViewer({ refreshTrigger }: { refreshTrigger: number }) {
   );
 }
 
+function RankingsCard({ data }: { data: MatchupData }) {
+  const rankings = useMemo(() => {
+    const byPokemon: Record<string, { wins: number; losses: number }> = {};
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        byPokemon[m.p1] = {
+          wins: (byPokemon[m.p1]?.wins ?? 0) + m.p1_wins,
+          losses: (byPokemon[m.p1]?.losses ?? 0) + m.p2_wins,
+        };
+        byPokemon[m.p2] = {
+          wins: (byPokemon[m.p2]?.wins ?? 0) + m.p2_wins,
+          losses: (byPokemon[m.p2]?.losses ?? 0) + m.p1_wins,
+        };
+      }
+    }
+    return Object.entries(byPokemon)
+      .map(([name, v]) => ({
+        name,
+        wins: v.wins,
+        losses: v.losses,
+        total: v.wins + v.losses,
+        winRate: v.wins + v.losses > 0 ? (v.wins / (v.wins + v.losses)) * 100 : 0,
+      }))
+      .sort((a, b) => {
+        const rateDiff = b.winRate - a.winRate;
+        if (Math.abs(rateDiff) > 0.01) return rateDiff;
+        return b.wins - a.wins;
+      })
+      .map((r, i) => ({ ...r, rank: i + 1 }));
+  }, [data]);
+
+  if (rankings.length === 0) return null;
+
+  const getRankStyle = (rank: number) => {
+    if (rank === 1) return "from-amber-400 to-yellow-600 text-amber-950 shadow-amber-500/30";
+    if (rank === 2) return "from-slate-300 to-slate-500 text-slate-900 shadow-slate-400/30";
+    if (rank === 3) return "from-amber-600 to-amber-800 text-amber-100 shadow-amber-700/30";
+    return "from-[var(--bg-input)] to-[var(--border)] text-[var(--text-muted)]";
+  };
+
+  return (
+    <div className="space-y-2 max-h-[480px] overflow-y-auto pr-1">
+      {rankings.map((r, i) => (
+        <motion.div
+          key={r.name}
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: i * 0.02 }}
+          className={cn(
+            "flex items-center gap-3 px-4 py-2.5 rounded-xl border border-[var(--border)]/40",
+            "bg-[var(--bg-input)]/50 hover:bg-[var(--primary)]/5 transition-colors"
+          )}
+        >
+          <div
+            className={cn(
+              "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm shadow-lg",
+              "bg-gradient-to-br",
+              getRankStyle(r.rank)
+            )}
+          >
+            {r.rank}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-[var(--text)] truncate">{r.name}</div>
+            <div className="flex items-center gap-3 mt-0.5 text-xs text-[var(--text-muted)]">
+              <span>{r.wins}W</span>
+              <span>{r.losses}L</span>
+              <span>{r.total} battles</span>
+            </div>
+          </div>
+          <div className="flex-shrink-0 w-24">
+            <div className="h-2 rounded-full bg-[var(--border)]/50 overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${r.winRate}%` }}
+                transition={{ duration: 0.6, delay: i * 0.02 }}
+                className={cn(
+                  "h-full rounded-full",
+                  r.winRate >= 60 ? "bg-[var(--primary)]" : r.winRate >= 40 ? "bg-[var(--accent)]" : "bg-[var(--danger)]"
+                )}
+              />
+            </div>
+            <div className="text-right text-sm font-medium text-[var(--text)] mt-0.5">
+              {r.winRate.toFixed(1)}%
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function SearchableMatchupTable({ data }: { data: MatchupData }) {
   const [filter, setFilter] = useState("");
   const [sortBy, setSortBy] = useState<"matchup" | "p1WinRate" | "total">("matchup");
@@ -875,6 +967,11 @@ export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrig
       <ChartCard title="Battle Logs" description="Turn-by-turn logs for each fight" className="md:col-span-2 xl:col-span-3">
         <BattleLogsViewer refreshTrigger={refreshTrigger} />
       </ChartCard>
+      {hasData && (
+        <ChartCard title="Rankings" description="All Pokemon ranked by win rate (top to bottom)" className="md:col-span-2 xl:col-span-3">
+          <RankingsCard data={data} />
+        </ChartCard>
+      )}
     </div>
   );
 }
