@@ -10,7 +10,7 @@ interface PanelProps {
 export function Panel({ title, children, defaultCollapsed = false }: PanelProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   return (
-    <section className="bg-[var(--bg-panel)] rounded-lg border border-[var(--border)] mb-4 overflow-hidden">
+    <section className="bg-[var(--bg-panel)] rounded-lg border border-[var(--border)] mb-4 overflow-visible">
       <h2
         className="m-0 px-5 py-4 text-base font-semibold flex items-center justify-between cursor-pointer select-none bg-black/20"
         onClick={() => setCollapsed((c) => !c)}

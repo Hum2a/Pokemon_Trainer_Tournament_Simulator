@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { Panel } from "./Panel";
 import { useApp } from "../context/AppContext";
 import { api } from "../api";
@@ -77,33 +77,49 @@ export function TeamBuilder() {
   const [smogonSets, setSmogonSets] = useState<Record<string, unknown>>({});
   const [smogonLoading, setSmogonLoading] = useState(false);
   const [team, setTeam] = useState<string[]>([]);
+  const [dexLoading, setDexLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropdownRef.current?.contains(e.target as Node) || inputRef.current?.contains(e.target as Node)) return;
+      const target = e.target as Node;
+      if (dropdownRef.current?.contains(target) || inputRef.current?.contains(target)) return;
       setShowDropdown(false);
     };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  useEffect(() => {
-    Promise.all([
-      api.get<Species[]>("/dex/species").catch(() => []),
-      api.get<{ id: string; name: string }[]>("/dex/moves").catch(() => []),
-      api.get<{ id: string; name: string }[]>("/dex/abilities").catch(() => []),
-      api.get<{ id: string; name: string }[]>("/dex/items").catch(() => []),
-      api.get<Record<string, string[]>>("/dex/learnsets").catch(() => ({})),
-      api.get<string[]>("/dex/natures").catch(() => []),
-    ]).then(([species, moves, abilities, items, learnsets, natures]) => {
+  const loadDexData = useCallback(async () => {
+    setDexLoading(true);
+    try {
+      const [species, moves, abilities, items, learnsets, natures] = await Promise.all([
+        api.get<Species[]>("/dex/species"),
+        api.get<{ id: string; name: string }[]>("/dex/moves"),
+        api.get<{ id: string; name: string }[]>("/dex/abilities"),
+        api.get<{ id: string; name: string }[]>("/dex/items"),
+        api.get<Record<string, string[]>>("/dex/learnsets"),
+        api.get<string[]>("/dex/natures"),
+      ]);
       setDexData({ species, moves, abilities, items, learnsets, natures });
       if (species.length === 0) {
-        appendLog("Dex data not loaded. Run Data/UsefulDatasets/fetch_dex_data.py first.", "error");
+        appendLog("Dex data empty. Run Data/UsefulDatasets/fetch_dex_data.py first.", "error");
       }
-    }).catch((e) => appendLog("Failed to load dex data: " + (e as Error).message, "error"));
+    } catch (e) {
+      const msg = (e as Error).message;
+      appendLog("Dex load failed: " + msg, "error");
+      if (msg.includes("fetch") || msg.includes("Failed") || msg.includes("Network")) {
+        appendLog("Is Flask running? Start with: python app.py", "error");
+      }
+    } finally {
+      setDexLoading(false);
+    }
   }, [appendLog]);
+
+  useEffect(() => {
+    loadDexData();
+  }, [loadDexData]);
 
   const getFilteredSpecies = () => {
     return dexData.species.filter((s) => {
@@ -268,20 +284,41 @@ export function TeamBuilder() {
             placeholder="Search species (e.g. Pikachu)"
             className={`${inputCls} min-w-[200px]`}
           />
-          {showDropdown && matches.length > 0 && (
+          {showDropdown && (
             <div
               ref={dropdownRef}
-              className="absolute top-full left-0 mt-1 bg-[var(--bg-panel)] border border-[var(--border)] rounded max-h-48 overflow-auto z-10 min-w-[200px]"
+              className="absolute top-full left-0 mt-1 bg-[var(--bg-panel)] border border-[var(--border)] rounded max-h-48 overflow-auto z-[100] min-w-[200px] shadow-lg"
             >
-              {matches.map((s) => (
-                <div
-                  key={s.id}
-                  className="px-3 py-2 cursor-pointer hover:bg-white/10"
-                  onClick={() => selectSpecies(s)}
-                >
-                  {s.name}
+              {dexLoading ? (
+                <div className="px-3 py-2 text-[var(--text-muted)] text-sm">Loading dex...</div>
+              ) : matches.length === 0 ? (
+                <div className="px-3 py-2 text-[var(--text-muted)] text-sm space-y-2">
+                  <div>
+                    {dexData.species.length === 0
+                      ? "API unreachable. Start Flask: python app.py"
+                      : "No matches"}
+                  </div>
+                  {dexData.species.length === 0 && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); loadDexData(); }}
+                      className="text-[var(--accent)] hover:underline text-sm"
+                    >
+                      Retry
+                    </button>
+                  )}
                 </div>
-              ))}
+              ) : (
+                matches.map((s) => (
+                  <div
+                    key={s.id}
+                    className="px-3 py-2 cursor-pointer hover:bg-white/10"
+                    onMouseDown={(e) => { e.preventDefault(); selectSpecies(s); }}
+                  >
+                    {s.name}
+                  </div>
+                ))
+              )}
             </div>
           )}
         </label>
