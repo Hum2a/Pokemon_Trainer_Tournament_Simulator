@@ -136,6 +136,14 @@ def write_parse_config():
     _write_script_config({"output_file": cfg.get("output_file", "output.txt")})
 
 
+def _ensure_list(val):
+    if val is None:
+        return []
+    if isinstance(val, list):
+        return [x for x in val if x]
+    return [val] if val else []
+
+
 def write_matchup_config():
     """Write flat config for runMatchupSimulations.py."""
     config = get_config()
@@ -145,23 +153,25 @@ def write_matchup_config():
         "setLevel": cfg.get("setLevel", 100),
         "battlesPerMatchup": cfg.get("battlesPerMatchup", 5),
         "mode": cfg.get("mode", "head-to-head"),
-        "poolFilter": cfg.get("poolFilter", "all"),
-        "poolType": cfg.get("poolType", ""),
-        "poolRegion": cfg.get("poolRegion", ""),
-        "poolEvolutionStage": cfg.get("poolEvolutionStage", ""),
+        "poolEvolutionStages": _ensure_list(cfg.get("poolEvolutionStages")),
+        "poolTypes": _ensure_list(cfg.get("poolTypes")),
+        "poolCategory": cfg.get("poolCategory", "all"),
+        "poolCanMega": cfg.get("poolCanMega", "all"),
+        "poolRegions": _ensure_list(cfg.get("poolRegions")),
+        "poolBst": cfg.get("poolBst", "any"),
+        "poolRoles": _ensure_list(cfg.get("poolRoles")),
+        "poolTypeCount": cfg.get("poolTypeCount", ""),
         "poolAbility": cfg.get("poolAbility", ""),
         "poolMove": cfg.get("poolMove", ""),
-        "poolRole": cfg.get("poolRole", ""),
-        "poolBst": cfg.get("poolBst", "any"),
-        "poolTypeCount": cfg.get("poolTypeCount", ""),
-        "poolTags": cfg.get("poolTags", ""),
-        "poolEggGroup": cfg.get("poolEggGroup", ""),
-        "poolColor": cfg.get("poolColor", ""),
-        "poolGeneration": cfg.get("poolGeneration", ""),
+        "poolTags": _ensure_list(cfg.get("poolTags")),
+        "poolEggGroups": _ensure_list(cfg.get("poolEggGroups")),
+        "poolColors": _ensure_list(cfg.get("poolColors")),
+        "poolGenerations": _ensure_list(cfg.get("poolGenerations")),
         "poolWeight": cfg.get("poolWeight", "any"),
         "poolHeight": cfg.get("poolHeight", "any"),
-        "poolCanMega": cfg.get("poolCanMega", "yes"),
         "poolLimit": cfg.get("poolLimit", 50),
+        "useSmogonSets": cfg.get("useSmogonSets", True),
+        "smogonFormat": cfg.get("smogonFormat", "gen9ou"),
         "pokemon1": cfg.get("pokemon1", ""),
         "pokemon2": cfg.get("pokemon2", ""),
     })
