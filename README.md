@@ -1,8 +1,22 @@
 # Pokémon Battle Simulator Environment
 
-Here we have an environment for running large amounts of Pokémon simulations in the command line. The Pokémon-showdown directory contains a modified version of https://github.com/smogon/pokemon-showdown, whose modifications are detailed below. In the Data directory, you can find various python files which can be used to build a set of battles from predefined text files of builds written in Pokémon Showdown output format, run large sets of multithreaded simulations, and parse and analyse the results of battles, producing a matrix of results. Additionally, Predefined teams for each trainer we used can be found in Data/Inputs. These are formatted inside of GymLeaderTeams.txt by referencing the species name and the line number of each pokemon build from GymLeaderPokemon.txt, for each member of the team.
+[![CI](https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/actions/workflows/ci.yml/badge.svg)](https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Node.js 20+](https://img.shields.io/badge/node-20+-green.svg)](https://nodejs.org/)
 
+Large-scale Pokémon Showdown simulations: trainer vs trainer, Pokémon vs leaders, and 1v1 matchup matrices. Parses results to PNG/CSV. Web UI for config, team building, and running simulations.
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Running Simulations](#running-simulations-yourself)
+- [Matchup Simulator](#matchup-simulator)
+- [Project Structure](#project-structure)
+- [Modifications to Pokémon Showdown](#modifications-to-pokémon-showdown)
+- [Contributing](#contributing)
+- [Community & Other Projects](#discussion-and-community)
 
 ## Requirements
 * Python (tested on version 3.10.12, but any Python 3 version should suffice)
@@ -21,7 +35,18 @@ Here we have an environment for running large amounts of Pokémon simulations in
     * time
     * timeit
 
+## Quick Start
 
+```bash
+git clone --recursive https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator.git
+cd Pokemon_Trainer_Tournament_Simulator
+pip install -r requirements.txt
+cd pokemon-showdown && npm install && node build && cd ..
+cd frontend && npm install && npm run build && cd ..
+python app.py
+```
+
+Open http://127.0.0.1:5000 in your browser.
 
 ## Running Simulations Yourself
 
@@ -107,6 +132,10 @@ Since there is a submodule in the repo, make sure to clone using `git clone --re
 * In the file "/pokemon-showdown/sim/dex-moves.ts," The DataMove class' constructor has been modified to allow for checking how many times a multi-hit move hits.
 
 
+
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards. See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Check Out My Other Projects
 * Pokemon Crystal Legacy: https://www.youtube.com/watch?v=oeJBVY3z_uE&t=55s

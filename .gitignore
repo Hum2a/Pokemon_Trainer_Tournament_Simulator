@@ -61,6 +61,10 @@ Data/scores.json
 Data/builds.json
 Data/average_scores.json
 Data/Pokemon_Simulation_Outputs/
+Data/matchup_results.json
+Data/matchup_matrix.csv
+Data/matchup_battle_logs.json
+Data/matchup_matrix_plot.png
 
 # IDE & editors
 .idea/
