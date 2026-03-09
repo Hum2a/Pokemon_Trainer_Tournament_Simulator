@@ -134,6 +134,7 @@ export function MatchupSimulator() {
   const inputRef1 = useRef<HTMLInputElement>(null);
   const inputRef2 = useRef<HTMLInputElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastOutputLengthRef = useRef(0);
 
   const m = config.matchups ?? {};
   const updateMatchup = (updates: Record<string, unknown>) => {
@@ -195,11 +196,18 @@ export function MatchupSimulator() {
     await saveConfig();
     setStatus(true, "Running matchup simulations...");
     appendLog("Starting matchup simulations.");
+    lastOutputLengthRef.current = 0;
     try {
       await api.post("/run-matchups");
       pollRef.current = setInterval(async () => {
         try {
-          const data = await api.get<{ running?: boolean }>("/status");
+          const data = await api.get<{ running?: boolean; output?: string }>("/status");
+          const output = data.output ?? "";
+          if (output.length > lastOutputLengthRef.current) {
+            const newContent = output.slice(lastOutputLengthRef.current);
+            appendLog(newContent.trimEnd());
+            lastOutputLengthRef.current = output.length;
+          }
           if (!data.running) {
             if (pollRef.current) clearInterval(pollRef.current);
             pollRef.current = null;
