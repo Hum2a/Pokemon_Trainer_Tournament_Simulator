@@ -9,6 +9,7 @@ import { OpenAuthModalContext } from "./context/AuthModalContext";
 import { TournamentPage } from "./pages/TournamentPage";
 import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 import { MySimulationsPage } from "./pages/MySimulationsPage";
+import { UploadResultsPage } from "./pages/UploadResultsPage";
 
 const container = {
   hidden: { opacity: 0 },
@@ -119,6 +120,18 @@ function AppContent() {
                 >
                   Trainer Tournament
                 </NavLink>
+                <NavLink
+                  to="/upload-results"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                    }`
+                  }
+                >
+                  Upload Results
+                </NavLink>
               </nav>
             </div>
             <div className="flex items-center gap-4">
@@ -134,6 +147,7 @@ function AppContent() {
                 <Route path="/" element={<MatchupSimulatorPage />} />
                 <Route path="/tournament" element={<TournamentPage />} />
                 <Route path="/simulations" element={<MySimulationsPage />} />
+                <Route path="/upload-results" element={<UploadResultsPage />} />
               </Routes>
             </main>
           </motion.div>
