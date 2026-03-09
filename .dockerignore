@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+pokemon-showdown/node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Build outputs (we build these in Docker)
+frontend/dist/
+
+# Git (keep .git and .gitmodules for submodule init in Docker build)
+.gitignore
+
+# IDE and local
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# Data outputs (ephemeral; generated at runtime)
+Data/output.txt
+Data/ErrorOutputs.txt
+Data/WorkerFiles/*.txt
+Data/WorkerOutputs/
+Data/*.png
+Data/*.csv
+Data/config.json
+Data/matchup_*.json
+Data/battle_matrix*
+Data/trainer_stats.csv
+
+# Docs and dev
+*.md
+!README.md
+manual.md
+DEPLOYMENT.md

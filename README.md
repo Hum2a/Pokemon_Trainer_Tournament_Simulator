@@ -11,6 +11,7 @@ Large-scale Pokémon Showdown simulations: trainer vs trainer, Pokémon vs leade
 
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
+- [Deployment](#deployment)
 - [Running Simulations](#running-simulations-yourself)
 - [Matchup Simulator](#matchup-simulator)
 - [Project Structure](#project-structure)
@@ -47,6 +48,12 @@ python app.py
 ```
 
 Open http://127.0.0.1:5000 in your browser.
+
+## Deployment
+
+To deploy to a live site, use **Render** (recommended). Netlify and Cloudflare are not suitable for this app because it requires a Python backend, Node.js subprocesses, and long-running simulations.
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for platform comparison and step-by-step Render instructions.
 
 ## Running Simulations Yourself
 
