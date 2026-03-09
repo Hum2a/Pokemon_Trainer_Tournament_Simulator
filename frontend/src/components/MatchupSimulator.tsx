@@ -278,6 +278,31 @@ export function MatchupSimulator() {
     return filtered.length;
   }, [species, learnsets, m.poolFilter, m.poolType, m.poolRegion, m.poolEvolutionStage, m.poolAbility, m.poolMove, m.poolRole, m.poolBst, m.poolTypeCount, m.poolTags, m.poolEggGroup, m.poolColor, m.poolGeneration, m.poolWeight, m.poolHeight, m.poolCanMega]);
 
+  const getMatchupCount = useCallback((): number => {
+    const mode = m.mode ?? "head-to-head";
+    if (mode === "head-to-head") return (m.pokemon1 && m.pokemon2) ? 1 : 0;
+    const poolSize = Math.min(getPoolMaxCount(), m.poolLimit ?? 50);
+    return (poolSize * (poolSize - 1)) / 2;
+  }, [m.mode, m.pokemon1, m.pokemon2, m.poolLimit, getPoolMaxCount]);
+
+  const getEstimatedTimeSeconds = useCallback((): number | null => {
+    const matchups = getMatchupCount();
+    const battlesPerMatchup = m.battlesPerMatchup ?? 5;
+    const threads = m.noOfThreads ?? 4;
+    const totalBattles = matchups * battlesPerMatchup;
+    if (totalBattles <= 0) return null;
+    const SECONDS_PER_BATTLE = 2;
+    return Math.ceil((totalBattles / threads) * SECONDS_PER_BATTLE);
+  }, [getMatchupCount, m.battlesPerMatchup, m.noOfThreads]);
+
+  const formatEstimatedTime = (seconds: number): string => {
+    if (seconds < 60) return `~${seconds} sec`;
+    if (seconds < 3600) return `~${Math.round(seconds / 60)} min`;
+    const h = Math.floor(seconds / 3600);
+    const m = Math.round((seconds % 3600) / 60);
+    return m > 0 ? `~${h} hr ${m} min` : `~${h} hr`;
+  };
+
   const getFilterValueLabel = (): string => {
     const f = m.poolFilter ?? "all";
     if (f === "all") return "—";
@@ -697,6 +722,15 @@ export function MatchupSimulator() {
             <dt className="text-[var(--text-muted)] min-w-[100px]">Threads</dt>
             <dd className="text-[var(--text)] font-medium">{m.noOfThreads ?? 4}</dd>
           </div>
+          {getEstimatedTimeSeconds() !== null && (
+            <div className="flex gap-2 sm:col-span-2 lg:col-span-3">
+              <dt className="text-[var(--text-muted)] min-w-[100px]">Est. time</dt>
+              <dd className="text-[var(--text)] font-medium">
+                {formatEstimatedTime(getEstimatedTimeSeconds()!)}
+                <span className="text-xs text-[var(--text-muted)] font-normal ml-1">(approx, varies by machine)</span>
+              </dd>
+            </div>
+          )}
         </dl>
       </div>
 
