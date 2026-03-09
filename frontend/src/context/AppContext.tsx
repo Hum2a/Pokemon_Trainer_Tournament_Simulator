@@ -65,6 +65,8 @@ export interface ModalState {
 interface AppState {
   logEntries: LogEntry[];
   status: { running: boolean; text: string };
+  taskStartTime: number | null;
+  taskEndTime: number | null;
   editorContent: string;
   editorPath: string;
   config: Config;
@@ -90,6 +92,8 @@ const AppContext = createContext<AppContextValue | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
   const [status, setStatusState] = useState({ running: false, text: "Ready" });
+  const [taskStartTime, setTaskStartTime] = useState<number | null>(null);
+  const [taskEndTime, setTaskEndTime] = useState<number | null>(null);
   const [editorContent, setEditorContentState] = useState("");
   const [editorPath, setEditorPathState] = useState("Inputs/GymLeaderPokemon.txt");
   const [config, setConfigState] = useState<Config>({});
@@ -108,10 +112,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setLogEntries((prev) => [...prev, { text: `[${time}] ${text}`, type }]);
   }, []);
 
-  const clearLog = useCallback(() => setLogEntries([]), []);
+  const clearLog = useCallback(() => {
+    setLogEntries([]);
+    setTaskStartTime(null);
+    setTaskEndTime(null);
+  }, []);
 
   const setStatus = useCallback((running: boolean, text: string) => {
     setStatusState({ running, text });
+    if (running) {
+      setTaskStartTime(Date.now());
+      setTaskEndTime(null);
+    } else {
+      setTaskEndTime(Date.now());
+    }
   }, []);
 
   const setEditorContent = useCallback((content: string | ((prev: string) => string)) => {
@@ -138,7 +152,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AppContext.Provider
-      value={{ logEntries, status, editorContent, editorPath, config, modal, refreshOutputsTrigger, appendLog, clearLog, setStatus, setEditorContent, setEditorPath, setConfig, saveConfig, triggerOutputsRefresh, showModal, hideModal }}
+      value={{ logEntries, status, taskStartTime, taskEndTime, editorContent, editorPath, config, modal, refreshOutputsTrigger, appendLog, clearLog, setStatus, setEditorContent, setEditorPath, setConfig, saveConfig, triggerOutputsRefresh, showModal, hideModal }}
     >
       {children}
     </AppContext.Provider>
