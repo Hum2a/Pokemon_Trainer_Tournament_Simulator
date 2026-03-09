@@ -1,0 +1,40 @@
+---
+description: React frontend conventions (Vite, Tailwind, TypeScript)
+globs: frontend/**/*
+alwaysApply: false
+---
+
+# Frontend (React + Vite + Tailwind)
+
+## Stack
+
+- React 19, TypeScript, Vite 5, Tailwind CSS, framer-motion.
+- API calls via `api.ts` (proxied to `/api` in dev).
+
+## Components
+
+- Functional components. Use `useApp()` from `AppContext` for shared state.
+- Reuse `Panel` for collapsible sections.
+- Use `cn()` from `lib/utils.ts` for conditional class names.
+
+## Styling
+
+- Prefer Tailwind. Use CSS variables from `index.css` (e.g. `var(--accent)`, `var(--primary)`).
+- Animations: framer-motion (`motion.*`, `AnimatePresence`). Keep subtle; avoid blocking interactions.
+
+## File Layout
+
+```
+frontend/src/
+├── components/     # Header, Panel, Settings, FileEditor, TeamBuilder, Actions, Log, Outputs
+├── context/       # AppContext (config, log, status, editor, outputs trigger)
+├── api.ts         # fetch wrapper, base URL
+├── lib/utils.ts   # cn()
+└── index.css      # CSS variables, base styles, keyframes
+```
+
+## Do Not
+
+- Add new dependencies without updating `package.json` and running `npm install`.
+- Change Vite proxy target (`127.0.0.1:5000`) without documenting.
+- Break existing component props or context shape without updating consumers.

@@ -1,0 +1,28 @@
+---
+description: General code style and formatting
+alwaysApply: true
+---
+
+# Code Style
+
+## Naming
+
+- **Python**: snake_case (functions, variables, modules).
+- **TypeScript/React**: camelCase (variables, functions), PascalCase (components, types).
+- Be descriptive. Avoid single-letter names except loop indices.
+
+## Formatting
+
+- **Python**: PEP 8, max line 100. Use Black or similar if available.
+- **TypeScript**: Prefer 2-space indent. Trailing commas in multiline.
+- **JSON**: 2-space indent.
+
+## Comments
+
+- Comment non-obvious logic. Prefer self-documenting code.
+- Keep README.md updated with setup, run instructions, dex fetch step.
+
+## Changes
+
+- Do not introduce breaking changes to existing APIs or component contracts without updating all consumers.
+- Preserve backward compatibility for config format and file paths where possible.

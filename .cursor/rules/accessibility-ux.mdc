@@ -1,0 +1,23 @@
+---
+description: Accessibility and UX guidelines
+globs: frontend/**/*.tsx, templates/**/*.html
+alwaysApply: false
+---
+
+# Accessibility & UX
+
+## HTML / React
+
+- Use semantic HTML. Labels for form inputs. `aria-label` or `aria-labelledby` where helpful.
+- Collapsible panels: ensure keyboard toggle works (or provide visible control).
+
+## Feedback
+
+- Clear feedback on actions: log messages, status indicator in header.
+- Error states: show user-friendly messages. Use `appendLog(..., "error")` for API failures.
+- Loading states: show spinners or "Loading..." for async operations (e.g. dex, Smogon sets).
+
+## Forms
+
+- Associate labels with inputs. Placeholder is not a substitute for label.
+- Disable submit/action buttons during in-flight requests when appropriate.
