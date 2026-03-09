@@ -1,20 +1,16 @@
 """
 Pokemon Battle Simulator - Web UI
 Entry point for the Flask application.
+Serves the React SPA from frontend/dist via src.routes.pages.
 """
 
 from flask import Flask
 
-from src.config import ROOT
 from src.routes import register_blueprints
 
 
 def create_app():
-    app = Flask(
-        __name__,
-        static_folder=str(ROOT / "static"),
-        template_folder=str(ROOT / "templates"),
-    )
+    app = Flask(__name__)
     app.config["JSON_SORT_KEYS"] = False
     app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024  # 12 MB max request
 

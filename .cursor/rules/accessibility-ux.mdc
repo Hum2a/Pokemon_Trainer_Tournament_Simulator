@@ -1,6 +1,6 @@
 ---
 description: Accessibility and UX guidelines
-globs: frontend/**/*.tsx, templates/**/*.html
+globs: frontend/**/*.tsx
 alwaysApply: false
 ---
 
