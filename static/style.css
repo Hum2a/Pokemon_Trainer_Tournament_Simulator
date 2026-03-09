@@ -402,6 +402,23 @@ body {
   min-width: 120px;
 }
 
+.builder-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.builder-stats .stat {
+  font-family: var(--font-mono);
+  padding: 0.25rem 0.5rem;
+  background: var(--bg-input);
+  border-radius: 4px;
+  min-width: 3.5rem;
+}
+
 .smogon-row {
   flex-direction: column;
 }
