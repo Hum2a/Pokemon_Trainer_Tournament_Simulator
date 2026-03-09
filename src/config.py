@@ -35,11 +35,69 @@ def get_config():
             with open(CONFIG_PATH, encoding="utf-8") as f:
                 data = json.load(f)
             if "trainer" in data:
+                m = data.get("matchups", {})
+                if m and ("poolFilter" in m or "poolEvolutionStage" in m):
+                    data = dict(data, matchups=_matchups_from_flat(m))
                 return data
             return _flat_to_nested(data)
         except (json.JSONDecodeError, OSError):
             pass
     return default_config()
+
+
+def _matchups_from_flat(flat):
+    """Build matchups dict from flat config, supporting both old and new filter keys."""
+    evo = flat.get("poolEvolutionStages")
+    if evo is None and flat.get("poolEvolutionStage"):
+        evo = [flat["poolEvolutionStage"]]
+    types = flat.get("poolTypes")
+    if types is None and flat.get("poolType"):
+        types = [flat["poolType"]] if flat["poolType"] else []
+    regions = flat.get("poolRegions")
+    if regions is None and flat.get("poolRegion"):
+        regions = [flat["poolRegion"]] if flat["poolRegion"] else []
+    roles = flat.get("poolRoles")
+    if roles is None and flat.get("poolRole"):
+        roles = [flat["poolRole"]] if flat["poolRole"] else []
+    tags = flat.get("poolTags")
+    if tags is None and flat.get("poolTags"):
+        tags = [flat["poolTags"]] if isinstance(flat["poolTags"], str) else (flat["poolTags"] or [])
+    egg_groups = flat.get("poolEggGroups")
+    if egg_groups is None and flat.get("poolEggGroup"):
+        egg_groups = [flat["poolEggGroup"]] if flat["poolEggGroup"] else []
+    colors = flat.get("poolColors")
+    if colors is None and flat.get("poolColor"):
+        colors = [flat["poolColor"]] if flat["poolColor"] else []
+    gens = flat.get("poolGenerations")
+    if gens is None and flat.get("poolGeneration"):
+        gens = [str(flat["poolGeneration"])] if flat["poolGeneration"] else []
+    return {
+        "noOfThreads": flat.get("noOfThreads", 4),
+        "setLevel": flat.get("setLevel", 100),
+        "battlesPerMatchup": flat.get("battlesPerMatchup", 5),
+        "mode": flat.get("mode", "head-to-head"),
+        "poolEvolutionStages": evo if isinstance(evo, list) else ([evo] if evo else []),
+        "poolTypes": types if isinstance(types, list) else ([types] if types else []),
+        "poolCategory": flat.get("poolCategory", "all"),
+        "poolCanMega": flat.get("poolCanMega", "all"),
+        "poolRegions": regions if isinstance(regions, list) else ([regions] if regions else []),
+        "poolBst": flat.get("poolBst", "any"),
+        "poolRoles": roles if isinstance(roles, list) else ([roles] if roles else []),
+        "poolTypeCount": flat.get("poolTypeCount", ""),
+        "poolAbility": flat.get("poolAbility", ""),
+        "poolMove": flat.get("poolMove", ""),
+        "poolTags": tags if isinstance(tags, list) else ([tags] if tags else []),
+        "poolEggGroups": egg_groups if isinstance(egg_groups, list) else ([egg_groups] if egg_groups else []),
+        "poolColors": colors if isinstance(colors, list) else ([colors] if colors else []),
+        "poolGenerations": gens if isinstance(gens, list) else ([str(g) for g in gens] if gens else []),
+        "poolWeight": flat.get("poolWeight", "any"),
+        "poolHeight": flat.get("poolHeight", "any"),
+        "poolLimit": flat.get("poolLimit", 50),
+        "useSmogonSets": flat.get("useSmogonSets", True),
+        "smogonFormat": flat.get("smogonFormat", "gen9ou"),
+        "pokemon1": flat.get("pokemon1", ""),
+        "pokemon2": flat.get("pokemon2", ""),
+    }
 
 
 def _flat_to_nested(flat):
@@ -58,31 +116,7 @@ def _flat_to_nested(flat):
             "n": flat.get("n", 2000),
         },
         "parse": {"output_file": flat.get("output_file", "output.txt")},
-        "matchups": {
-            "noOfThreads": flat.get("noOfThreads", 4),
-            "setLevel": flat.get("setLevel", 100),
-            "battlesPerMatchup": flat.get("battlesPerMatchup", 5),
-            "mode": flat.get("mode", "head-to-head"),
-            "poolFilter": flat.get("poolFilter", "all"),
-            "poolType": flat.get("poolType", ""),
-            "poolRegion": flat.get("poolRegion", ""),
-            "poolEvolutionStage": flat.get("poolEvolutionStage", ""),
-            "poolAbility": flat.get("poolAbility", ""),
-            "poolMove": flat.get("poolMove", ""),
-            "poolRole": flat.get("poolRole", ""),
-            "poolBst": flat.get("poolBst", "any"),
-            "poolTypeCount": flat.get("poolTypeCount", ""),
-            "poolTags": flat.get("poolTags", ""),
-            "poolEggGroup": flat.get("poolEggGroup", ""),
-            "poolColor": flat.get("poolColor", ""),
-            "poolGeneration": flat.get("poolGeneration", ""),
-            "poolWeight": flat.get("poolWeight", "any"),
-            "poolHeight": flat.get("poolHeight", "any"),
-            "poolCanMega": flat.get("poolCanMega", "yes"),
-            "poolLimit": flat.get("poolLimit", 50),
-            "pokemon1": flat.get("pokemon1", ""),
-            "pokemon2": flat.get("pokemon2", ""),
-        },
+        "matchups": _matchups_from_flat(flat),
     }
 
 
@@ -108,23 +142,25 @@ def default_config():
             "setLevel": 100,
             "battlesPerMatchup": 5,
             "mode": "head-to-head",
-            "poolFilter": "all",
-            "poolType": "",
-            "poolRegion": "",
-            "poolEvolutionStage": "",
+            "poolEvolutionStages": [],
+            "poolTypes": [],
+            "poolCategory": "all",
+            "poolCanMega": "all",
+            "poolRegions": [],
+            "poolBst": "any",
+            "poolRoles": [],
+            "poolTypeCount": "",
             "poolAbility": "",
             "poolMove": "",
-            "poolRole": "",
-            "poolBst": "any",
-            "poolTypeCount": "",
-            "poolTags": "",
-            "poolEggGroup": "",
-            "poolColor": "",
-            "poolGeneration": "",
+            "poolTags": [],
+            "poolEggGroups": [],
+            "poolColors": [],
+            "poolGenerations": [],
             "poolWeight": "any",
             "poolHeight": "any",
-            "poolCanMega": "yes",
             "poolLimit": 50,
+            "useSmogonSets": True,
+            "smogonFormat": "gen9ou",
             "pokemon1": "",
             "pokemon2": "",
         },
