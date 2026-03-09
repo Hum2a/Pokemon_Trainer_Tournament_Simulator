@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import { api } from "../api";
 import { cn } from "../lib/utils";
+import { PoolSets } from "./PoolSets";
 
 interface MatchupResult {
   p1: string;
@@ -562,13 +563,8 @@ function ScatterWinRateVsBattles({ data }: { data: MatchupData }) {
   );
 }
 
-type SmogonSets = Record<string, Record<string, { moves?: unknown[]; ability?: string; item?: string | string[]; nature?: string | string[]; evs?: Record<string, number> }>>;
-
 function PoolSetsWidget({ data, refreshTrigger }: { data: MatchupData; refreshTrigger: number }) {
-  const [smogonSets, setSmogonSets] = useState<SmogonSets | null>(null);
   const [format, setFormat] = useState("gen9ou");
-  const [expanded, setExpanded] = useState<string | null>(null);
-
   const pokemon = useMemo(() => {
     const set = new Set<string>();
     for (const m of Object.values(data)) {
@@ -578,113 +574,13 @@ function PoolSetsWidget({ data, refreshTrigger }: { data: MatchupData; refreshTr
     return Array.from(set).sort();
   }, [data]);
 
-  useEffect(() => {
-    let cancelled = false;
-    api
-      .get<SmogonSets>(`/smogon/sets/${format}`)
-      .then((s) => {
-        if (!cancelled) setSmogonSets(s);
-      })
-      .catch(() => {
-        if (!cancelled) setSmogonSets(null);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [format, refreshTrigger]);
-
-  const getSetForPokemon = (name: string): { setName: string; set: { moves?: unknown[]; ability?: string; item?: string | string[] } } | null => {
-    if (!smogonSets) return null;
-    const normalized = name.replace(/[\s-]/g, "");
-    for (const [species, sets] of Object.entries(smogonSets)) {
-      const speciesNorm = species.replace(/[\s-]/g, "");
-      if (speciesNorm === normalized || speciesNorm.toLowerCase() === normalized.toLowerCase()) {
-        const setNames = Object.keys(sets);
-        if (setNames.length === 0) return null;
-        const firstName = setNames[0];
-        return { setName: firstName, set: sets[firstName] ?? {} };
-      }
-    }
-    return null;
-  };
-
-  const flattenMoves = (moves: unknown[] | undefined): string[] => {
-    if (!moves || !Array.isArray(moves)) return [];
-    return moves.slice(0, 4).map((m) => (Array.isArray(m) ? (m[0] as string) : (m as string)));
-  };
-
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm text-[var(--text-muted)]">Smogon format:</span>
-        <select
-          value={format}
-          onChange={(e) => setFormat(e.target.value)}
-          aria-label="Smogon format"
-          className="px-2 py-1 rounded bg-[var(--bg-panel)] border border-[var(--border)] text-[var(--text)] text-sm"
-        >
-          {["gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9"].map((f) => (
-            <option key={f} value={f}>{f}</option>
-          ))}
-        </select>
-      </div>
-      <div className="text-xs text-[var(--text-muted)] mb-2">
-        {pokemon.length} Pokemon in pool. {smogonSets ? "Smogon sets loaded." : "Loading Smogon sets…"}
-      </div>
-      <div className="max-h-80 overflow-y-auto rounded-lg border border-[var(--border)]/50">
-        <table className="w-full text-sm">
-          <thead className="sticky top-0 bg-[var(--bg-input)] border-b border-[var(--border)] z-10">
-            <tr>
-              <th className="px-3 py-2 text-left">Pokemon</th>
-              <th className="px-3 py-2 text-left">Set</th>
-              <th className="px-3 py-2 text-left">Ability / Item</th>
-              <th className="px-3 py-2 text-left w-8" />
-            </tr>
-          </thead>
-          <tbody>
-            {pokemon.map((p) => {
-              const info = getSetForPokemon(p);
-              const moves = info ? flattenMoves(info.set.moves) : [];
-              const isExpanded = expanded === p;
-              return (
-                <tr key={p} className="border-b border-[var(--border)]/30 hover:bg-[var(--primary)]/5">
-                  <td className="px-3 py-2 font-medium text-[var(--text)]">{p}</td>
-                  <td className="px-3 py-2 text-[var(--text-muted)]">
-                    {info ? info.setName : <span className="italic">Default (no Smogon set)</span>}
-                  </td>
-                  <td className="px-3 py-2 text-[var(--text-muted)] text-xs">
-                    {info ? (
-                      <>
-                        {info.set.ability ?? "—"} / {Array.isArray(info.set.item) ? info.set.item[0] : info.set.item ?? "—"}
-                      </>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="px-3 py-2">
-                    {moves.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => setExpanded(isExpanded ? null : p)}
-                        className="text-[var(--primary)] hover:underline text-xs"
-                      >
-                        {isExpanded ? "Hide" : "Moves"}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {expanded && (
-        <div className="p-3 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)]/50 text-sm">
-          <strong className="text-[var(--primary)]">{expanded}</strong> moves:{" "}
-          {flattenMoves(getSetForPokemon(expanded)?.set.moves).join(", ") || "—"}
-        </div>
-      )}
-    </div>
+    <PoolSets
+      pokemon={pokemon}
+      format={format}
+      onFormatChange={setFormat}
+      refreshTrigger={refreshTrigger}
+    />
   );
 }
 
