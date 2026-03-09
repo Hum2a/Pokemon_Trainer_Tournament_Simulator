@@ -15,6 +15,9 @@ ALLOWED_OUTPUT_FILES = frozenset({
     "battle_matrix_plot.png",
     "trainer_stats.csv",
     "battle_matrix.csv",
+    "matchup_matrix.csv",
+    "matchup_matrix_plot.png",
+    "matchup_results.json",
 })
 
 ALLOWED_DEX_TYPES = frozenset({
@@ -55,6 +58,17 @@ def _flat_to_nested(flat):
             "n": flat.get("n", 2000),
         },
         "parse": {"output_file": flat.get("output_file", "output.txt")},
+        "matchups": {
+            "noOfThreads": flat.get("noOfThreads", 4),
+            "setLevel": flat.get("setLevel", 50),
+            "battlesPerMatchup": flat.get("battlesPerMatchup", 100),
+            "mode": flat.get("mode", "head-to-head"),
+            "poolFilter": flat.get("poolFilter", "all"),
+            "poolType": flat.get("poolType", ""),
+            "poolLimit": flat.get("poolLimit", 50),
+            "pokemon1": flat.get("pokemon1", ""),
+            "pokemon2": flat.get("pokemon2", ""),
+        },
     }
 
 
@@ -74,6 +88,17 @@ def default_config():
         },
         "parse": {
             "output_file": "output.txt",
+        },
+        "matchups": {
+            "noOfThreads": 4,
+            "setLevel": 50,
+            "battlesPerMatchup": 100,
+            "mode": "head-to-head",
+            "poolFilter": "all",
+            "poolType": "",
+            "poolLimit": 50,
+            "pokemon1": "",
+            "pokemon2": "",
         },
     }
 

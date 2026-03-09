@@ -22,6 +22,7 @@ from src.services import (
     write_trainer_config,
     write_pokemon_config,
     write_parse_config,
+    write_matchup_config,
 )
 
 api_bp = Blueprint("api", __name__)
@@ -77,6 +78,13 @@ def run_pokemon():
     return jsonify({"ok": True, "message": "Pokemon simulations started"})
 
 
+@api_bp.route("/run-matchups", methods=["POST"])
+def run_matchups():
+    write_matchup_config()
+    run_script_background("runMatchupSimulations.py")
+    return jsonify({"ok": True, "message": "Matchup simulations started"})
+
+
 @api_bp.route("/parse-png", methods=["POST"])
 def parse_png():
     write_parse_config()
@@ -99,7 +107,14 @@ def status():
 @api_bp.route("/outputs")
 def outputs_list():
     files = []
-    for name in ["output.txt", "battle_matrix_plot.png", "trainer_stats.csv", "battle_matrix.csv"]:
+    for name in [
+        "output.txt",
+        "battle_matrix_plot.png",
+        "trainer_stats.csv",
+        "battle_matrix.csv",
+        "matchup_results.json",
+        "matchup_matrix.csv",
+    ]:
         p = DATA_DIR / name
         if p.exists():
             files.append({"name": name, "size": p.stat().st_size})

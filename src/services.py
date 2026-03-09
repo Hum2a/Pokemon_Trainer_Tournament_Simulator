@@ -113,6 +113,23 @@ def write_parse_config():
     _write_script_config({"output_file": cfg.get("output_file", "output.txt")})
 
 
+def write_matchup_config():
+    """Write flat config for runMatchupSimulations.py."""
+    config = get_config()
+    cfg = config.get("matchups", {})
+    _write_script_config({
+        "noOfThreads": cfg.get("noOfThreads", 4),
+        "setLevel": cfg.get("setLevel", 50),
+        "battlesPerMatchup": cfg.get("battlesPerMatchup", 100),
+        "mode": cfg.get("mode", "head-to-head"),
+        "poolFilter": cfg.get("poolFilter", "all"),
+        "poolType": cfg.get("poolType", ""),
+        "poolLimit": cfg.get("poolLimit", 50),
+        "pokemon1": cfg.get("pokemon1", ""),
+        "pokemon2": cfg.get("pokemon2", ""),
+    })
+
+
 def _write_script_config(flat_config):
     """Write flat config to config.json for scripts (does not use save_config)."""
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
