@@ -58,6 +58,11 @@ interface DexData {
 }
 
 const STAT_LABELS: Record<string, string> = { hp: "HP", atk: "Atk", def: "Def", spa: "SpA", spd: "SpD", spe: "Spe" };
+const STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"] as const;
+type StatKey = (typeof STAT_KEYS)[number];
+
+const DEFAULT_EVS: Record<StatKey, number> = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+const DEFAULT_IVS: Record<StatKey, number> = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 
 function toId(s: string) {
   return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -73,6 +78,40 @@ function flattenMoves(moves: unknown[]): string[] {
     result.push(Array.isArray(m) ? (m[0] as string) : (m as string));
   }
   return result.slice(0, 4);
+}
+
+function parseEvs(val: unknown): Partial<Record<StatKey, number>> {
+  if (!val || typeof val !== "object") return {};
+  const arr = Array.isArray(val) ? val[0] : val;
+  if (!arr || typeof arr !== "object") return {};
+  const out: Partial<Record<StatKey, number>> = {};
+  for (const k of STAT_KEYS) {
+    const v = (arr as Record<string, number>)[k];
+    if (typeof v === "number" && v >= 0) out[k] = Math.min(252, Math.floor(v));
+  }
+  return out;
+}
+
+function parseIvs(val: unknown): Partial<Record<StatKey, number>> {
+  if (!val || typeof val !== "object") return {};
+  const obj = Array.isArray(val) ? val[0] : val;
+  if (!obj || typeof obj !== "object") return {};
+  const out: Partial<Record<StatKey, number>> = {};
+  for (const k of STAT_KEYS) {
+    const v = (obj as Record<string, number>)[k];
+    if (typeof v === "number" && v >= 0) out[k] = Math.min(31, Math.floor(v));
+  }
+  return out;
+}
+
+function formatEvsLine(evs: Record<StatKey, number>): string {
+  const parts = STAT_KEYS.filter((s) => evs[s] > 0).map((s) => `${evs[s]} ${STAT_LABELS[s]}`);
+  return parts.length ? `EVs: ${parts.join(" / ")}` : "";
+}
+
+function formatIvsLine(ivs: Record<StatKey, number>): string {
+  const parts = STAT_KEYS.filter((s) => ivs[s] < 31).map((s) => `${ivs[s]} ${STAT_LABELS[s]}`);
+  return parts.length ? `IVs: ${parts.join(" / ")}` : "";
 }
 
 export function TeamBuilder() {
@@ -95,6 +134,8 @@ export function TeamBuilder() {
   const [item, setItem] = useState("");
   const [nature, setNature] = useState("Hardy");
   const [moves, setMoves] = useState(["", "", "", ""]);
+  const [evs, setEvs] = useState<Record<StatKey, number>>({ ...DEFAULT_EVS });
+  const [ivs, setIvs] = useState<Record<StatKey, number>>({ ...DEFAULT_IVS });
   const [level, setLevel] = useState(50);
   const [smogonFormat, setSmogonFormat] = useState("gen9ou");
   const [smogonSets, setSmogonSets] = useState<Record<string, unknown>>({});
@@ -171,6 +212,8 @@ export function TeamBuilder() {
     const abOpts = Object.values(abs).filter(Boolean);
     setAbility(abOpts[0] || "");
     setMoves(["", "", "", ""]);
+    setEvs({ ...DEFAULT_EVS });
+    setIvs({ ...DEFAULT_IVS });
     loadSmogonSets(s);
   };
 
@@ -199,7 +242,14 @@ export function TeamBuilder() {
   }, [smogonFormat]);
 
   const importSmogonSet = (setName: string) => {
-    const set = smogonSets[setName] as { ability?: unknown; item?: unknown; nature?: unknown; moves?: unknown[] };
+    const set = smogonSets[setName] as {
+      ability?: unknown;
+      item?: unknown;
+      nature?: unknown;
+      moves?: unknown[];
+      evs?: unknown;
+      ivs?: unknown;
+    };
     if (!set) return;
     const ab = pickFirst(set.ability);
     const it = pickFirst(set.item);
@@ -209,13 +259,25 @@ export function TeamBuilder() {
     if (it) setItem(it as string);
     setNature(nat as string);
     setMoves([mov[0] || "", mov[1] || "", mov[2] || "", mov[3] || ""]);
-    appendLog(`Imported Smogon set: ${setName}`);
+    const parsedEvs = parseEvs(set.evs);
+    if (Object.keys(parsedEvs).length > 0) {
+      setEvs({ ...DEFAULT_EVS, ...parsedEvs });
+    }
+    const parsedIvs = parseIvs(set.ivs);
+    if (Object.keys(parsedIvs).length > 0) {
+      setIvs({ ...DEFAULT_IVS, ...parsedIvs });
+    }
+    appendLog(`Imported Smogon set: ${setName} (with EVs/IVs)`);
   };
 
   const buildSet = () => {
     if (!selectedSpecies) return null;
     const speciesLine = item ? `${selectedSpecies.name} @ ${item}` : selectedSpecies.name;
     let out = `|${speciesLine}\nLevel: ${level}\n${nature} Nature\n`;
+    const evsLine = formatEvsLine(evs);
+    if (evsLine) out += `${evsLine}\n`;
+    const ivsLine = formatIvsLine(ivs);
+    if (ivsLine) out += `${ivsLine}\n`;
     if (ability) out += `Ability: ${ability}\n`;
     moves.filter(Boolean).forEach((m) => (out += `- ${m}\n`));
     return out;
@@ -375,8 +437,8 @@ export function TeamBuilder() {
           </div>
         </label>
       </div>
-      <div className="flex flex-wrap gap-2 mb-5">
-        {(["hp", "atk", "def", "spa", "spd", "spe"] as const).map((stat) => (
+      <div className="flex flex-wrap gap-2 mb-4">
+        {STAT_KEYS.map((stat) => (
           <motion.span
             key={stat}
             className="px-3 py-1.5 text-sm font-mono bg-[var(--bg-input)] rounded-lg border border-[var(--border)]/50"
@@ -385,6 +447,63 @@ export function TeamBuilder() {
             {STAT_LABELS[stat]} {selectedSpecies?.baseStats?.[stat] ?? "—"}
           </motion.span>
         ))}
+      </div>
+      <div className="mb-5 space-y-4">
+        <div>
+          <h4 className="text-sm font-medium text-[var(--text-muted)] mb-2">EVs (max 252 per stat, 510 total)</h4>
+          <div className="flex flex-wrap gap-3">
+            {STAT_KEYS.map((stat) => (
+              <label key={stat} className="flex flex-col gap-1 text-sm">
+                <span className="text-[var(--text-muted)]">{STAT_LABELS[stat]}</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={252}
+                  value={evs[stat]}
+                  onChange={(e) => {
+                    const v = Math.min(252, Math.max(0, parseInt(e.target.value) || 0));
+                    setEvs((prev) => ({ ...prev, [stat]: v }));
+                  }}
+                  className={cn(inputCls, "w-16")}
+                />
+              </label>
+            ))}
+            <div className="flex items-end gap-2">
+              <span className="text-xs text-[var(--text-muted)] pb-2">
+                Total: {STAT_KEYS.reduce((s, k) => s + evs[k], 0)}/510
+              </span>
+              <motion.button type="button" onClick={() => setEvs({ ...DEFAULT_EVS })} className="px-2 py-1 text-xs rounded border border-[var(--border)] bg-[var(--bg-input)] hover:bg-white/5" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                Reset
+              </motion.button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4 className="text-sm font-medium text-[var(--text-muted)] mb-2">IVs (0–31 per stat)</h4>
+          <div className="flex flex-wrap gap-3">
+            {STAT_KEYS.map((stat) => (
+              <label key={stat} className="flex flex-col gap-1 text-sm">
+                <span className="text-[var(--text-muted)]">{STAT_LABELS[stat]}</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={31}
+                  value={ivs[stat]}
+                  onChange={(e) => {
+                    const v = Math.min(31, Math.max(0, parseInt(e.target.value) || 0));
+                    setIvs((prev) => ({ ...prev, [stat]: v }));
+                  }}
+                  className={cn(inputCls, "w-16")}
+                />
+              </label>
+            ))}
+            <div className="flex items-end">
+              <motion.button type="button" onClick={() => setIvs({ ...DEFAULT_IVS })} className="px-2 py-1 text-xs rounded border border-[var(--border)] bg-[var(--bg-input)] hover:bg-white/5" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                Reset (31 all)
+              </motion.button>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col gap-5 mb-5">
         <div className="flex flex-wrap gap-4 items-end">
