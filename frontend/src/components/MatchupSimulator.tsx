@@ -600,14 +600,31 @@ export function MatchupSimulator() {
           <h3 className="font-display font-semibold text-[var(--primary)]">Battle Config</h3>
           <label className={labelCls}>
             <span>Level</span>
-            <input
-              type="number"
-              min={1}
-              max={100}
-              value={m.setLevel ?? 100}
-              onChange={(e) => updateMatchup({ setLevel: parseInt(e.target.value) || 100 })}
-              className={inputCls}
-            />
+            <div className="flex gap-2">
+              <input
+                type="number"
+                min={1}
+                max={100}
+                value={m.setLevel ?? 100}
+                onChange={(e) => updateMatchup({ setLevel: parseInt(e.target.value) || 100 })}
+                className={cn(inputCls, "flex-1 min-w-0")}
+              />
+              {[1, 50, 100].map((lvl) => (
+                <button
+                  key={lvl}
+                  type="button"
+                  onClick={() => updateMatchup({ setLevel: lvl })}
+                  className={cn(
+                    "px-3 py-2.5 rounded-lg border text-sm font-medium transition-colors whitespace-nowrap",
+                    (m.setLevel ?? 100) === lvl
+                      ? "border-[var(--primary)] bg-[var(--primary)]/20 text-[var(--primary)]"
+                      : "border-[var(--border)] bg-[var(--bg-input)] text-[var(--text)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50"
+                  )}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
           </label>
           <label className={labelCls}>
             <span>Battles per matchup</span>
