@@ -266,7 +266,8 @@ def load_smogon_sets(format_id="gen9ou"):
     except Exception as e:
         print(f"  Warning: Could not load Smogon sets from {url}: {e}", flush=True)
         return {}
-    if format_id == "gen9":
+    # Generation-level formats (gen9, gen8, etc.) have tier structure
+    if re.match(r"^gen\d+$", format_id):
         tier_priority = ("ou", "uu", "ru", "nu", "pu", "zu")
         merged = {}
         for species, tiers in data.items():
@@ -305,6 +306,47 @@ def get_smogon_set_for_species(species_name, smogon_sets):
                 return first_name, sets.get(first_name)
             return None, None
     return None, None
+
+
+def custom_set_to_showdown(species_name, custom, level=100):
+    """Convert custom set dict to Pokemon Showdown export format string."""
+    if not custom or not isinstance(custom, dict):
+        return None
+    moves = custom.get("moves")
+    if not isinstance(moves, list):
+        moves = []
+    moves = [str(m).strip() for m in moves[:4] if m]
+    while len(moves) < 4:
+        moves.append("Struggle")
+    ability = (custom.get("ability") or "").strip()
+    item = (custom.get("item") or "").strip()
+    nature = (custom.get("nature") or "Hardy").strip()
+    evs = custom.get("evs")
+    evs_str = ""
+    if evs and isinstance(evs, dict):
+        order = ("hp", "atk", "def", "spa", "spd", "spe")
+        parts = []
+        for stat in order:
+            v = evs.get(stat, 0)
+            if v and int(v) > 0:
+                name = "SpA" if stat == "spa" else "SpD" if stat == "spd" else stat.upper()
+                parts.append(f"{int(v)} {name}")
+        evs_str = " / ".join(parts) if parts else ""
+
+    lines = []
+    if item:
+        lines.append(f"{species_name} @ {item}")
+    else:
+        lines.append(species_name)
+    lines.append(f"Level: {level}")
+    if ability:
+        lines.append(f"Ability: {ability}")
+    if evs_str:
+        lines.append(f"EVs: {evs_str}")
+    lines.append(f"{nature} Nature")
+    for m in moves:
+        lines.append(f"- {m}")
+    return "\n".join(lines)
 
 
 def get_default_set(species_name, learnsets, species_list, level=50):
@@ -369,8 +411,16 @@ def run_single_battle(p1_set, p2_set, thread_no, level):
     return None
 
 
-def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_smogon, level):
-    """Get Showdown-format set for a Pokemon. Prefers Smogon if available."""
+def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets=None):
+    """Get Showdown-format set for a Pokemon. Prefers: custom > Smogon > default."""
+    if custom_sets:
+        for key, custom in custom_sets.items():
+            key_norm = key.replace(" ", "").replace("-", "").lower()
+            name_norm = species_name.replace(" ", "").replace("-", "").lower()
+            if key_norm == name_norm:
+                result = custom_set_to_showdown(species_name, custom, level)
+                if result:
+                    return result
     if use_smogon and smogon_sets:
         _, set_data = get_smogon_set_for_species(species_name, smogon_sets)
         if set_data:
@@ -378,10 +428,10 @@ def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_s
     return get_default_set(species_name, learnsets, species_list, level)
 
 
-def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level, smogon_sets=None, use_smogon=True):
+def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level, smogon_sets=None, use_smogon=True, custom_sets=None):
     """Run n_battles between p1 and p2. Returns (p1_wins, p2_wins)."""
-    p1_set = get_set_for_battle(p1_name, learnsets, species_list, smogon_sets, use_smogon, level)
-    p2_set = get_set_for_battle(p2_name, learnsets, species_list, smogon_sets, use_smogon, level)
+    p1_set = get_set_for_battle(p1_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
+    p2_set = get_set_for_battle(p2_name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
 
     p1_wins = 0
     p2_wins = 0
@@ -410,6 +460,7 @@ def main():
     pool_limit = m.get("poolLimit", 50)
     use_smogon = m.get("useSmogonSets", True)
     smogon_format = m.get("smogonFormat", "gen9ou")
+    custom_sets = m.get("customSets") or {}
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
 
@@ -454,7 +505,7 @@ def main():
         with lock:
             tn = thread_names.pop(0) if thread_names else 1
         try:
-            w1, w2 = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon)
+            w1, w2 = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon, custom_sets)
             return (p1, p2, w1, w2)
         finally:
             with lock:
