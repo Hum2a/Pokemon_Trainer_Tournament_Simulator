@@ -119,8 +119,8 @@ def write_matchup_config():
     cfg = config.get("matchups", {})
     _write_script_config({
         "noOfThreads": cfg.get("noOfThreads", 4),
-        "setLevel": cfg.get("setLevel", 50),
-        "battlesPerMatchup": cfg.get("battlesPerMatchup", 100),
+        "setLevel": cfg.get("setLevel", 100),
+        "battlesPerMatchup": cfg.get("battlesPerMatchup", 5),
         "mode": cfg.get("mode", "head-to-head"),
         "poolFilter": cfg.get("poolFilter", "all"),
         "poolType": cfg.get("poolType", ""),
