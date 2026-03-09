@@ -1,0 +1,317 @@
+{
+  "Sceptile vs Swampert": {
+    "p1": "Sceptile",
+    "p2": "Swampert",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Sceptile vs Blaziken": {
+    "p1": "Sceptile",
+    "p2": "Blaziken",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Sceptile vs Mightyena": {
+    "p1": "Sceptile",
+    "p2": "Mightyena",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Sceptile vs Pelipper": {
+    "p1": "Sceptile",
+    "p2": "Pelipper",
+    "p1_wins": 2,
+    "p2_wins": 3,
+    "total": 5
+  },
+  "Sceptile vs Gardevoir": {
+    "p1": "Sceptile",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Sceptile vs Masquerain": {
+    "p1": "Sceptile",
+    "p2": "Masquerain",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Sceptile vs Shiftry": {
+    "p1": "Sceptile",
+    "p2": "Shiftry",
+    "p1_wins": 4,
+    "p2_wins": 1,
+    "total": 5
+  },
+  "Sceptile vs Ludicolo": {
+    "p1": "Sceptile",
+    "p2": "Ludicolo",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Sceptile vs Breloom": {
+    "p1": "Sceptile",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Blaziken vs Ludicolo": {
+    "p1": "Blaziken",
+    "p2": "Ludicolo",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Blaziken vs Gardevoir": {
+    "p1": "Blaziken",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Blaziken vs Swampert": {
+    "p1": "Blaziken",
+    "p2": "Swampert",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Blaziken vs Mightyena": {
+    "p1": "Blaziken",
+    "p2": "Mightyena",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Blaziken vs Shiftry": {
+    "p1": "Blaziken",
+    "p2": "Shiftry",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Blaziken vs Pelipper": {
+    "p1": "Blaziken",
+    "p2": "Pelipper",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Blaziken vs Masquerain": {
+    "p1": "Blaziken",
+    "p2": "Masquerain",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Blaziken vs Breloom": {
+    "p1": "Blaziken",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Swampert vs Ludicolo": {
+    "p1": "Swampert",
+    "p2": "Ludicolo",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Swampert vs Gardevoir": {
+    "p1": "Swampert",
+    "p2": "Gardevoir",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Swampert vs Mightyena": {
+    "p1": "Swampert",
+    "p2": "Mightyena",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Swampert vs Masquerain": {
+    "p1": "Swampert",
+    "p2": "Masquerain",
+    "p1_wins": 4,
+    "p2_wins": 1,
+    "total": 5
+  },
+  "Swampert vs Breloom": {
+    "p1": "Swampert",
+    "p2": "Breloom",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Swampert vs Shiftry": {
+    "p1": "Swampert",
+    "p2": "Shiftry",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Swampert vs Pelipper": {
+    "p1": "Swampert",
+    "p2": "Pelipper",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Mightyena vs Ludicolo": {
+    "p1": "Mightyena",
+    "p2": "Ludicolo",
+    "p1_wins": 2,
+    "p2_wins": 3,
+    "total": 5
+  },
+  "Mightyena vs Gardevoir": {
+    "p1": "Mightyena",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Ludicolo vs Shiftry": {
+    "p1": "Ludicolo",
+    "p2": "Shiftry",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Mightyena vs Breloom": {
+    "p1": "Mightyena",
+    "p2": "Breloom",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Mightyena vs Masquerain": {
+    "p1": "Mightyena",
+    "p2": "Masquerain",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Mightyena vs Shiftry": {
+    "p1": "Mightyena",
+    "p2": "Shiftry",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Mightyena vs Pelipper": {
+    "p1": "Mightyena",
+    "p2": "Pelipper",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Ludicolo vs Pelipper": {
+    "p1": "Ludicolo",
+    "p2": "Pelipper",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Shiftry vs Pelipper": {
+    "p1": "Shiftry",
+    "p2": "Pelipper",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Ludicolo vs Masquerain": {
+    "p1": "Ludicolo",
+    "p2": "Masquerain",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Shiftry vs Gardevoir": {
+    "p1": "Shiftry",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Ludicolo vs Breloom": {
+    "p1": "Ludicolo",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Ludicolo vs Gardevoir": {
+    "p1": "Ludicolo",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Shiftry vs Breloom": {
+    "p1": "Shiftry",
+    "p2": "Breloom",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Pelipper vs Gardevoir": {
+    "p1": "Pelipper",
+    "p2": "Gardevoir",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Shiftry vs Masquerain": {
+    "p1": "Shiftry",
+    "p2": "Masquerain",
+    "p1_wins": 0,
+    "p2_wins": 5,
+    "total": 5
+  },
+  "Gardevoir vs Breloom": {
+    "p1": "Gardevoir",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Pelipper vs Breloom": {
+    "p1": "Pelipper",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Pelipper vs Masquerain": {
+    "p1": "Pelipper",
+    "p2": "Masquerain",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Gardevoir vs Masquerain": {
+    "p1": "Gardevoir",
+    "p2": "Masquerain",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  },
+  "Masquerain vs Breloom": {
+    "p1": "Masquerain",
+    "p2": "Breloom",
+    "p1_wins": 5,
+    "p2_wins": 0,
+    "total": 5
+  }
+}

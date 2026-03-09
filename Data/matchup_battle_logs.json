@@ -1,0 +1,992 @@
+{
+  "Sceptile vs Swampert": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Swampert, M|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Swampert|Swampert, M|404/404\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|16/404\n|move|p2a: Swampert|Earthquake|p1a: Sceptile\n|-resisted|p1a: Sceptile\n|-damage|p1a: Sceptile|223/315\n|\n|-heal|p2a: Swampert|41/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|0 fnt\n|faint|p2a: Swampert\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Swampert, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Swampert|Swampert, M|404/404\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|4/404\n|move|p2a: Swampert|Earthquake|p1a: Sceptile\n|-resisted|p1a: Sceptile\n|-damage|p1a: Sceptile|219/315\n|\n|-heal|p2a: Swampert|29/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|0 fnt\n|faint|p2a: Swampert\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|0 fnt\n|faint|p2a: Swampert\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-damage|p2a: Swampert|4/404\n|move|p2a: Swampert|Earthquake|p1a: Sceptile\n|-resisted|p1a: Sceptile\n|-damage|p1a: Sceptile|228/315\n|\n|-heal|p2a: Swampert|29/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-crit|p2a: Swampert\n|-damage|p2a: Swampert|0 fnt\n|faint|p2a: Swampert\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Leaf Blade|p2a: Swampert\n|-supereffective|p2a: Swampert\n|-crit|p2a: Swampert\n|-damage|p2a: Swampert|0 fnt\n|faint|p2a: Swampert\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Sceptile vs Blaziken": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Blaziken, F|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Blaziken|Blaziken, F|301/301\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Blaziken|Flare Blitz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|-damage|p2a: Blaziken|197/301|[from] Recoil\n|-damage|p2a: Blaziken|167/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Blaziken, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Blaziken|Blaziken, M|301/301\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Blaziken|Flare Blitz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|-damage|p2a: Blaziken|197/301|[from] Recoil\n|-damage|p2a: Blaziken|167/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Blaziken, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Blaziken|Blaziken, F|301/301\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Blaziken|Flare Blitz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|-damage|p2a: Blaziken|197/301|[from] Recoil\n|-damage|p2a: Blaziken|167/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Blaziken, F|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Blaziken|Blaziken, F|301/301\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Blaziken|Flare Blitz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|-damage|p2a: Blaziken|197/301|[from] Recoil\n|-damage|p2a: Blaziken|167/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Blaziken, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Blaziken|Blaziken, F|301/301\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Blaziken|Flare Blitz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|-damage|p2a: Blaziken|197/301|[from] Recoil\n|-damage|p2a: Blaziken|167/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Sceptile vs Mightyena": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Mightyena|Crunch|p1a: Sceptile\n|-damage|p1a: Sceptile|77/315\n|-unboost|p1a: Sceptile|def|1\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Leaf Blade|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Mightyena|Crunch|p1a: Sceptile\n|-damage|p1a: Sceptile|101/315\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Leaf Blade|p2a: Mightyena\n|-crit|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Mightyena|Crunch|p1a: Sceptile\n|-damage|p1a: Sceptile|80/315\n|-unboost|p1a: Sceptile|def|1\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080003\n|move|p1a: Sceptile|Leaf Blade|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Mightyena|Crunch|p1a: Sceptile\n|-damage|p1a: Sceptile|85/315\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p1a: Sceptile|Leaf Blade|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Mightyena, M|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Mightyena|Mightyena, M|281/281\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Mightyena|Crunch|p1a: Sceptile\n|-damage|p1a: Sceptile|85/315\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080009\n|move|p1a: Sceptile|Leaf Blade|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Sceptile vs Pelipper": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|49/315\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Leaf Blade|p2a: Pelipper\n|-damage|p2a: Pelipper|41/261\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|33/315\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Leaf Blade|p2a: Pelipper\n|-crit|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|25/315\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080003\n|move|p1a: Sceptile|Leaf Blade|p2a: Pelipper\n|-damage|p2a: Pelipper|17/261\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|27/315\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p1a: Sceptile|Leaf Blade|p2a: Pelipper\n|-crit|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|31/315\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080009\n|move|p1a: Sceptile|Leaf Blade|p2a: Pelipper\n|-damage|p2a: Pelipper|17/261\n|move|p2a: Pelipper|Hurricane|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Sceptile vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Unburden|[from] ability: Trace|[of] p1a: Sceptile\n|turn|1\n|\n|t:|1773079997\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|120/315\n|-unboost|p1a: Sceptile|spa|1\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Unburden|[from] ability: Trace|[of] p1a: Sceptile\n|turn|1\n|\n|t:|1773080000\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|102/315\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Unburden|[from] ability: Trace|[of] p1a: Sceptile\n|turn|1\n|\n|t:|1773080003\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|99/315\n|-unboost|p1a: Sceptile|spa|1\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|\n|upkeep\n|turn|2\n|\n|t:|1773080003\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Unburden|[from] ability: Trace|[of] p1a: Sceptile\n|turn|1\n|\n|t:|1773080006\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|113/315\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Unburden|[from] ability: Trace|[of] p1a: Sceptile\n|turn|1\n|\n|t:|1773080009\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-crit|p1a: Sceptile\n|-damage|p1a: Sceptile|9/315\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|\n|upkeep\n|turn|2\n|\n|t:|1773080009\n|move|p2a: Gardevoir|Moonblast|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Sceptile vs Masquerain": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|19/315\n|\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Acrobatics|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|3\n|\n|t:|1773079997\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|13/315\n|-unboost|p1a: Sceptile|spd|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Acrobatics|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|3\n|\n|t:|1773080000\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|21/315\n|\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p1a: Sceptile|Acrobatics|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|3\n|\n|t:|1773080006\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Masquerain|Bug Buzz|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|faint|p1a: Sceptile\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Sceptile vs Shiftry": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|151/321\n|move|p2a: Shiftry|Knock Off|p1a: Sceptile\n|-damage|p1a: Sceptile|38/315\n|-enditem|p1a: Sceptile|Psychic Seed|[from] move: Knock Off|[of] p2a: Shiftry\n|-damage|p2a: Shiftry|119/321|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|debug|BP doubled for no item\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|169/321\n|move|p2a: Shiftry|Knock Off|p1a: Sceptile\n|-damage|p1a: Sceptile|13/315\n|-enditem|p1a: Sceptile|Psychic Seed|[from] move: Knock Off|[of] p2a: Shiftry\n|-damage|p2a: Shiftry|137/321|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|debug|BP doubled for no item\n|-supereffective|p2a: Shiftry\n|-crit|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|151/321\n|move|p2a: Shiftry|Knock Off|p1a: Sceptile\n|-damage|p1a: Sceptile|0 fnt\n|-enditem|p1a: Sceptile|Psychic Seed|[from] move: Knock Off|[of] p2a: Shiftry\n|faint|p1a: Sceptile\n|-damage|p2a: Shiftry|119/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|147/321\n|move|p2a: Shiftry|Knock Off|p1a: Sceptile\n|-damage|p1a: Sceptile|33/315\n|-enditem|p1a: Sceptile|Psychic Seed|[from] move: Knock Off|[of] p2a: Shiftry\n|-damage|p2a: Shiftry|115/321|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080006\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|debug|BP doubled for no item\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080009\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|151/321\n|move|p2a: Shiftry|Knock Off|p1a: Sceptile\n|-damage|p1a: Sceptile|17/315\n|-enditem|p1a: Sceptile|Psychic Seed|[from] move: Knock Off|[of] p2a: Shiftry\n|-damage|p2a: Shiftry|119/321|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080009\n|move|p1a: Sceptile|Acrobatics|p2a: Shiftry\n|debug|BP doubled for no item\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Sceptile vs Ludicolo": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773079997\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773079997\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773079997\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Ice Beam|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|58/315\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773079997\n|move|p1a: Sceptile|Leaf Blade|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080000\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080000\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080000\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Ice Beam|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|58/315\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773080000\n|move|p1a: Sceptile|Leaf Blade|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080003\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080003\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080003\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Ice Beam|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|52/315\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773080003\n|move|p1a: Sceptile|Leaf Blade|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080006\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080006\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080006\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080008\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Ice Beam|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|26/315\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773080008\n|move|p1a: Sceptile|Leaf Blade|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080009\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080009\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080011\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080011\n|move|p1a: Sceptile|Swords Dance|p1a: Sceptile\n|-boost|p1a: Sceptile|atk|2\n|move|p2a: Ludicolo|Ice Beam|p1a: Sceptile\n|-supereffective|p1a: Sceptile\n|-damage|p1a: Sceptile|60/315\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773080011\n|move|p1a: Sceptile|Leaf Blade|p2a: Ludicolo\n|-crit|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Sceptile vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080012\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|52/324\n|move|p2a: Breloom|Close Combat|p1a: Sceptile\n|-damage|p1a: Sceptile|36/315\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080012\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Sceptile|Sceptile, F|315/315\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080015\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|40/324\n|move|p2a: Breloom|Close Combat|p1a: Sceptile\n|-damage|p1a: Sceptile|5/315\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080015\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|44/324\n|move|p2a: Breloom|Close Combat|p1a: Sceptile\n|-damage|p1a: Sceptile|45/315\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080018\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-crit|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Sceptile, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Sceptile|Sceptile, M|315/315\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080025\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|48/324\n|move|p2a: Breloom|Close Combat|p1a: Sceptile\n|-damage|p1a: Sceptile|11/315\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080026\n|move|p1a: Sceptile|Acrobatics|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-crit|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Blaziken vs Ludicolo": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080012\n|move|p1a: Blaziken|Close Combat|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Ludicolo\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080015\n|move|p1a: Blaziken|Close Combat|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Ludicolo\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Blaziken|Close Combat|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Ludicolo\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Blaziken|Close Combat|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Ludicolo\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080026\n|move|p1a: Blaziken|Close Combat|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Ludicolo\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Blaziken vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Speed Boost|[from] ability: Trace|[of] p1a: Blaziken\n|turn|1\n|\n|t:|1773080012\n|move|p2a: Gardevoir|Psychic Noise|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Speed Boost|[from] ability: Trace|[of] p1a: Blaziken\n|turn|1\n|\n|t:|1773080015\n|move|p2a: Gardevoir|Psychic Noise|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Speed Boost|[from] ability: Trace|[of] p1a: Blaziken\n|turn|1\n|\n|t:|1773080018\n|move|p2a: Gardevoir|Psychic Noise|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Speed Boost|[from] ability: Trace|[of] p1a: Blaziken\n|turn|1\n|\n|t:|1773080021\n|move|p2a: Gardevoir|Psychic Noise|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Speed Boost|[from] ability: Trace|[of] p1a: Blaziken\n|turn|1\n|\n|t:|1773080026\n|move|p2a: Gardevoir|Psychic Noise|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Blaziken vs Swampert": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Swampert, M|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Swampert|Swampert, M|404/404\n|turn|1\n|\n|t:|1773080012\n|move|p1a: Blaziken|Close Combat|p2a: Swampert\n|-damage|p2a: Swampert|162/404\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|move|p2a: Swampert|Earthquake|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080015\n|move|p1a: Blaziken|Close Combat|p2a: Swampert\n|-damage|p2a: Swampert|200/404\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|move|p2a: Swampert|Earthquake|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Swampert, M|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Swampert|Swampert, M|404/404\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Blaziken|Close Combat|p2a: Swampert\n|-damage|p2a: Swampert|186/404\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|move|p2a: Swampert|Earthquake|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Blaziken|Close Combat|p2a: Swampert\n|-damage|p2a: Swampert|166/404\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|move|p2a: Swampert|Earthquake|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Swampert, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Swampert|Swampert, F|404/404\n|turn|1\n|\n|t:|1773080026\n|move|p1a: Blaziken|Close Combat|p2a: Swampert\n|-damage|p2a: Swampert|186/404\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|move|p2a: Swampert|Earthquake|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Blaziken vs Mightyena": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080012\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Mightyena|Play Rough|p1a: Blaziken\n|-damage|p1a: Blaziken|132/301\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080012\n|move|p1a: Blaziken|Close Combat|p2a: Mightyena\n|-supereffective|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Mightyena\n|-damage|p1a: Blaziken|102/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Mightyena, M|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Mightyena|Mightyena, M|281/281\n|turn|1\n|\n|t:|1773080015\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Mightyena|Play Rough|p1a: Blaziken\n|-damage|p1a: Blaziken|154/301\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080015\n|move|p1a: Blaziken|Close Combat|p2a: Mightyena\n|-supereffective|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Mightyena\n|-damage|p1a: Blaziken|124/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Mightyena, M|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Mightyena|Mightyena, M|281/281\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Mightyena|Play Rough|p1a: Blaziken\n|-damage|p1a: Blaziken|140/301\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080018\n|move|p1a: Blaziken|Close Combat|p2a: Mightyena\n|-supereffective|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Mightyena\n|-damage|p1a: Blaziken|110/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Mightyena, M|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Mightyena|Mightyena, M|281/281\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Mightyena|Play Rough|p1a: Blaziken\n|-damage|p1a: Blaziken|129/301\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080021\n|move|p1a: Blaziken|Close Combat|p2a: Mightyena\n|-supereffective|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Mightyena\n|-damage|p1a: Blaziken|99/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080026\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Mightyena|Play Rough|p1a: Blaziken\n|-damage|p1a: Blaziken|154/301\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080026\n|move|p1a: Blaziken|Close Combat|p2a: Mightyena\n|-supereffective|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Mightyena\n|-damage|p1a: Blaziken|124/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Blaziken vs Shiftry": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080012\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Blaziken|Close Combat|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Shiftry\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080015\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Blaziken|Close Combat|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Shiftry\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Blaziken|Close Combat|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-crit|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Shiftry\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Blaziken|Close Combat|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Shiftry\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080026\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Blaziken|Close Combat|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|-unboost|p1a: Blaziken|def|1\n|-unboost|p1a: Blaziken|spd|1\n|faint|p2a: Shiftry\n|-damage|p1a: Blaziken|271/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Blaziken vs Pelipper": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080012\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080015\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080018\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080021\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080025\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080025\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080026\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Pelipper|Hurricane|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Blaziken vs Masquerain": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080012\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080012\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080014\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080015\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080015\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080015\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|23/301\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080016\n|move|p1a: Blaziken|Flare Blitz|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|-damage|p1a: Blaziken|0 fnt|[from] Recoil\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080018\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080018\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080019\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|0 fnt\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080021\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080021\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080023\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken|[miss]\n|-miss|p2a: Masquerain|p1a: Blaziken\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080023\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|31/301\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|3\n|\n|t:|1773080023\n|move|p1a: Blaziken|Flare Blitz|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|-damage|p1a: Blaziken|0 fnt|[from] Recoil\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080028\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080028\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080029\n|move|p2a: Masquerain|Hydro Pump|p1a: Blaziken\n|-supereffective|p1a: Blaziken\n|-damage|p1a: Blaziken|1/301\n|move|p1a: Blaziken|Swords Dance|p1a: Blaziken\n|-boost|p1a: Blaziken|atk|2\n|\n|-ability|p1a: Blaziken|Speed Boost|boost\n|-boost|p1a: Blaziken|spe|1\n|upkeep\n|turn|2\n|\n|t:|1773080029\n|move|p1a: Blaziken|Flare Blitz|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-enditem|p2a: Masquerain|Focus Sash\n|-damage|p2a: Masquerain|1/281\n|-status|p2a: Masquerain|brn\n|-damage|p1a: Blaziken|0 fnt|[from] Recoil\n|faint|p1a: Blaziken\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Blaziken vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080031\n|move|p1a: Blaziken|Flare Blitz|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Blaziken|194/301|[from] Recoil\n|-damage|p1a: Blaziken|164/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080034\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080035\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080035\n|move|p1a: Blaziken|Flare Blitz|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Blaziken|194/301|[from] Recoil\n|-damage|p1a: Blaziken|164/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080040\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080040\n|start\n|switch|p1a: Blaziken|Blaziken, F|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080040\n|move|p1a: Blaziken|Flare Blitz|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Blaziken|194/301|[from] Recoil\n|-damage|p1a: Blaziken|164/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080048\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080048\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080049\n|move|p1a: Blaziken|Flare Blitz|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Blaziken|194/301|[from] Recoil\n|-damage|p1a: Blaziken|164/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080054\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Blaziken, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080055\n|start\n|switch|p1a: Blaziken|Blaziken, M|301/301\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080056\n|move|p1a: Blaziken|Flare Blitz|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Blaziken|194/301|[from] Recoil\n|-damage|p1a: Blaziken|164/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Swampert vs Ludicolo": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080031\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Swampert|Earthquake|p2a: Ludicolo\n|-resisted|p2a: Ludicolo\n|-damage|p2a: Ludicolo|215/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p2a: Ludicolo|Giga Drain|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|-heal|p2a: Ludicolo|301/301|[from] drain|[of] p1a: Swampert\n|faint|p1a: Swampert\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080036\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080036\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080037\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Swampert|Earthquake|p2a: Ludicolo\n|-resisted|p2a: Ludicolo\n|-damage|p2a: Ludicolo|220/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080037\n|move|p2a: Ludicolo|Giga Drain|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|-heal|p2a: Ludicolo|301/301|[from] drain|[of] p1a: Swampert\n|faint|p1a: Swampert\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080041\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080042\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080043\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Swampert|Earthquake|p2a: Ludicolo\n|-resisted|p2a: Ludicolo\n|-damage|p2a: Ludicolo|221/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080043\n|move|p2a: Ludicolo|Giga Drain|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|-heal|p2a: Ludicolo|301/301|[from] drain|[of] p1a: Swampert\n|faint|p1a: Swampert\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080049\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080050\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080050\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Swampert|Earthquake|p2a: Ludicolo\n|-resisted|p2a: Ludicolo\n|-damage|p2a: Ludicolo|216/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080050\n|move|p2a: Ludicolo|Giga Drain|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-crit|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|-heal|p2a: Ludicolo|301/301|[from] drain|[of] p1a: Swampert\n|faint|p1a: Swampert\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080056\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080056\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080057\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Swampert|Earthquake|p2a: Ludicolo\n|-resisted|p2a: Ludicolo\n|-damage|p2a: Ludicolo|214/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080057\n|move|p2a: Ludicolo|Giga Drain|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-crit|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|-heal|p2a: Ludicolo|301/301|[from] drain|[of] p1a: Swampert\n|faint|p1a: Swampert\n|-damage|p2a: Ludicolo|271/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Swampert vs Gardevoir": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Swampert\n|turn|1\n|\n|t:|1773080031\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|194/404\n|-unboost|p1a: Swampert|spa|1\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|102/277\n|\n|-heal|p1a: Swampert|219/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|20/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|0 fnt\n|faint|p2a: Gardevoir\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080036\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080036\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Swampert\n|turn|1\n|\n|t:|1773080037\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|221/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|90/277\n|\n|-heal|p1a: Swampert|246/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080037\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|33/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|0 fnt\n|faint|p2a: Gardevoir\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080043\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080043\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Swampert\n|turn|1\n|\n|t:|1773080044\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|199/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|90/277\n|\n|-heal|p1a: Swampert|224/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080044\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|41/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|0 fnt\n|faint|p2a: Gardevoir\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080052\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080052\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Swampert\n|turn|1\n|\n|t:|1773080052\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|196/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|105/277\n|\n|-heal|p1a: Swampert|221/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080052\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|8/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|0 fnt\n|faint|p2a: Gardevoir\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080057\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080057\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Swampert\n|turn|1\n|\n|t:|1773080057\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|218/404\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|91/277\n|\n|-heal|p1a: Swampert|243/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080057\n|move|p2a: Gardevoir|Moonblast|p1a: Swampert\n|-damage|p1a: Swampert|30/404\n|-unboost|p1a: Swampert|spa|1\n|move|p1a: Swampert|Earthquake|p2a: Gardevoir\n|-damage|p2a: Gardevoir|0 fnt\n|faint|p2a: Gardevoir\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Swampert vs Mightyena": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080031\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|275/404\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|72/281\n|\n|-heal|p1a: Swampert|300/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|183/404\n|-damage|p2a: Mightyena|44/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080036\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080036\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080037\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|271/404\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|75/281\n|\n|-heal|p1a: Swampert|296/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080037\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|170/404\n|-damage|p2a: Mightyena|47/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080041\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Mightyena, M|\n|teampreview\n|\n|t:|1773080042\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Mightyena|Mightyena, M|281/281\n|turn|1\n|\n|t:|1773080043\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|286/404\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|85/281\n|\n|-heal|p1a: Swampert|311/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080043\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|198/404\n|-damage|p2a: Mightyena|57/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080049\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080050\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080050\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|274/404\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|70/281\n|\n|-heal|p1a: Swampert|299/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080050\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|186/404\n|-damage|p2a: Mightyena|42/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080057\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Mightyena, F|\n|teampreview\n|\n|t:|1773080057\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Mightyena|Mightyena, F|281/281\n|turn|1\n|\n|t:|1773080057\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|274/404\n|-unboost|p1a: Swampert|def|1\n|-damage|p2a: Mightyena|253/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|96/281\n|\n|-heal|p1a: Swampert|299/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080058\n|move|p2a: Mightyena|Crunch|p1a: Swampert\n|-damage|p1a: Swampert|111/404\n|-damage|p2a: Mightyena|68/281|[from] item: Life Orb\n|move|p1a: Swampert|Earthquake|p2a: Mightyena\n|-damage|p2a: Mightyena|0 fnt\n|faint|p2a: Mightyena\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Swampert vs Masquerain": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080032\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|257/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|166/281\n|\n|-heal|p1a: Swampert|282/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|146/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|54/281\n|\n|-heal|p1a: Swampert|171/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080032\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|20/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080037\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080038\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080038\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|260/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-crit|p2a: Masquerain\n|-damage|p2a: Masquerain|110/281\n|\n|-heal|p1a: Swampert|285/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080038\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|129/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|7/281\n|\n|-heal|p1a: Swampert|154/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080038\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|13/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080044\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080044\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080045\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|248/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|167/281\n|\n|-heal|p1a: Swampert|273/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080045\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|119/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|55/281\n|\n|-heal|p1a: Swampert|144/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080045\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080052\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080052\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080052\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|245/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|173/281\n|\n|-heal|p1a: Swampert|270/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080052\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|122/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|58/281\n|\n|-heal|p1a: Swampert|147/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080052\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|5/404\n|-unboost|p1a: Swampert|spd|1\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080057\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080057\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080058\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|259/404\n|-unboost|p1a: Swampert|spd|1\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-damage|p2a: Masquerain|158/281\n|\n|-heal|p1a: Swampert|284/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080058\n|move|p2a: Masquerain|Bug Buzz|p1a: Swampert\n|-damage|p1a: Swampert|76/404\n|move|p1a: Swampert|Flip Turn|p2a: Masquerain\n|-crit|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Swampert vs Breloom": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080034\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080034\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080034\n|move|p2a: Breloom|Seed Bomb|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080039\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080040\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080040\n|move|p2a: Breloom|Seed Bomb|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080047\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080047\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080048\n|move|p2a: Breloom|Seed Bomb|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080054\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080054\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080054\n|move|p2a: Breloom|Seed Bomb|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080060\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080060\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080060\n|move|p2a: Breloom|Seed Bomb|p1a: Swampert\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Swampert vs Shiftry": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080031\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Swampert|Earthquake|p2a: Shiftry\n|-resisted|p2a: Shiftry\n|-damage|p2a: Shiftry|234/321\n|\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p2a: Shiftry|Solar Blade|p1a: Swampert|[from]lockedmove\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|-damage|p2a: Shiftry|202/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080038\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080038\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080038\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Swampert|Earthquake|p2a: Shiftry\n|-resisted|p2a: Shiftry\n|-damage|p2a: Shiftry|222/321\n|\n|upkeep\n|turn|2\n|\n|t:|1773080038\n|move|p2a: Shiftry|Solar Blade|p1a: Swampert|[from]lockedmove\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|-damage|p2a: Shiftry|190/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080045\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080045\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080046\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Swampert|Earthquake|p2a: Shiftry\n|-resisted|p2a: Shiftry\n|-damage|p2a: Shiftry|218/321\n|\n|upkeep\n|turn|2\n|\n|t:|1773080046\n|move|p2a: Shiftry|Solar Blade|p1a: Swampert|[from]lockedmove\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|-damage|p2a: Shiftry|186/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080053\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080053\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080053\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Swampert|Earthquake|p2a: Shiftry\n|-resisted|p2a: Shiftry\n|-damage|p2a: Shiftry|234/321\n|\n|upkeep\n|turn|2\n|\n|t:|1773080053\n|move|p2a: Shiftry|Solar Blade|p1a: Swampert|[from]lockedmove\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|-damage|p2a: Shiftry|202/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080060\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080060\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080060\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Swampert|Earthquake|p2a: Shiftry\n|-resisted|p2a: Shiftry\n|-damage|p2a: Shiftry|225/321\n|\n|upkeep\n|turn|2\n|\n|t:|1773080061\n|move|p2a: Shiftry|Solar Blade|p1a: Swampert|[from]lockedmove\n|-supereffective|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|-damage|p2a: Shiftry|193/321|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Swampert vs Pelipper": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080031\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080031\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080031\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|184/261\n|-enditem|p2a: Pelipper|Damp Rock|[from] move: Knock Off|[of] p1a: Swampert\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|269/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|294/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080032\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|130/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|158/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|183/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080032\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|77/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|50/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|75/404|[from] item: Leftovers\n|upkeep\n|turn|4\n|\n|t:|1773080032\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|24/261\n|move|p2a: Pelipper|Roost|p2a: Pelipper\n|-heal|p2a: Pelipper|155/261\n|-singleturn|p2a: Pelipper|move: Roost\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|100/404|[from] item: Leftovers\n|upkeep\n|turn|5\n|\n|t:|1773080032\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|105/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080037\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080038\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080038\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|180/261\n|-enditem|p2a: Pelipper|Damp Rock|[from] move: Knock Off|[of] p1a: Swampert\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|280/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|305/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080038\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|133/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|169/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|194/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080038\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|83/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|47/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|72/404|[from] item: Leftovers\n|upkeep\n|turn|4\n|\n|t:|1773080038\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|36/261\n|move|p2a: Pelipper|Roost|p2a: Pelipper\n|-heal|p2a: Pelipper|167/261\n|-singleturn|p2a: Pelipper|move: Roost\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|97/404|[from] item: Leftovers\n|upkeep\n|turn|5\n|\n|t:|1773080038\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|113/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080045\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080045\n|start\n|switch|p1a: Swampert|Swampert, M|404/404\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080045\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|185/261\n|-enditem|p2a: Pelipper|Damp Rock|[from] move: Knock Off|[of] p1a: Swampert\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-crit|p1a: Swampert\n|-damage|p1a: Swampert|196/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|221/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080045\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|138/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|79/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|104/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080046\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|87/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080053\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080053\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080053\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|189/261\n|-enditem|p2a: Pelipper|Damp Rock|[from] move: Knock Off|[of] p1a: Swampert\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|277/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|302/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080053\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|139/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|172/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|197/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080053\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|90/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|64/404\n|-start|p1a: Swampert|confusion\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|89/404|[from] item: Leftovers\n|upkeep\n|turn|4\n|\n|t:|1773080053\n|-activate|p1a: Swampert|confusion\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|38/261\n|move|p2a: Pelipper|Roost|p2a: Pelipper\n|-heal|p2a: Pelipper|169/261\n|-singleturn|p2a: Pelipper|move: Roost\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|114/404|[from] item: Leftovers\n|upkeep\n|turn|5\n|\n|t:|1773080053\n|-activate|p1a: Swampert|confusion\n|-damage|p1a: Swampert|88/404|[from] confusion\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080060\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Swampert, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080060\n|start\n|switch|p1a: Swampert|Swampert, F|404/404\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080060\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|192/261\n|-enditem|p2a: Pelipper|Damp Rock|[from] move: Knock Off|[of] p1a: Swampert\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|269/404\n|-start|p1a: Swampert|confusion\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|294/404|[from] item: Leftovers\n|upkeep\n|turn|2\n|\n|t:|1773080061\n|-activate|p1a: Swampert|confusion\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|139/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|155/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|180/404|[from] item: Leftovers\n|upkeep\n|turn|3\n|\n|t:|1773080061\n|-activate|p1a: Swampert|confusion\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|92/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|33/404\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|58/404|[from] item: Leftovers\n|upkeep\n|turn|4\n|\n|t:|1773080061\n|-activate|p1a: Swampert|confusion\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|40/261\n|move|p2a: Pelipper|Roost|p2a: Pelipper\n|-heal|p2a: Pelipper|171/261\n|-singleturn|p2a: Pelipper|move: Roost\n|\n|-weather|RainDance|[upkeep]\n|-heal|p1a: Swampert|83/404|[from] item: Leftovers\n|upkeep\n|turn|5\n|\n|t:|1773080061\n|-end|p1a: Swampert|confusion\n|move|p1a: Swampert|Knock Off|p2a: Pelipper\n|-damage|p2a: Pelipper|121/261\n|move|p2a: Pelipper|Hurricane|p1a: Swampert\n|-damage|p1a: Swampert|0 fnt\n|faint|p1a: Swampert\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Mightyena vs Ludicolo": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080062\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080062\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080062\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|90/301\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080062\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-crit|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|-damage|p1a: Mightyena|225/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080071\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080072\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080072\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|94/301\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080072\n|move|p2a: Ludicolo|Hydro Pump|p1a: Mightyena\n|debug|rain water boost\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|-damage|p2a: Ludicolo|64/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080078\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|101/301\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080079\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|0 fnt\n|faint|p2a: Ludicolo\n|-damage|p1a: Mightyena|225/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080085\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Ludicolo, M|\n|teampreview\n|\n|t:|1773080085\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Ludicolo|Ludicolo, M|301/301\n|turn|1\n|\n|t:|1773080086\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|105/301\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080086\n|move|p2a: Ludicolo|Hydro Pump|p1a: Mightyena\n|debug|rain water boost\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|-damage|p2a: Ludicolo|75/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080095\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Ludicolo, F|\n|teampreview\n|\n|t:|1773080095\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Ludicolo|Ludicolo, F|301/301\n|turn|1\n|\n|t:|1773080097\n|move|p1a: Mightyena|Crunch|p2a: Ludicolo\n|-damage|p2a: Ludicolo|90/301\n|-unboost|p2a: Ludicolo|def|1\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Ludicolo|Rain Dance|p2a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080097\n|move|p2a: Ludicolo|Hydro Pump|p1a: Mightyena\n|debug|rain water boost\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|-damage|p2a: Ludicolo|60/301|[from] item: Life Orb\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Mightyena vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080067\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080067\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Moxie|[from] ability: Trace|[of] p1a: Mightyena\n|turn|1\n|\n|t:|1773080068\n|move|p2a: Gardevoir|Moonblast|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Moxie|[from] ability: Trace|[of] p1a: Mightyena\n|turn|1\n|\n|t:|1773080077\n|move|p2a: Gardevoir|Moonblast|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080082\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080082\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Moxie|[from] ability: Trace|[of] p1a: Mightyena\n|turn|1\n|\n|t:|1773080083\n|move|p2a: Gardevoir|Moonblast|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080090\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080091\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir|Moxie|[from] ability: Trace|[of] p1a: Mightyena\n|turn|1\n|\n|t:|1773080091\n|move|p2a: Gardevoir|Moonblast|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080099\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080099\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir|Moxie|[from] ability: Trace|[of] p1a: Mightyena\n|turn|1\n|\n|t:|1773080099\n|move|p2a: Gardevoir|Moonblast|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-crit|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Ludicolo vs Shiftry": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080068\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080070\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080070\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080070\n|move|p2a: Shiftry|Solar Blade|p1a: Ludicolo|[from]lockedmove\n|debug|weakened by weather\n|-damage|p1a: Ludicolo|126/301\n|-damage|p2a: Shiftry|289/321|[from] item: Life Orb\n|move|p1a: Ludicolo|Ice Beam|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-crit|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|debug|move failed because it did nothing\n|faint|p2a: Shiftry\n|-damage|p1a: Ludicolo|96/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080077\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080077\n|move|p2a: Shiftry|Solar Blade|p1a: Ludicolo|[from]lockedmove\n|debug|weakened by weather\n|-damage|p1a: Ludicolo|137/301\n|-damage|p2a: Shiftry|289/321|[from] item: Life Orb\n|move|p1a: Ludicolo|Ice Beam|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-crit|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Ludicolo|107/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080082\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080082\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080083\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080083\n|move|p2a: Shiftry|Solar Blade|p1a: Ludicolo|[from]lockedmove\n|debug|weakened by weather\n|-damage|p1a: Ludicolo|137/301\n|-damage|p2a: Shiftry|289/321|[from] item: Life Orb\n|move|p1a: Ludicolo|Ice Beam|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Ludicolo|107/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080090\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080091\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080091\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080091\n|move|p2a: Shiftry|Solar Blade|p1a: Ludicolo|[from]lockedmove\n|debug|weakened by weather\n|-damage|p1a: Ludicolo|109/301\n|-damage|p2a: Shiftry|289/321|[from] item: Life Orb\n|move|p1a: Ludicolo|Ice Beam|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Ludicolo|79/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080099\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080099\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080100\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080100\n|move|p2a: Shiftry|Solar Blade|p1a: Ludicolo|[from]lockedmove\n|debug|weakened by weather\n|-damage|p1a: Ludicolo|137/301\n|-damage|p2a: Shiftry|289/321|[from] item: Life Orb\n|move|p1a: Ludicolo|Ice Beam|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-crit|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Ludicolo|107/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Mightyena vs Breloom": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080067\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080067\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080067\n|move|p1a: Mightyena|Play Rough|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|56/324\n|-unboost|p2a: Breloom|atk|1\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Breloom|Close Combat|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080077\n|move|p1a: Mightyena|Play Rough|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|35/324\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Breloom|Close Combat|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080083\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080084\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080085\n|move|p1a: Mightyena|Play Rough|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|48/324\n|-unboost|p2a: Breloom|atk|1\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Breloom|Close Combat|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080093\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080093\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080094\n|move|p1a: Mightyena|Play Rough|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|22/324\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Breloom|Close Combat|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080099\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080099\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080100\n|move|p1a: Mightyena|Play Rough|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|56/324\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Breloom|Close Combat|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Mightyena vs Masquerain": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080066\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080067\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080067\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Mightyena|Crunch|p2a: Masquerain\n|-damage|p2a: Masquerain|31/281\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080068\n|move|p2a: Masquerain|Bug Buzz|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080077\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Mightyena|Crunch|p2a: Masquerain\n|-damage|p2a: Masquerain|34/281\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080079\n|move|p2a: Masquerain|Bug Buzz|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080083\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080084\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080085\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Mightyena|Crunch|p2a: Masquerain\n|-damage|p2a: Masquerain|35/281\n|-unboost|p2a: Masquerain|def|1\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080085\n|move|p2a: Masquerain|Bug Buzz|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080093\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080093\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080094\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Mightyena|Crunch|p2a: Masquerain\n|-damage|p2a: Masquerain|65/281\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080094\n|move|p2a: Masquerain|Bug Buzz|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080099\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080099\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080100\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Mightyena|Crunch|p2a: Masquerain\n|-damage|p2a: Masquerain|39/281\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|upkeep\n|turn|2\n|\n|t:|1773080100\n|move|p2a: Masquerain|Bug Buzz|p1a: Mightyena\n|-supereffective|p1a: Mightyena\n|-damage|p1a: Mightyena|0 fnt\n|faint|p1a: Mightyena\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Mightyena vs Shiftry": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080065\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080067\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080067\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Mightyena|Play Rough|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080077\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Mightyena|Play Rough|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080083\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080084\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080085\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Mightyena|Play Rough|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080093\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Shiftry, F|\n|teampreview\n|\n|t:|1773080094\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Shiftry|Shiftry, F|321/321\n|turn|1\n|\n|t:|1773080094\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Mightyena|Play Rough|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080101\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Shiftry, M|\n|teampreview\n|\n|t:|1773080101\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Shiftry|Shiftry, M|321/321\n|turn|1\n|\n|t:|1773080101\n|move|p2a: Shiftry|Solar Blade||[still]\n|-prepare|p2a: Shiftry|Solar Blade\n|move|p1a: Mightyena|Play Rough|p2a: Shiftry\n|-supereffective|p2a: Shiftry\n|-damage|p2a: Shiftry|0 fnt\n|faint|p2a: Shiftry\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Mightyena vs Pelipper": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080065\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080067\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080067\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|104/261\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Mightyena\n|-damage|p1a: Mightyena|54/281\n|-start|p1a: Mightyena|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080067\n|-activate|p1a: Mightyena|confusion\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-crit|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|-damage|p1a: Mightyena|26/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080077\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|128/261\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Mightyena\n|-damage|p1a: Mightyena|76/281\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080077\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|-damage|p1a: Mightyena|48/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080083\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, F|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080084\n|start\n|switch|p1a: Mightyena|Mightyena, F|281/281\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080085\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|127/261\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Mightyena\n|-damage|p1a: Mightyena|60/281\n|-start|p1a: Mightyena|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080085\n|-activate|p1a: Mightyena|confusion\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|-damage|p1a: Mightyena|32/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080094\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080094\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080095\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|113/261\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Mightyena\n|-damage|p1a: Mightyena|55/281\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080095\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|-damage|p1a: Mightyena|27/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080101\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Mightyena, M|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080101\n|start\n|switch|p1a: Mightyena|Mightyena, M|281/281\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080101\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|109/261\n|-damage|p1a: Mightyena|253/281|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Mightyena\n|-damage|p1a: Mightyena|67/281\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080101\n|move|p1a: Mightyena|Crunch|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|faint|p2a: Pelipper\n|-damage|p1a: Mightyena|39/281|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Ludicolo vs Pelipper": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080070\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Pelipper, M|\n|teampreview\n|\n|t:|1773080070\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Pelipper|Pelipper, M|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080070\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|58/261\n|-damage|p1a: Ludicolo|271/301|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|11/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080071\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|-heal|p1a: Ludicolo|40/301|[from] drain|[of] p2a: Pelipper\n|faint|p2a: Pelipper\n|-damage|p1a: Ludicolo|10/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080077\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080077\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080077\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|61/261\n|-damage|p1a: Ludicolo|271/301|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|11/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080078\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|-heal|p1a: Ludicolo|42/301|[from] drain|[of] p2a: Pelipper\n|faint|p2a: Pelipper\n|-damage|p1a: Ludicolo|12/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080083\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080084\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080085\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|49/261\n|-damage|p1a: Ludicolo|271/301|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|41/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080085\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|-heal|p1a: Ludicolo|66/301|[from] drain|[of] p2a: Pelipper\n|faint|p2a: Pelipper\n|-damage|p1a: Ludicolo|36/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080093\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080094\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080094\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|57/261\n|-damage|p1a: Ludicolo|271/301|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|31/301\n|-start|p1a: Ludicolo|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080094\n|-activate|p1a: Ludicolo|confusion\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|-heal|p1a: Ludicolo|60/301|[from] drain|[of] p2a: Pelipper\n|faint|p2a: Pelipper\n|-damage|p1a: Ludicolo|30/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080101\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080101\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080102\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|45/261\n|-damage|p1a: Ludicolo|271/301|[from] item: Life Orb\n|move|p2a: Pelipper|Hurricane|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|43/301\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080102\n|move|p1a: Ludicolo|Giga Drain|p2a: Pelipper\n|-damage|p2a: Pelipper|0 fnt\n|-heal|p1a: Ludicolo|66/301|[from] drain|[of] p2a: Pelipper\n|faint|p2a: Pelipper\n|-damage|p1a: Ludicolo|36/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Shiftry vs Pelipper": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080104\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080104\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080104\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Pelipper|Hurricane|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080108\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080108\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080109\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Pelipper|Hurricane|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080114\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080114\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080114\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Pelipper|Hurricane|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080117\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080117\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080117\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Pelipper|Hurricane|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|debug|move failed because it did nothing\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080121\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Pelipper, F|\n|teampreview\n|\n|t:|1773080121\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Pelipper|Pelipper, F|261/261\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Pelipper\n|turn|1\n|\n|t:|1773080121\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Pelipper|Hurricane|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Ludicolo vs Masquerain": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080104\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080104\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080104\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|13/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080105\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Ludicolo|Ice Beam|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|109/281\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080108\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080108\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080109\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|19/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080109\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Ludicolo|Ice Beam|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|96/281\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080113\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080113\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080113\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|35/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080113\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Ludicolo|Ice Beam|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|96/281\n|-damage|p1a: Ludicolo|5/301|[from] item: Life Orb\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|3\n|\n|t:|1773080113\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080117\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080117\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080118\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|29/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080118\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Ludicolo|Ice Beam|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|91/281\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080122\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080122\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080122\n|move|p2a: Masquerain|Bug Buzz|p1a: Ludicolo\n|-supereffective|p1a: Ludicolo\n|-damage|p1a: Ludicolo|13/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080122\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Ludicolo|Ice Beam|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|94/281\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Shiftry vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080104\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080104\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Shiftry\n|turn|1\n|\n|t:|1773080105\n|move|p2a: Gardevoir|Moonblast|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-crit|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080112\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080112\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Shiftry\n|turn|1\n|\n|t:|1773080112\n|move|p2a: Gardevoir|Moonblast|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080115\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080115\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Shiftry\n|turn|1\n|\n|t:|1773080116\n|move|p2a: Gardevoir|Moonblast|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080120\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080120\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Shiftry\n|turn|1\n|\n|t:|1773080120\n|move|p2a: Gardevoir|Moonblast|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080123\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080123\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Shiftry\n|turn|1\n|\n|t:|1773080123\n|move|p2a: Gardevoir|Moonblast|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Ludicolo vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080104\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080104\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080105\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|move|p2a: Breloom|Close Combat|p1a: Ludicolo\n|-damage|p1a: Ludicolo|19/301\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-weather|RainDance|[upkeep]\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080105\n|move|p1a: Ludicolo|Ice Beam|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080108\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080108\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080109\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|move|p2a: Breloom|Close Combat|p1a: Ludicolo\n|-damage|p1a: Ludicolo|19/301\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-weather|RainDance|[upkeep]\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080109\n|move|p1a: Ludicolo|Ice Beam|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080114\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080114\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080114\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|move|p2a: Breloom|Close Combat|p1a: Ludicolo\n|-damage|p1a: Ludicolo|46/301\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-weather|RainDance|[upkeep]\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080114\n|move|p1a: Ludicolo|Ice Beam|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Ludicolo|16/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080118\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080118\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080119\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|move|p2a: Breloom|Close Combat|p1a: Ludicolo\n|-damage|p1a: Ludicolo|13/301\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-weather|RainDance|[upkeep]\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080119\n|move|p1a: Ludicolo|Ice Beam|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Ludicolo|0 fnt|[from] item: Life Orb\n|faint|p1a: Ludicolo\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080123\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080123\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080123\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|move|p2a: Breloom|Close Combat|p1a: Ludicolo\n|-damage|p1a: Ludicolo|43/301\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|\n|-weather|RainDance|[upkeep]\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080124\n|move|p1a: Ludicolo|Ice Beam|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|-damage|p1a: Ludicolo|13/301|[from] item: Life Orb\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Ludicolo vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080104\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080104\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Ludicolo\n|turn|1\n|\n|t:|1773080104\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|135/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080104\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080108\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080108\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Ludicolo\n|turn|1\n|\n|t:|1773080109\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|109/301\n|-unboost|p1a: Ludicolo|spa|1\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080109\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080114\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080114\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Ludicolo\n|turn|1\n|\n|t:|1773080114\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|126/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080114\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080119\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, F|\n|poke|p2|Gardevoir, M|\n|teampreview\n|\n|t:|1773080119\n|start\n|switch|p1a: Ludicolo|Ludicolo, F|301/301\n|switch|p2a: Gardevoir|Gardevoir, M|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Ludicolo\n|turn|1\n|\n|t:|1773080120\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|136/301\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080121\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080124\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Ludicolo, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080124\n|start\n|switch|p1a: Ludicolo|Ludicolo, M|301/301\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-ability|p2a: Gardevoir||[from] ability: Trace|[of] p1a: Ludicolo\n|turn|1\n|\n|t:|1773080125\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|130/301\n|-unboost|p1a: Ludicolo|spa|1\n|move|p1a: Ludicolo|Rain Dance|p1a: Ludicolo\n|-weather|RainDance\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080125\n|move|p2a: Gardevoir|Moonblast|p1a: Ludicolo\n|-damage|p1a: Ludicolo|0 fnt\n|faint|p1a: Ludicolo\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Shiftry vs Breloom": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080106\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080106\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080106\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Breloom|Close Combat|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080112\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080112\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080112\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Breloom|Close Combat|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080115\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080115\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080116\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Breloom|Close Combat|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080120\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080120\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080120\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Breloom|Close Combat|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080124\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080125\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080125\n|move|p1a: Shiftry|Solar Blade||[still]\n|-prepare|p1a: Shiftry|Solar Blade\n|move|p2a: Breloom|Close Combat|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|-unboost|p2a: Breloom|def|1\n|-unboost|p2a: Breloom|spd|1\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Pelipper vs Gardevoir": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080107\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, M|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080107\n|start\n|switch|p1a: Pelipper|Pelipper, M|261/261\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gardevoir\n|-ability|p2a: Gardevoir|Drizzle|[from] ability: Trace|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080107\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|29/261\n|-unboost|p1a: Pelipper|spa|1\n|move|p1a: Pelipper|Hurricane|p2a: Gardevoir\n|-damage|p2a: Gardevoir|205/277\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080107\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|0 fnt\n|faint|p1a: Pelipper\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080113\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080113\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gardevoir\n|-ability|p2a: Gardevoir|Drizzle|[from] ability: Trace|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080113\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|8/261\n|move|p1a: Pelipper|Hurricane|p2a: Gardevoir\n|-damage|p2a: Gardevoir|166/277\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080113\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|0 fnt\n|faint|p1a: Pelipper\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080116\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080117\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gardevoir\n|-ability|p2a: Gardevoir|Drizzle|[from] ability: Trace|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080117\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|26/261\n|move|p1a: Pelipper|Hurricane|p2a: Gardevoir\n|-damage|p2a: Gardevoir|159/277\n|-start|p2a: Gardevoir|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080117\n|-activate|p2a: Gardevoir|confusion\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|0 fnt\n|faint|p1a: Pelipper\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080120\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080120\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gardevoir\n|-ability|p2a: Gardevoir|Drizzle|[from] ability: Trace|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080121\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|33/261\n|move|p1a: Pelipper|Hurricane|p2a: Gardevoir\n|-damage|p2a: Gardevoir|168/277\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080121\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|0 fnt\n|faint|p1a: Pelipper\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080124\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Gardevoir, F|\n|teampreview\n|\n|t:|1773080125\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Gardevoir|Gardevoir, F|277/277\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gardevoir\n|-ability|p2a: Gardevoir|Drizzle|[from] ability: Trace|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080125\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|15/261\n|-unboost|p1a: Pelipper|spa|1\n|move|p1a: Pelipper|Hurricane|p2a: Gardevoir\n|-damage|p2a: Gardevoir|204/277\n|-start|p2a: Gardevoir|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080125\n|-activate|p2a: Gardevoir|confusion\n|move|p2a: Gardevoir|Moonblast|p1a: Pelipper\n|-damage|p1a: Pelipper|0 fnt\n|faint|p1a: Pelipper\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Shiftry vs Masquerain": [
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080106\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080106\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080106\n|move|p2a: Masquerain|Bug Buzz|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-crit|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080112\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080112\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|turn|1\n|\n|t:|1773080112\n|move|p2a: Masquerain|Bug Buzz|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080115\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080115\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080116\n|move|p2a: Masquerain|Bug Buzz|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080120\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080120\n|start\n|switch|p1a: Shiftry|Shiftry, M|321/321\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080120\n|move|p2a: Masquerain|Bug Buzz|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    },
+    {
+      "winner": "p2",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080124\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Shiftry, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080125\n|start\n|switch|p1a: Shiftry|Shiftry, F|321/321\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|turn|1\n|\n|t:|1773080125\n|move|p2a: Masquerain|Bug Buzz|p1a: Shiftry\n|-supereffective|p1a: Shiftry\n|-damage|p1a: Shiftry|0 fnt\n|faint|p1a: Shiftry\n|\n|win|Bot 2\n"
+    }
+  ],
+  "Gardevoir vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080127\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080127\n|start\n|switch|p1a: Gardevoir|Gardevoir, F|277/277\n|switch|p2a: Breloom|Breloom, M|324/324\n|-ability|p1a: Gardevoir|Poison Heal|[from] ability: Trace|[of] p2a: Breloom\n|turn|1\n|\n|t:|1773080127\n|move|p1a: Gardevoir|Moonblast|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080131\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080131\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Breloom|Breloom, F|324/324\n|-ability|p1a: Gardevoir|Poison Heal|[from] ability: Trace|[of] p2a: Breloom\n|turn|1\n|\n|t:|1773080131\n|move|p1a: Gardevoir|Moonblast|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080133\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080133\n|start\n|switch|p1a: Gardevoir|Gardevoir, F|277/277\n|switch|p2a: Breloom|Breloom, F|324/324\n|-ability|p1a: Gardevoir|Poison Heal|[from] ability: Trace|[of] p2a: Breloom\n|turn|1\n|\n|t:|1773080134\n|move|p1a: Gardevoir|Moonblast|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080137\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080137\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Breloom|Breloom, M|324/324\n|-ability|p1a: Gardevoir|Poison Heal|[from] ability: Trace|[of] p2a: Breloom\n|turn|1\n|\n|t:|1773080137\n|move|p1a: Gardevoir|Moonblast|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080141\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080142\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Breloom|Breloom, F|324/324\n|-ability|p1a: Gardevoir|Poison Heal|[from] ability: Trace|[of] p2a: Breloom\n|turn|1\n|\n|t:|1773080142\n|move|p1a: Gardevoir|Moonblast|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Pelipper vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080126\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080126\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Breloom|Breloom, F|324/324\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080126\n|move|p2a: Breloom|Seed Bomb|p1a: Pelipper\n|-damage|p1a: Pelipper|126/261\n|move|p1a: Pelipper|Hurricane|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|debug|move failed because it did nothing\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080130\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080130\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Breloom|Breloom, F|324/324\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080130\n|move|p2a: Breloom|Seed Bomb|p1a: Pelipper\n|-damage|p1a: Pelipper|134/261\n|move|p1a: Pelipper|Hurricane|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|debug|move failed because it did nothing\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080133\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080133\n|start\n|switch|p1a: Pelipper|Pelipper, M|261/261\n|switch|p2a: Breloom|Breloom, M|324/324\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080133\n|move|p2a: Breloom|Seed Bomb|p1a: Pelipper\n|-damage|p1a: Pelipper|144/261\n|move|p1a: Pelipper|Hurricane|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080137\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080137\n|start\n|switch|p1a: Pelipper|Pelipper, M|261/261\n|switch|p2a: Breloom|Breloom, F|324/324\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080137\n|move|p2a: Breloom|Seed Bomb|p1a: Pelipper\n|-damage|p1a: Pelipper|137/261\n|move|p1a: Pelipper|Hurricane|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080141\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080142\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Breloom|Breloom, F|324/324\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080142\n|move|p2a: Breloom|Seed Bomb|p1a: Pelipper\n|-damage|p1a: Pelipper|131/261\n|move|p1a: Pelipper|Hurricane|p2a: Breloom\n|-supereffective|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Pelipper vs Masquerain": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080125\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080125\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080126\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|77/281\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080126\n|move|p2a: Masquerain|Bug Buzz|p1a: Pelipper\n|-resisted|p1a: Pelipper\n|-damage|p1a: Pelipper|135/261\n|-unboost|p1a: Pelipper|spd|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|debug|move failed because it did nothing\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080130\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080130\n|start\n|switch|p1a: Pelipper|Pelipper, M|261/261\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080130\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|89/281\n|-start|p2a: Masquerain|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080130\n|-activate|p2a: Masquerain|confusion\n|-damage|p2a: Masquerain|59/281|[from] confusion\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080133\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080133\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080133\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|81/281\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080133\n|move|p2a: Masquerain|Bug Buzz|p1a: Pelipper\n|-resisted|p1a: Pelipper\n|-damage|p1a: Pelipper|122/261\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080137\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080137\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080137\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|77/281\n|-start|p2a: Masquerain|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080137\n|-activate|p2a: Masquerain|confusion\n|move|p2a: Masquerain|Bug Buzz|p1a: Pelipper\n|-resisted|p1a: Pelipper\n|-damage|p1a: Pelipper|117/261\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080141\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Pelipper, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080142\n|start\n|switch|p1a: Pelipper|Pelipper, F|261/261\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Pelipper\n|turn|1\n|\n|t:|1773080142\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|89/281\n|-start|p2a: Masquerain|confusion\n|\n|-weather|RainDance|[upkeep]\n|upkeep\n|turn|2\n|\n|t:|1773080142\n|-activate|p2a: Masquerain|confusion\n|-damage|p2a: Masquerain|61/281|[from] confusion\n|move|p1a: Pelipper|Hurricane|p2a: Masquerain\n|-supereffective|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Gardevoir vs Masquerain": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080127\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080127\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-ability|p1a: Gardevoir||[from] ability: Trace|[of] p2a: Masquerain\n|turn|1\n|\n|t:|1773080127\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|70/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080127\n|move|p2a: Masquerain|Bug Buzz|p1a: Gardevoir\n|-damage|p1a: Gardevoir|108/277\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080131\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080131\n|start\n|switch|p1a: Gardevoir|Gardevoir, F|277/277\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-ability|p1a: Gardevoir||[from] ability: Trace|[of] p2a: Masquerain\n|turn|1\n|\n|t:|1773080131\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|83/281\n|-unboost|p2a: Masquerain|spa|1\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080131\n|move|p2a: Masquerain|Bug Buzz|p1a: Gardevoir\n|-damage|p1a: Gardevoir|157/277\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080134\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080135\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|-ability|p1a: Gardevoir||[from] ability: Trace|[of] p2a: Masquerain\n|turn|1\n|\n|t:|1773080135\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|74/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080135\n|move|p2a: Masquerain|Bug Buzz|p1a: Gardevoir\n|-damage|p1a: Gardevoir|103/277\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|debug|Negating (sp)def boost/penalty.\n|-crit|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080137\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, F|\n|poke|p2|Masquerain, M|\n|teampreview\n|\n|t:|1773080137\n|start\n|switch|p1a: Gardevoir|Gardevoir, F|277/277\n|switch|p2a: Masquerain|Masquerain, M|281/281\n|-ability|p1a: Gardevoir||[from] ability: Trace|[of] p2a: Masquerain\n|turn|1\n|\n|t:|1773080137\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|50/281\n|-unboost|p2a: Masquerain|spa|1\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080137\n|move|p2a: Masquerain|Bug Buzz|p1a: Gardevoir\n|-damage|p1a: Gardevoir|157/277\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080141\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Gardevoir, M|\n|poke|p2|Masquerain, F|\n|teampreview\n|\n|t:|1773080142\n|start\n|switch|p1a: Gardevoir|Gardevoir, M|277/277\n|switch|p2a: Masquerain|Masquerain, F|281/281\n|-ability|p1a: Gardevoir||[from] ability: Trace|[of] p2a: Masquerain\n|turn|1\n|\n|t:|1773080142\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|58/281\n|move|p2a: Masquerain|Quiver Dance|p2a: Masquerain\n|-boost|p2a: Masquerain|spa|1\n|-boost|p2a: Masquerain|spd|1\n|-boost|p2a: Masquerain|spe|1\n|\n|upkeep\n|turn|2\n|\n|t:|1773080142\n|move|p2a: Masquerain|Bug Buzz|p1a: Gardevoir\n|-damage|p1a: Gardevoir|111/277\n|move|p1a: Gardevoir|Moonblast|p2a: Masquerain\n|-damage|p2a: Masquerain|0 fnt\n|faint|p2a: Masquerain\n|\n|win|Bot 1\n"
+    }
+  ],
+  "Masquerain vs Breloom": [
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080129\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Masquerain, F|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080129\n|start\n|switch|p1a: Masquerain|Masquerain, F|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080129\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|137/324\n|move|p2a: Breloom|Facade|p1a: Masquerain\n|-damage|p1a: Masquerain|164/281\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080129\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080133\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Masquerain, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080133\n|start\n|switch|p1a: Masquerain|Masquerain, M|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080133\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|134/324\n|move|p2a: Breloom|Facade|p1a: Masquerain\n|-damage|p1a: Masquerain|155/281\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080133\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080137\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Masquerain, M|\n|poke|p2|Breloom, F|\n|teampreview\n|\n|t:|1773080137\n|start\n|switch|p1a: Masquerain|Masquerain, M|281/281\n|switch|p2a: Breloom|Breloom, F|324/324\n|turn|1\n|\n|t:|1773080137\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|105/324\n|move|p2a: Breloom|Facade|p1a: Masquerain\n|-damage|p1a: Masquerain|167/281\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080137\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080141\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Masquerain, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080142\n|start\n|switch|p1a: Masquerain|Masquerain, M|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080142\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|119/324\n|-unboost|p2a: Breloom|spd|1\n|move|p2a: Breloom|Facade|p1a: Masquerain\n|-damage|p1a: Masquerain|155/281\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080142\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    },
+    {
+      "winner": "p1",
+      "log": "[[[[[\n0 vs 0\n|t:|1773080145\n|gametype|singles\n|player|p1|Bot 1||\n|player|p2|Bot 2||\n|teamsize|p1|1\n|teamsize|p2|1\n|gen|9\n|tier|[Gen 9] Custom Game\n|clearpoke\n|poke|p1|Masquerain, M|\n|poke|p2|Breloom, M|\n|teampreview\n|\n|t:|1773080145\n|start\n|switch|p1a: Masquerain|Masquerain, M|281/281\n|switch|p2a: Breloom|Breloom, M|324/324\n|turn|1\n|\n|t:|1773080145\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|126/324\n|move|p2a: Breloom|Facade|p1a: Masquerain\n|-damage|p1a: Masquerain|171/281\n|\n|-status|p2a: Breloom|tox|[from] item: Toxic Orb\n|upkeep\n|turn|2\n|\n|t:|1773080145\n|move|p1a: Masquerain|Bug Buzz|p2a: Breloom\n|-damage|p2a: Breloom|0 fnt\n|faint|p2a: Breloom\n|\n|win|Bot 1\n"
+    }
+  ]
+}

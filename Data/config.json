@@ -1,17 +1,34 @@
 {
-  "trainer": {
-    "noOfThreads": 4,
-    "setLevel": 50,
-    "RandomiseTeams": false,
-    "n": 100,
-    "run_n_times": 100,
-    "filename": "Inputs/GymLeaderPokemon.txt"
-  },
-  "pokemon": {
-    "noOfThreads": 4,
-    "n": 2000
-  },
-  "parse": {
-    "output_file": "output.txt"
-  }
+  "noOfThreads": 8,
+  "setLevel": 100,
+  "battlesPerMatchup": 5,
+  "mode": "matrix",
+  "poolEvolutionStages": [
+    "final"
+  ],
+  "poolTypes": [],
+  "poolCategory": "regular",
+  "poolCanMega": "all",
+  "poolRegions": [
+    "Hoenn"
+  ],
+  "poolBst": "any",
+  "poolRoles": [],
+  "poolTypeCount": "",
+  "poolAbility": "",
+  "poolMove": "",
+  "poolTags": [],
+  "poolEggGroups": [],
+  "poolColors": [],
+  "poolGenerations": [
+    "3"
+  ],
+  "poolWeight": "any",
+  "poolHeight": "any",
+  "poolLimit": 10,
+  "useSmogonSets": true,
+  "smogonFormat": "newest",
+  "customSets": {},
+  "pokemon1": "",
+  "pokemon2": ""
 }
