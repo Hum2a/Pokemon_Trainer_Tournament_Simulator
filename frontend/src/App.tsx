@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AppProvider, useApp } from "./context/AppContext";
+import { Modal } from "./components/Modal";
 import { TournamentPage } from "./pages/TournamentPage";
 import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 
@@ -13,9 +14,23 @@ const container = {
 };
 
 function AppContent() {
-  const { status } = useApp();
+  const { status, modal, hideModal } = useApp();
   return (
-    <BrowserRouter>
+    <>
+      {modal && (
+        <Modal
+          isOpen
+          onClose={hideModal}
+          onConfirm={modal.onConfirm}
+          title={modal.title}
+          message={modal.message}
+          confirmLabel={modal.confirmLabel}
+          cancelLabel={modal.cancelLabel}
+          variant={modal.variant}
+          alertOnly={modal.alertOnly}
+        />
+      )}
+      <BrowserRouter>
       <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
         <motion.div
           className="max-w-[1000px] mx-auto"
@@ -69,6 +84,7 @@ function AppContent() {
           </motion.div>
         </div>
       </BrowserRouter>
+    </>
   );
 }
 
