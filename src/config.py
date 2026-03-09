@@ -95,6 +95,7 @@ def _matchups_from_flat(flat):
         "poolLimit": flat.get("poolLimit", 50),
         "useSmogonSets": flat.get("useSmogonSets", True),
         "smogonFormat": flat.get("smogonFormat", "gen9ou"),
+        "customSets": flat.get("customSets") or {},
         "pokemon1": flat.get("pokemon1", ""),
         "pokemon2": flat.get("pokemon2", ""),
     }
@@ -161,6 +162,7 @@ def default_config():
             "poolLimit": 50,
             "useSmogonSets": True,
             "smogonFormat": "gen9ou",
+            "customSets": {},
             "pokemon1": "",
             "pokemon2": "",
         },
