@@ -126,6 +126,20 @@ def matchup_data():
         return jsonify({"error": str(e)}), 500
 
 
+@api_bp.route("/outputs/matchup-battle-logs")
+def matchup_battle_logs():
+    """Return matchup_battle_logs.json content. 404 if not found."""
+    path = DATA_DIR / "matchup_battle_logs.json"
+    if not path.exists():
+        return jsonify({"error": "File not found"}), 404
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return jsonify(data)
+    except (json.JSONDecodeError, OSError) as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @api_bp.route("/outputs")
 def outputs_list():
     files = []
@@ -136,6 +150,7 @@ def outputs_list():
         "battle_matrix.csv",
         "matchup_results.json",
         "matchup_matrix.csv",
+        "matchup_battle_logs.json",
     ]:
         p = DATA_DIR / name
         if p.exists():

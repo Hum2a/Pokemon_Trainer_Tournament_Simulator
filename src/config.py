@@ -18,6 +18,7 @@ ALLOWED_OUTPUT_FILES = frozenset({
     "matchup_matrix.csv",
     "matchup_matrix_plot.png",
     "matchup_results.json",
+    "matchup_battle_logs.json",
 })
 
 ALLOWED_DEX_TYPES = frozenset({
