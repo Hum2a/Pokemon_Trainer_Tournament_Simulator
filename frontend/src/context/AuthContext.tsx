@@ -23,31 +23,57 @@ interface AuthContextValue extends AuthState {
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   getAccessToken: () => Promise<string | null>;
+  refreshAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+// Persist auth across React Strict Mode remounts and navigation
+let _cachedUser: User | null = null;
+let _cachedSession: Session | null = null;
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(() => _cachedUser);
+  const [session, setSession] = useState<Session | null>(() => _cachedSession);
+  const [loading, setLoading] = useState(!_cachedUser);
+
+  const updateAuth = useCallback((newSession: Session | null, newUser: User | null) => {
+    _cachedSession = newSession;
+    _cachedUser = newUser;
+    setSession(newSession);
+    setUser(newUser);
+    setLoading(false);
+  }, []);
+
+  const refreshAuth = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    updateAuth(data.session, data.session?.user ?? null);
+  }, [updateAuth]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    refreshAuth();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session && event !== "SIGNED_OUT") {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          updateAuth(data.session, data.session.user);
+          return;
+        }
+      }
+      updateAuth(session, session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    const onFocus = () => refreshAuth();
+    window.addEventListener("focus", onFocus);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [refreshAuth, updateAuth]);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
@@ -77,7 +103,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
-  }, []);
+    updateAuth(null, null);
+  }, [updateAuth]);
 
   const getAccessToken = useCallback(async () => {
     const { data } = await supabase.auth.getSession();
@@ -95,6 +122,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithGoogle,
         signOut,
         getAccessToken,
+        refreshAuth,
       }}
     >
       {children}

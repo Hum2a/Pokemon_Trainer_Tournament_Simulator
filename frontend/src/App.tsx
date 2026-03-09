@@ -83,20 +83,18 @@ function AppContent() {
                 Pokemon Battle Simulator
               </NavLink>
               <nav className="flex gap-2">
-                {user && (
-                  <NavLink
-                    to="/simulations"
-                    className={({ isActive }) =>
-                      `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-[var(--primary)]/20 text-[var(--primary)]"
-                          : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
-                      }`
-                    }
-                  >
-                    My Simulations
-                  </NavLink>
-                )}
+                <NavLink
+                  to="/simulations"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                    }`
+                  }
+                >
+                  My Simulations
+                </NavLink>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
@@ -123,15 +121,13 @@ function AppContent() {
                 </NavLink>
               </nav>
             </div>
-            {user && (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--bg-panel)] border border-[var(--border)]">
-                  <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
-                  <span className="text-sm font-medium">{status.text}</span>
-                </div>
-                <UserMenu onSignInClick={() => setAuthModalOpen(true)} />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--bg-panel)] border border-[var(--border)]">
+                <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
+                <span className="text-sm font-medium">{status.text}</span>
               </div>
-            )}
+              <UserMenu onSignInClick={() => setAuthModalOpen(true)} />
+            </div>
           </header>
             <main>
               <Routes>

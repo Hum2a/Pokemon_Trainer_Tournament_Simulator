@@ -4,14 +4,9 @@ const API_BASE = '/api';
 
 async function authHeaders(): Promise<HeadersInit> {
   const headers: Record<string, string> = {};
-  // Refresh session to get a valid token (handles expiry). Fall back to getSession if no session.
-  let token: string | null = null;
-  const { data: refreshData } = await supabase.auth.refreshSession();
-  token = refreshData.session?.access_token ?? null;
-  if (!token) {
-    const { data: sessionData } = await supabase.auth.getSession();
-    token = sessionData.session?.access_token ?? null;
-  }
+  // Use getSession only - refreshSession can trigger onAuthStateChange(null) and clear auth state
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token ?? null;
   if (token) headers['Authorization'] = `Bearer ${token}`;
   return headers;
 }

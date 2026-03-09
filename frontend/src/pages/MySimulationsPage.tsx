@@ -13,11 +13,15 @@ interface SimulationRun {
 }
 
 export function MySimulationsPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading, refreshAuth } = useAuth();
   const [runs, setRuns] = useState<SimulationRun[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    refreshAuth();
+  }, [refreshAuth]);
 
   useEffect(() => {
     if (!user) {
@@ -43,6 +47,14 @@ export function MySimulationsPage() {
       cancelled = true;
     };
   }, [user]);
+
+  if (authLoading) {
+    return (
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] p-8 text-center">
+        <p className="text-[var(--text-muted)]">Loading…</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
