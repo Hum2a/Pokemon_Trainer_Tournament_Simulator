@@ -121,7 +121,7 @@ interface DexItem {
 }
 
 export function MatchupSimulator() {
-  const { appendLog, setStatus, saveConfig, triggerOutputsRefresh, config, setConfig } = useApp();
+  const { appendLog, setStatus, saveConfig, triggerOutputsRefresh, config, setConfig, status } = useApp();
   const [species, setSpecies] = useState<Species[]>([]);
   const [abilities, setAbilities] = useState<DexItem[]>([]);
   const [moves, setMoves] = useState<DexItem[]>([]);
@@ -812,15 +812,42 @@ export function MatchupSimulator() {
         </div>
       )}
 
-      <motion.button
-        type="button"
-        onClick={runMatchups}
-        className="px-6 py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:shadow-[0_0_24px_var(--accent-glow)] transition-all"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        Run Matchup Simulations
-      </motion.button>
+      <div className="flex flex-wrap gap-3">
+        <motion.button
+          type="button"
+          onClick={runMatchups}
+          disabled={status.running}
+          className="px-6 py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:shadow-[0_0_24px_var(--accent-glow)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          whileHover={{ scale: status.running ? 1 : 1.02 }}
+          whileTap={{ scale: status.running ? 1 : 0.98 }}
+        >
+          Run Matchup Simulations
+        </motion.button>
+        {status.running && (
+          <motion.button
+            type="button"
+            onClick={async () => {
+              try {
+                await api.post("/terminate-task");
+                appendLog("Simulation terminated by user.");
+                setStatus(false, "Ready");
+                if (pollRef.current) {
+                  clearInterval(pollRef.current);
+                  pollRef.current = null;
+                }
+                triggerOutputsRefresh();
+              } catch (e) {
+                appendLog("Failed to terminate: " + (e as Error).message, "error");
+              }
+            }}
+            className="px-6 py-3 rounded-xl border-2 border-red-500/80 text-red-400 font-medium hover:bg-red-500/20 transition-all"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Stop Simulation
+          </motion.button>
+        )}
+      </div>
 
       <p className="text-xs text-[var(--text-muted)] mt-4">
         Results: matchup_results.json, matchup_matrix.csv (download from Outputs below)
