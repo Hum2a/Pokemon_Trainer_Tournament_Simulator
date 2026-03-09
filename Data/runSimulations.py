@@ -131,9 +131,20 @@ def runSimulation(matchup, threadNo, filename, teamNumbers, setLevel):
 def get_keys_from_value(d, val):
     return [k for k, v in d.items() if v == val]
 
-filename = "Inputs/" + "GymLeaderPokemon.txt"
-noOfThreads = 1 # change this to fit your CPU
-RandomiseTeams = False # randomise order of simulations
+# Load config from file if present (for UI)
+config = {}
+if os.path.exists('config.json'):
+    try:
+        with open('config.json') as f:
+            config = json.load(f)
+    except Exception:
+        pass
+
+filename = config.get('filename', "Inputs/GymLeaderPokemon.txt")
+noOfThreads = config.get('noOfThreads', 1)
+RandomiseTeams = config.get('RandomiseTeams', False)
+setLevel = config.get('setLevel', 50)
+n = config.get('n', 100)  # number of battles to stop after (None = all)
 
 #read in teams
 with open('Inputs/tournament_battles.json', 'r') as infile:
@@ -145,9 +156,8 @@ with open('Inputs/GymLeaderTeams.json', 'r') as infile:
     teamNumbers = json.load(infile)
 
 print(len(teams))
-setLevel = 50 # If not None, all pokemon will be set to this level
-n = 100 # number of battles to stop running after
-teams = teams[:n] # comment this out to simulate all battles
+if n is not None:
+    teams = teams[:n]
 
 n = len(teams)
 noOfTeams = len(teamNumbers)
