@@ -25,6 +25,7 @@ from src.services import (
     write_parse_config,
     write_matchup_config,
 )
+from src.battle_log_parser import compute_analytics
 
 api_bp = Blueprint("api", __name__)
 
@@ -135,6 +136,21 @@ def matchup_battle_logs():
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
+        return jsonify(data)
+    except (json.JSONDecodeError, OSError) as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@api_bp.route("/outputs/matchup-battle-analytics")
+def matchup_battle_analytics():
+    """Return parsed analytics from matchup_battle_logs.json. 404 if not found."""
+    path = DATA_DIR / "matchup_battle_logs.json"
+    if not path.exists():
+        return jsonify({"error": "File not found"}), 404
+    try:
+        data = compute_analytics(path)
+        if "error" in data:
+            return jsonify({"error": data["error"]}), 404
         return jsonify(data)
     except (json.JSONDecodeError, OSError) as e:
         return jsonify({"error": str(e)}), 500
