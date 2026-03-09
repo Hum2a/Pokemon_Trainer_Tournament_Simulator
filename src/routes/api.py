@@ -158,6 +158,56 @@ def file_write():
         return jsonify({"error": str(e)}), 500
 
 
+SMOGON_SETS_URL = "https://data.pkmn.cc/sets"
+TIER_PRIORITY = ("ou", "uu", "ru", "nu", "pu", "zu")
+
+
+def _flatten_gen9_tiers(data):
+    """Flatten gen9.json tier structure to match gen9ou format: {species: {setName: set}}."""
+    result = {}
+    for species, tiers in data.items():
+        if not isinstance(tiers, dict):
+            continue
+        merged = {}
+        for tier in TIER_PRIORITY:
+            tier_sets = tiers.get(tier)
+            if not isinstance(tier_sets, dict):
+                continue
+            for set_name, set_data in tier_sets.items():
+                if set_name not in merged:
+                    merged[set_name] = set_data
+        if not merged:
+            for tier, tier_sets in tiers.items():
+                if tier in TIER_PRIORITY or not isinstance(tier_sets, dict):
+                    continue
+                for set_name, set_data in tier_sets.items():
+                    if set_name not in merged:
+                        merged[set_name] = set_data
+        if merged:
+            result[species] = merged
+    return result
+
+
+@api_bp.route("/smogon/sets/<format_id>")
+def smogon_sets(format_id):
+    """Proxy Smogon sets. format_id: gen9ou, gen9uu, gen9, etc."""
+    import urllib.request
+    allowed = {"gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9"}
+    fmt = format_id.lower()
+    if fmt not in allowed:
+        return jsonify({"error": "Invalid format"}), 400
+    try:
+        url = f"{SMOGON_SETS_URL}/{fmt}.json"
+        req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = json.loads(r.read().decode())
+        if fmt == "gen9":
+            data = _flatten_gen9_tiers(data)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
 @api_bp.route("/dex/<data_type>")
 def dex(data_type):
     if not validate_dex_type(data_type):
