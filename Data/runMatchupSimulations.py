@@ -2,6 +2,7 @@
 1v1 Pokemon matchup simulator.
 Runs battles between Pokemon (head-to-head or full matrix).
 Reads config from config.json (matchups section).
+Uses Smogon presets by default for proper movesets.
 Output: matchup_results.json, matchup_matrix.csv
 """
 import json
@@ -10,6 +11,7 @@ import re
 import subprocess
 import sys
 import threading
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -17,6 +19,7 @@ DEX_DIR = Path(__file__).parent / "UsefulDatasets" / "dex-export"
 WORKER_FILES = Path(__file__).parent / "WorkerFiles"
 WORKER_OUTPUTS = Path(__file__).parent / "WorkerOutputs"
 OUTPUT_FILE = Path(__file__).parent / "matchup_results.json"
+SMOGON_SETS_URL = "https://data.pkmn.cc/sets"
 
 
 def load_dex():
@@ -84,21 +87,64 @@ def _matches_height(heightm, range_key):
     return True
 
 
+def _ensure_list(val):
+    """Ensure value is a list (for multi-select filters)."""
+    if val is None:
+        return []
+    if isinstance(val, list):
+        return [x for x in val if x]
+    return [val] if val else []
+
+
 def filter_species(species_list, learnsets, m):
-    """Filter species by pool criteria. m = matchups config dict."""
+    """Filter species by pool criteria. All non-empty filters are ANDed together."""
     filtered = list(species_list)
-    pool_filter = m.get("poolFilter", "all")
-    if pool_filter == "all":
-        return filtered
-    if pool_filter == "type" and m.get("poolType"):
-        filtered = [s for s in filtered if m["poolType"] in (s.get("types") or [])]
-    elif pool_filter == "region" and m.get("poolRegion"):
-        filtered = [s for s in filtered if s.get("region") == m["poolRegion"]]
-    elif pool_filter == "evolution" and m.get("poolEvolutionStage"):
-        filtered = [s for s in filtered if s.get("evolutionStage") == m["poolEvolutionStage"]]
-    elif pool_filter == "ability" and m.get("poolAbility"):
+
+    # Evolution stage (multi)
+    evo = _ensure_list(m.get("poolEvolutionStages"))
+    if evo:
+        filtered = [s for s in filtered if s.get("evolutionStage") in evo]
+
+    # Type (multi - Pokemon must have at least one of these types)
+    types = _ensure_list(m.get("poolTypes"))
+    if types:
+        filtered = [s for s in filtered if any(t in (s.get("types") or []) for t in types)]
+
+    # Category: all | legendary | regular
+    cat = m.get("poolCategory", "all")
+    if cat == "legendary":
+        filtered = [s for s in filtered if (s.get("tags") or [])]
+    elif cat == "regular":
+        filtered = [s for s in filtered if not (s.get("tags") or [])]
+
+    # Can Mega Evolve
+    mega = m.get("poolCanMega", "all")
+    if mega == "yes":
+        filtered = [s for s in filtered if s.get("canMega")]
+    elif mega == "no":
+        filtered = [s for s in filtered if not s.get("canMega")]
+
+    # Region (multi)
+    regions = _ensure_list(m.get("poolRegions"))
+    if regions:
+        filtered = [s for s in filtered if s.get("region") in regions]
+
+    # BST range
+    bst = m.get("poolBst", "any")
+    if bst and bst != "any":
+        filtered = [s for s in filtered if _matches_bst(s.get("bst", 0), bst)]
+
+    # Role (multi)
+    roles = _ensure_list(m.get("poolRoles"))
+    if roles:
+        filtered = [s for s in filtered if s.get("role") in roles]
+
+    # Ability (single)
+    if m.get("poolAbility"):
         filtered = [s for s in filtered if m["poolAbility"] in (s.get("abilities") or {}).values()]
-    elif pool_filter == "move" and m.get("poolMove"):
+
+    # Move (single)
+    if m.get("poolMove"):
         move_id = m["poolMove"].lower().replace(" ", "").replace("-", "")
         result = []
         for s in filtered:
@@ -108,35 +154,157 @@ def filter_species(species_list, learnsets, m):
             if isinstance(moves, list) and move_id in moves:
                 result.append(s)
         filtered = result
-    elif pool_filter == "role" and m.get("poolRole"):
-        filtered = [s for s in filtered if s.get("role") == m["poolRole"]]
-    elif pool_filter == "bst" and m.get("poolBst") and m.get("poolBst") != "any":
-        filtered = [s for s in filtered if _matches_bst(s.get("bst", 0), m["poolBst"])]
-    elif pool_filter == "typeCount" and m.get("poolTypeCount"):
-        tc = 2 if m["poolTypeCount"] == "dual" else 1
-        filtered = [s for s in filtered if s.get("typeCount", 1) == tc]
-    elif pool_filter == "tags" and m.get("poolTags"):
-        tag = m["poolTags"]
-        filtered = [s for s in filtered if tag in (s.get("tags") or [])]
-    elif pool_filter == "eggGroup" and m.get("poolEggGroup"):
-        eg = m["poolEggGroup"]
-        filtered = [s for s in filtered if eg in (s.get("eggGroups") or [])]
-    elif pool_filter == "color" and m.get("poolColor"):
-        filtered = [s for s in filtered if s.get("color") == m["poolColor"]]
-    elif pool_filter == "generation" and m.get("poolGeneration"):
-        try:
-            gen = int(m["poolGeneration"])
-            filtered = [s for s in filtered if s.get("generation") == gen]
-        except (ValueError, TypeError):
-            pass
-    elif pool_filter == "weight" and m.get("poolWeight") and m.get("poolWeight") != "any":
+
+    # Tags (multi - specific legendary types)
+    tags = _ensure_list(m.get("poolTags"))
+    if tags:
+        filtered = [s for s in filtered if any(t in (s.get("tags") or []) for t in tags)]
+
+    # Egg group (multi)
+    egg_groups = _ensure_list(m.get("poolEggGroups"))
+    if egg_groups:
+        filtered = [s for s in filtered if any(eg in (s.get("eggGroups") or []) for eg in egg_groups)]
+
+    # Color (multi)
+    colors = _ensure_list(m.get("poolColors"))
+    if colors:
+        filtered = [s for s in filtered if s.get("color") in colors]
+
+    # Generation (multi)
+    gens = _ensure_list(m.get("poolGenerations"))
+    if gens:
+        gen_set = {int(g) for g in gens if str(g).isdigit()}
+        if gen_set:
+            filtered = [s for s in filtered if s.get("generation") in gen_set]
+
+    # Weight range
+    if m.get("poolWeight") and m.get("poolWeight") != "any":
         filtered = [s for s in filtered if _matches_weight(s.get("weightkg"), m["poolWeight"])]
-    elif pool_filter == "height" and m.get("poolHeight") and m.get("poolHeight") != "any":
+
+    # Height range
+    if m.get("poolHeight") and m.get("poolHeight") != "any":
         filtered = [s for s in filtered if _matches_height(s.get("heightm"), m["poolHeight"])]
-    elif pool_filter == "canMega" and m.get("poolCanMega"):
-        want_mega = m["poolCanMega"] == "yes"
-        filtered = [s for s in filtered if bool(s.get("canMega")) == want_mega]
+
+    # Type count (single vs dual)
+    tc = m.get("poolTypeCount", "")
+    if tc == "single":
+        filtered = [s for s in filtered if (s.get("typeCount") or 1) == 1]
+    elif tc == "dual":
+        filtered = [s for s in filtered if (s.get("typeCount") or 1) == 2]
+
     return filtered
+
+
+def _first(val):
+    """Get first element from value (handles slash options in Smogon data)."""
+    if val is None:
+        return None
+    if isinstance(val, list):
+        return val[0] if val else None
+    return val
+
+
+def _flatten_moves(moves):
+    """Flatten Smogon moves (can be str or [str, str] for slash options) to list of 4 moves."""
+    if not moves or not isinstance(moves, list):
+        return []
+    result = []
+    for m in moves[:4]:
+        result.append(_first(m) if isinstance(m, list) else m)
+    return [str(x) for x in result if x]
+
+
+def _evs_to_str(evs):
+    """Convert evs dict to Showdown format: 252 HP / 4 Def / 252 Spe."""
+    if not evs or not isinstance(evs, dict):
+        return ""
+    order = ("hp", "atk", "def", "spa", "spd", "spe")
+    parts = []
+    for stat in order:
+        v = evs.get(stat, 0)
+        if v and v > 0:
+            name = "SpA" if stat == "spa" else "SpD" if stat == "spd" else stat.upper()
+            parts.append(f"{v} {name}")
+    return " / ".join(parts) if parts else ""
+
+
+def smogon_to_showdown(species_name, smogon_set, level=100):
+    """Convert Smogon set dict to Pokemon Showdown export format string."""
+    if not smogon_set:
+        return None
+    item = _first(smogon_set.get("item")) or ""
+    ability = _first(smogon_set.get("ability")) or ""
+    nature = _first(smogon_set.get("nature")) or "Hardy"
+    evs_str = _evs_to_str(smogon_set.get("evs"))
+    moves = _flatten_moves(smogon_set.get("moves"))
+    while len(moves) < 4:
+        moves.append("Struggle")
+
+    lines = []
+    if item:
+        lines.append(f"{species_name} @ {item}")
+    else:
+        lines.append(species_name)
+    lines.append(f"Level: {level}")
+    if ability:
+        lines.append(f"Ability: {ability}")
+    if evs_str:
+        lines.append(f"EVs: {evs_str}")
+    lines.append(f"{nature} Nature")
+    for m in moves:
+        lines.append(f"- {m}")
+    return "\n".join(lines)
+
+
+def load_smogon_sets(format_id="gen9ou"):
+    """Fetch Smogon sets from data.pkmn.cc. Returns {species: {setName: setData}}."""
+    url = f"{SMOGON_SETS_URL}/{format_id}.json"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = json.loads(r.read().decode())
+    except Exception as e:
+        print(f"  Warning: Could not load Smogon sets from {url}: {e}", flush=True)
+        return {}
+    if format_id == "gen9":
+        tier_priority = ("ou", "uu", "ru", "nu", "pu", "zu")
+        merged = {}
+        for species, tiers in data.items():
+            if not isinstance(tiers, dict):
+                continue
+            sets_for_species = {}
+            for tier in tier_priority:
+                tier_sets = tiers.get(tier, {})
+                if isinstance(tier_sets, dict):
+                    for name, s in tier_sets.items():
+                        if name not in sets_for_species:
+                            sets_for_species[name] = s
+            if not sets_for_species:
+                for tier, tier_sets in tiers.items():
+                    if tier not in tier_priority and isinstance(tier_sets, dict):
+                        for name, s in tier_sets.items():
+                            if name not in sets_for_species:
+                                sets_for_species[name] = s
+            if sets_for_species:
+                merged[species] = sets_for_species
+        return merged
+    return data
+
+
+def get_smogon_set_for_species(species_name, smogon_sets):
+    """Find best matching Smogon set for species. Returns (setName, setData) or (None, None)."""
+    if not smogon_sets:
+        return None, None
+    sid = species_name.replace(" ", "").replace("-", "").lower()
+    for smogon_species, sets in smogon_sets.items():
+        smogon_id = smogon_species.replace(" ", "").replace("-", "").lower()
+        if smogon_id == sid:
+            set_names = list(sets.keys())
+            if set_names:
+                first_name = set_names[0]
+                return first_name, sets.get(first_name)
+            return None, None
+    return None, None
 
 
 def get_default_set(species_name, learnsets, species_list, level=50):
@@ -201,10 +369,19 @@ def run_single_battle(p1_set, p2_set, thread_no, level):
     return None
 
 
-def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level):
+def get_set_for_battle(species_name, learnsets, species_list, smogon_sets, use_smogon, level):
+    """Get Showdown-format set for a Pokemon. Prefers Smogon if available."""
+    if use_smogon and smogon_sets:
+        _, set_data = get_smogon_set_for_species(species_name, smogon_sets)
+        if set_data:
+            return smogon_to_showdown(species_name, set_data, level)
+    return get_default_set(species_name, learnsets, species_list, level)
+
+
+def run_matchup(p1_name, p2_name, n_battles, thread_no, species_list, learnsets, level, smogon_sets=None, use_smogon=True):
     """Run n_battles between p1 and p2. Returns (p1_wins, p2_wins)."""
-    p1_set = get_default_set(p1_name, learnsets, species_list, level)
-    p2_set = get_default_set(p2_name, learnsets, species_list, level)
+    p1_set = get_set_for_battle(p1_name, learnsets, species_list, smogon_sets, use_smogon, level)
+    p2_set = get_set_for_battle(p2_name, learnsets, species_list, smogon_sets, use_smogon, level)
 
     p1_wins = 0
     p2_wins = 0
@@ -231,12 +408,20 @@ def main():
     threads = m.get("noOfThreads", 4)
     mode = m.get("mode", "head-to-head")
     pool_limit = m.get("poolLimit", 50)
+    use_smogon = m.get("useSmogonSets", True)
+    smogon_format = m.get("smogonFormat", "gen9ou")
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
 
     print("Stage 1/4: Loading dex data (species, learnsets)...", flush=True)
     species_list, learnsets = load_dex()
     print(f"  Loaded {len(species_list)} species.", flush=True)
+
+    smogon_sets = {}
+    if use_smogon:
+        print(f"  Loading Smogon sets ({smogon_format})...", flush=True)
+        smogon_sets = load_smogon_sets(smogon_format)
+        print(f"  Loaded {len(smogon_sets)} species from Smogon.", flush=True)
 
     print("Stage 2/4: Building matchup list...", flush=True)
     matchups = []
@@ -269,7 +454,7 @@ def main():
         with lock:
             tn = thread_names.pop(0) if thread_names else 1
         try:
-            w1, w2 = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level)
+            w1, w2 = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon)
             return (p1, p2, w1, w2)
         finally:
             with lock:
