@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Battle Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Pokemon Battle Simulator</h1>
+      <div class="status" id="status">
+        <span class="status-dot idle"></span>
+        <span id="statusText">Ready</span>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel settings-panel">
+        <h2 class="panel-title" data-toggle="settings">
+          <span>Settings</span>
+          <span class="toggle">▼</span>
+        </h2>
+        <div class="panel-content" id="settingsContent">
+          <div class="settings-grid">
+            <fieldset class="settings-group">
+              <legend>Trainer Tournament</legend>
+              <label>
+                <span>Threads</span>
+                <input type="number" id="trainerThreads" min="1" max="64" value="4">
+              </label>
+              <label>
+                <span>Level Override</span>
+                <input type="number" id="trainerLevel" min="1" max="100" placeholder="50 (or empty for build levels)">
+              </label>
+              <label>
+                <span>Battles per Matchup</span>
+                <input type="number" id="runNTimes" min="1" value="100">
+              </label>
+              <label>
+                <span>Battle Cap (test)</span>
+                <input type="number" id="trainerN" min="1" placeholder="Empty = all">
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="randomiseTeams">
+                <span>Randomise Teams</span>
+              </label>
+              <label>
+                <span>Pokemon File</span>
+                <input type="text" id="trainerFilename" value="Inputs/GymLeaderPokemon.txt">
+              </label>
+            </fieldset>
+            <fieldset class="settings-group">
+              <legend>Pokemon Tournament</legend>
+              <label>
+                <span>Threads</span>
+                <input type="number" id="pokemonThreads" min="1" max="64" value="4">
+              </label>
+              <label>
+                <span>Battle Cap</span>
+                <input type="number" id="pokemonN" min="1" placeholder="2000">
+              </label>
+            </fieldset>
+            <fieldset class="settings-group">
+              <legend>Parse Output</legend>
+              <label>
+                <span>Output File</span>
+                <input type="text" id="outputFile" value="output.txt">
+              </label>
+            </fieldset>
+          </div>
+          <button type="button" class="btn btn-secondary" id="saveSettings">Save Settings</button>
+        </div>
+      </section>
+
+      <section class="panel editor-panel">
+        <h2 class="panel-title" data-toggle="editor">
+          <span>Pokemon Builds Editor</span>
+          <span class="toggle">▼</span>
+        </h2>
+        <div class="panel-content" id="editorContent">
+          <p class="editor-hint">Edit GymLeaderPokemon.txt (Showdown format: <code>|Species</code> per build, Level, Nature, Ability, moves) or GymLeaderTeams.json (trainer → [[species, lineNo], ...]).</p>
+          <div class="editor-toolbar">
+            <label>
+              <span>File</span>
+              <select id="editorFileSelect">
+                <option value="Inputs/GymLeaderPokemon.txt">Inputs/GymLeaderPokemon.txt</option>
+                <option value="Inputs/GymLeaderTeams.json">Inputs/GymLeaderTeams.json</option>
+              </select>
+            </label>
+            <button type="button" class="btn btn-primary" id="loadFile">Load</button>
+            <button type="button" class="btn btn-accent" id="saveFile">Save</button>
+            <button type="button" class="btn btn-small" id="loadExample" title="Load from example (Trainer Tournament 1+2)">Load example</button>
+          </div>
+          <textarea id="fileEditor" placeholder="Load a file to edit..."></textarea>
+        </div>
+      </section>
+
+      <section class="panel teambuilder-panel">
+        <h2 class="panel-title" data-toggle="teambuilder">
+          <span>Team Builder</span>
+          <span class="toggle">▼</span>
+        </h2>
+        <div class="panel-content" id="teambuilderContent">
+          <p class="editor-hint">Build Pokemon in Showdown format. Pick species, ability, moves, item, nature. Add to team and export to the editor above.</p>
+          <div class="builder-form">
+            <div class="builder-row">
+              <label>
+                <span>Pokemon</span>
+                <input type="text" id="builderSpecies" placeholder="Search species (e.g. Pikachu)">
+                <div id="builderSpeciesList" class="dropdown-list"></div>
+              </label>
+              <label>
+                <span>Level</span>
+                <input type="number" id="builderLevel" value="50" min="1" max="100">
+              </label>
+            </div>
+            <div class="builder-row">
+              <label>
+                <span>Ability</span>
+                <select id="builderAbility"></select>
+              </label>
+              <label>
+                <span>Item</span>
+                <select id="builderItem"></select>
+              </label>
+              <label>
+                <span>Nature</span>
+                <select id="builderNature"></select>
+              </label>
+            </div>
+            <div class="builder-row">
+              <label>
+                <span>Move 1</span>
+                <select id="builderMove1"></select>
+              </label>
+              <label>
+                <span>Move 2</span>
+                <select id="builderMove2"></select>
+              </label>
+              <label>
+                <span>Move 3</span>
+                <select id="builderMove3"></select>
+              </label>
+              <label>
+                <span>Move 4</span>
+                <select id="builderMove4"></select>
+              </label>
+            </div>
+            <div class="builder-row builder-actions">
+              <button type="button" class="btn btn-accent" id="builderAdd">Add to Team</button>
+              <button type="button" class="btn btn-primary" id="builderExport">Export to Editor</button>
+            </div>
+          </div>
+          <div class="builder-team">
+            <h4>Current Team</h4>
+            <div id="builderTeamList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel actions-panel">
+        <h2 class="panel-title">Actions</h2>
+        <div class="actions-grid">
+          <div class="action-group">
+            <h3>Build Phase</h3>
+            <button type="button" class="btn btn-primary" id="buildTrainer">Build Trainer Battles</button>
+            <button type="button" class="btn btn-primary" id="buildPokemon">Build Pokemon vs Leaders</button>
+          </div>
+          <div class="action-group">
+            <h3>Run Phase</h3>
+            <button type="button" class="btn btn-accent" id="runTrainer">Run Trainer Simulations</button>
+            <button type="button" class="btn btn-accent" id="runPokemon">Run Pokemon Simulations</button>
+          </div>
+          <div class="action-group">
+            <h3>Parse Phase</h3>
+            <button type="button" class="btn btn-primary" id="parsePng">Parse to PNG Matrix</button>
+            <button type="button" class="btn btn-primary" id="parseCsv">Parse to CSV</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel log-panel">
+        <h2 class="panel-title" data-toggle="log">
+          <span>Log / Progress</span>
+          <span class="toggle">▼</span>
+        </h2>
+        <div class="panel-content" id="logContent">
+          <pre id="logOutput"></pre>
+          <div class="log-actions">
+            <button type="button" class="btn btn-small" id="clearLog">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel outputs-panel">
+        <h2 class="panel-title" data-toggle="outputs">
+          <span>Outputs</span>
+          <span class="toggle">▼</span>
+        </h2>
+        <div class="panel-content" id="outputsContent">
+          <div class="outputs-grid" id="outputsGrid">
+            <p class="muted">Run simulations and parse to generate outputs.</p>
+          </div>
+          <button type="button" class="btn btn-secondary" id="refreshOutputs">Refresh</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
