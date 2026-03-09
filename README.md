@@ -5,8 +5,8 @@ Here we have an environment for running large amounts of Pokémon simulations in
 
 
 ## Requirements
-* Python (tested on version 3.10.12, buy any python 3 version SHOULD suffice)
-* Node.js (tested on node version 21.1.0 / npm version 8.10.2, but any SHOULD suffice)
+* Python (tested on version 3.10.12, but any Python 3 version should suffice)
+* Node.js (tested on node 21.1.0 / npm 8.10.2, but any version should suffice)
 * The following python libraries:
     * json
     * itertools
@@ -37,9 +37,49 @@ A web interface is available to run all simulator functions through buttons and 
 - Terminal 1: `python app.py` (API on port 5000)
 - Terminal 2: `cd frontend && npm run dev` (UI on port 5173, proxies API to 5000)
 
-The UI lets you build battles, run trainer or Pokemon simulations, parse results to PNG/CSV, and download outputs—all configurable via the Settings panel.
+The UI has two main sections:
 
-**Project structure:** The codebase is modular. See `.cursor/rules/` for conventions. Key directories:
+- **Matchup Simulator** – 1v1 Pokemon battles (head-to-head or matrix mode). See below.
+- **Trainer Tournament** – Build battles from team files, run trainer simulations, parse results to PNG/CSV, and download outputs. Uses the Team Builder, File Editor, and Settings panel.
+
+### Matchup Simulator
+
+The **Matchup Simulator** runs 1v1 Pokemon battles between two modes:
+
+- **Head-to-Head:** Pick two Pokemon and run battles between them.
+- **Matrix:** Run every Pokemon in a filtered pool against each other (all vs all).
+
+**Pool filters** (Matrix mode) let you narrow the pool with multiple combinable filters. Each filter section is collapsible—use **Expand all** / **Collapse all** to manage the layout. Filter options use text chips: click a label to toggle it on (highlighted) or off (muted).
+
+| Filter | Options |
+|--------|---------|
+| Evolution stage | First stage, Mid evolution, Full evolution |
+| Type | Any of 18 types (multi-select) |
+| Category | All, Legendary/Mythical, Regular only |
+| Can Mega Evolve | All, Yes, No |
+| Region | Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea, Other |
+| BST range | Any, Under 400, 400–500, 500–600, 600+ |
+| Type count | Any, Single type, Dual type |
+| Role | Physical Attacker, Special Attacker, Wall, Mixed, Balanced |
+| Ability / Move | Optional dropdowns to require a specific ability or learnable move |
+| Tags | Mythical, Restricted Legendary, Sub-Legendary, Paradox, Ultra Beast |
+| Egg group, Color, Generation | Multi-select options |
+| Weight / Height | Range dropdowns |
+
+Filters combine with **AND** logic; within each multi-select (e.g. types), **OR** logic applies. Set a **Pool size limit** and use **Maximum** to cap at the number of Pokemon matching the current filters.
+
+**Smogon presets:** By default, simulations use movesets from [Smogon](https://www.smogon.com/) (e.g. gen9ou) instead of minimal learnset-based sets. This produces more realistic battles. Toggle **Use Smogon presets** and choose a format (gen9ou, gen9uu, gen9ru, gen9nu, gen9pu, gen9zu, gen9). Pokemon without Smogon sets fall back to default sets.
+
+**Matchup Analytics** (after running simulations) includes:
+
+- **Pool Sets:** Lists all Pokemon in the pool and their Smogon set (or "Default" if none). Use the format dropdown to match your simulation format.
+- Summary stats, win rate charts, dominance scores, heatmaps, and a searchable matchup table.
+
+**Outputs:** `matchup_results.json` (per-matchup win counts) and `matchup_matrix.csv` (win rate matrix). Download from the Outputs panel.
+
+### Project structure
+
+The codebase is modular. See `.cursor/rules/` for conventions. Key directories:
 - `app.py` – entry point
 - `src/` – backend (config, security, services, routes)
 - `frontend/` – React + Vite + Tailwind frontend (builds to `frontend/dist/`)
