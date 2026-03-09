@@ -37,8 +37,8 @@ This app is a **Flask backend + React frontend** that runs Pokemon Showdown simu
 4. Configure:
    - **Name:** `pokemon-simulator` (or any name)
    - **Region:** Choose closest to you
-   - **Runtime:** **Docker**
-   - **Dockerfile Path:** `./Dockerfile` (default)
+   - **Language:** Select **Docker** from the dropdown (Render may auto-detect Python—change it to Docker)
+   - **Dockerfile Path:** `./Dockerfile` (default; under Advanced if not visible)
    - Leave Build/Start commands empty (Dockerfile defines them)
 5. Click **Create Web Service**
 
