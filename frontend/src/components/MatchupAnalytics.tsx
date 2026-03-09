@@ -563,8 +563,11 @@ function ScatterWinRateVsBattles({ data }: { data: MatchupData }) {
   );
 }
 
-function PoolSetsWidget({ data, refreshTrigger }: { data: MatchupData; refreshTrigger: number }) {
-  const [format, setFormat] = useState("gen9ou");
+function PoolSetsWidget({ data, refreshTrigger, smogonFormat }: { data: MatchupData; refreshTrigger: number; smogonFormat?: string }) {
+  const [format, setFormat] = useState(smogonFormat ?? "gen9ou");
+  useEffect(() => {
+    if (smogonFormat) setFormat(smogonFormat);
+  }, [smogonFormat]);
   const pokemon = useMemo(() => {
     const set = new Set<string>();
     for (const m of Object.values(data)) {
@@ -581,6 +584,77 @@ function PoolSetsWidget({ data, refreshTrigger }: { data: MatchupData; refreshTr
       onFormatChange={setFormat}
       refreshTrigger={refreshTrigger}
     />
+  );
+}
+
+type BattleLogsData = Record<string, Array<{ winner: string | null; log: string }>>;
+
+function BattleLogsViewer({ refreshTrigger }: { refreshTrigger: number }) {
+  const [logs, setLogs] = useState<BattleLogsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedMatchup, setSelectedMatchup] = useState("");
+  const [expandedBattle, setExpandedBattle] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    api
+      .get<BattleLogsData>("/outputs/matchup-battle-logs")
+      .then((d) => { if (!cancelled) setLogs(d); })
+      .catch(() => { if (!cancelled) setLogs(null); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [refreshTrigger]);
+
+  if (loading) return <p className="text-sm text-[var(--text-muted)]">Loading battle logs…</p>;
+  if (!logs || Object.keys(logs).length === 0) return <p className="text-sm text-[var(--text-muted)]">No battle logs. Run simulations to generate turn-by-turn logs.</p>;
+
+  const matchups = Object.keys(logs).sort();
+  const battles = selectedMatchup ? (logs[selectedMatchup] ?? []) : [];
+
+  return (
+    <div className="space-y-3">
+      <label className="block text-sm font-medium text-[var(--text-muted)]">
+        Select matchup to view turn-by-turn logs
+      </label>
+      <select
+        aria-label="Select matchup to view turn-by-turn logs"
+        value={selectedMatchup}
+        onChange={(e) => {
+          setSelectedMatchup(e.target.value);
+          setExpandedBattle(null);
+        }}
+        className="w-full px-3 py-2 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)] text-[var(--text)] text-sm"
+      >
+        <option value="">—</option>
+        {matchups.map((m) => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      {selectedMatchup && battles.length > 0 && (
+        <div className="space-y-2">
+          {battles.map((b, i) => (
+            <div key={i} className="rounded-lg border border-[var(--border)]/50 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setExpandedBattle(expandedBattle === i ? null : i)}
+                className="w-full px-4 py-2 flex items-center justify-between text-left bg-[var(--bg-input)] hover:bg-[var(--primary)]/5 transition-colors"
+              >
+                <span className="text-sm font-medium text-[var(--text)]">
+                  Battle {i + 1}: {b.winner === "p1" ? "P1 wins" : b.winner === "p2" ? "P2 wins" : "No result"}
+                </span>
+                <span className="text-[var(--primary)] text-sm">{expandedBattle === i ? "▲" : "▼"}</span>
+              </button>
+              {expandedBattle === i && (
+                <pre className="p-4 text-xs text-[var(--text-muted)] bg-[var(--bg-panel)] overflow-x-auto max-h-64 overflow-y-auto whitespace-pre-wrap font-mono">
+                  {b.log}
+                </pre>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -709,7 +783,7 @@ function ChartCard({
   );
 }
 
-export function MatchupAnalytics({ refreshTrigger }: { refreshTrigger: number }) {
+export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrigger: number; smogonFormat?: string }) {
   const { data, loading, error } = useMatchupData(refreshTrigger);
 
   if (loading) {
@@ -742,7 +816,7 @@ export function MatchupAnalytics({ refreshTrigger }: { refreshTrigger: number })
         <p className="text-sm text-[var(--text-muted)] mb-3">
           Pokemon in the pool and their Smogon sets. Simulations use these by default.
         </p>
-        <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} />
+        <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} smogonFormat={smogonFormat} />
       </div>
       {hasData && (
         <>
@@ -797,6 +871,9 @@ export function MatchupAnalytics({ refreshTrigger }: { refreshTrigger: number })
       )}
       <ChartCard title="Matchup Table" description="Search and sort all matchups" className="md:col-span-2 xl:col-span-3">
         <SearchableMatchupTable data={data} />
+      </ChartCard>
+      <ChartCard title="Battle Logs" description="Turn-by-turn logs for each fight" className="md:col-span-2 xl:col-span-3">
+        <BattleLogsViewer refreshTrigger={refreshTrigger} />
       </ChartCard>
     </div>
   );
