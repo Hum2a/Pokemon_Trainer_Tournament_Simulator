@@ -1,19 +1,13 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Panel } from "./Panel";
-import { useApp } from "../context/AppContext";
+import { useApp, type Config } from "../context/AppContext";
 import { api } from "../api";
 import { cn } from "../lib/utils";
 
 const TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
 
 const REGIONS = ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unova", "Kalos", "Alola", "Galar", "Paldea", "Other"];
-
-const EVOLUTION_STAGES = [
-  { value: "base", label: "Base (first stage)" },
-  { value: "middle", label: "Middle (evolves further)" },
-  { value: "final", label: "Final (fully evolved)" },
-];
 
 const ROLES = ["Physical Attacker", "Special Attacker", "Wall", "Mixed", "Balanced"];
 
@@ -58,42 +52,72 @@ const HEIGHT_RANGES = [
   { value: "large", label: "Large (> 2 m)" },
 ];
 
-const POOL_FILTER_LABELS: Record<string, string> = {
-  all: "All Pokemon",
-  type: "Specific type",
-  region: "Specific region",
-  evolution: "Evolution stage",
-  ability: "Has ability",
-  move: "Can learn move",
-  role: "Role",
-  bst: "BST range",
-  typeCount: "Single vs dual type",
-  tags: "Legendary / Mythical / etc",
-  eggGroup: "Egg group",
-  color: "Color",
-  generation: "Generation",
-  weight: "Weight range",
-  height: "Height range",
-  canMega: "Can Mega Evolve",
-};
+const EVOLUTION_OPTIONS = [
+  { value: "base", label: "First stage" },
+  { value: "middle", label: "Mid evolution" },
+  { value: "final", label: "Full evolution" },
+];
 
-const POOL_FILTER_RESET: Record<string, string> = {
-  poolType: "",
-  poolRegion: "",
-  poolEvolutionStage: "",
-  poolAbility: "",
-  poolMove: "",
-  poolRole: "",
-  poolBst: "any",
-  poolTypeCount: "",
-  poolTags: "",
-  poolEggGroup: "",
-  poolColor: "",
-  poolGeneration: "",
-  poolWeight: "any",
-  poolHeight: "any",
-  poolCanMega: "yes",
-};
+function FilterChip({
+  label,
+  active,
+  onClick,
+  className,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "px-2.5 py-1 rounded-md text-sm font-medium transition-all",
+        active
+          ? "bg-[var(--primary)]/20 text-[var(--primary)] border border-[var(--primary)]/50 shadow-[0_0_12px_rgba(0,245,255,0.2)]"
+          : "bg-transparent text-[var(--text-muted)] border border-[var(--border)]/50 hover:text-[var(--text)] hover:border-[var(--border)]",
+        className
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
+function FilterSection({
+  title,
+  expanded,
+  onToggle,
+  children,
+}: {
+  title: string;
+  expanded: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-lg border border-[var(--border)]/50 overflow-hidden">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--primary)]/5 transition-colors"
+      >
+        <span>{title}</span>
+        <svg
+          className={cn("w-4 h-4 text-[var(--text-muted)] transition-transform", expanded && "rotate-180")}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {expanded && <div className="px-3 pb-3 pt-0 border-t border-[var(--border)]/30">{children}</div>}
+    </div>
+  );
+}
 
 interface Species {
   id: string;
@@ -129,6 +153,23 @@ export function MatchupSimulator() {
   const [loading, setLoading] = useState(true);
   const [showDropdown1, setShowDropdown1] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
+  const [expandedFilters, setExpandedFilters] = useState<Record<string, boolean>>({
+    evolution: true,
+    type: true,
+    category: true,
+    region: true,
+    bst: false,
+    role: false,
+    ability: false,
+    tags: false,
+    eggGroup: false,
+    color: false,
+    generation: false,
+    physical: false,
+    poolLimit: true,
+  });
+  const toggleFilterSection = (key: string) =>
+    setExpandedFilters((prev) => ({ ...prev, [key]: !prev[key] }));
   const dropdownRef1 = useRef<HTMLDivElement>(null);
   const dropdownRef2 = useRef<HTMLDivElement>(null);
   const inputRef1 = useRef<HTMLInputElement>(null);
@@ -142,6 +183,11 @@ export function MatchupSimulator() {
       ...prev,
       matchups: { ...(prev.matchups ?? {}), ...updates },
     }));
+  };
+  const togglePoolArray = (key: keyof NonNullable<Config["matchups"]>, value: string) => {
+    const arr = (m[key] as string[] | undefined) ?? [];
+    const next = arr.includes(value) ? arr.filter((x) => x !== value) : [...arr, value];
+    updateMatchup({ [key]: next });
   };
 
   useEffect(() => {
@@ -226,8 +272,10 @@ export function MatchupSimulator() {
   const inputCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] transition-all focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]";
   const labelCls = "flex flex-col gap-1.5 text-sm font-medium text-[var(--text)]";
 
+  const ensureList = useCallback((val: unknown): string[] =>
+    Array.isArray(val) ? val.filter((x): x is string => !!x) : val ? [String(val)] : [], []);
+
   const getPoolMaxCount = useCallback((): number => {
-    const f = m.poolFilter ?? "all";
     const matchesBst = (bst: number, key: string) => {
       if (!key || key === "any") return true;
       if (key === "under400") return bst < 400;
@@ -253,38 +301,46 @@ export function MatchupSimulator() {
       return true;
     };
     let filtered = [...species];
-    if (f === "all") return filtered.length;
-    if (f === "type" && m.poolType) filtered = filtered.filter((s) => (s.types ?? []).includes(m.poolType!));
-    else if (f === "region" && m.poolRegion) filtered = filtered.filter((s) => s.region === m.poolRegion);
-    else if (f === "evolution" && m.poolEvolutionStage) filtered = filtered.filter((s) => s.evolutionStage === m.poolEvolutionStage);
-    else if (f === "ability" && m.poolAbility) filtered = filtered.filter((s) => Object.values(s.abilities ?? {}).includes(m.poolAbility!));
-    else if (f === "move" && m.poolMove) {
-      const moveId = m.poolMove.toLowerCase().replace(/[\s-]/g, "");
+    const evo = ensureList(m.poolEvolutionStages);
+    if (evo.length) filtered = filtered.filter((s) => evo.includes(s.evolutionStage ?? ""));
+    const types = ensureList(m.poolTypes);
+    if (types.length) filtered = filtered.filter((s) => (s.types ?? []).some((t) => types.includes(t)));
+    const cat = m.poolCategory ?? "all";
+    if (cat === "legendary") filtered = filtered.filter((s) => (s.tags ?? []).length > 0);
+    else if (cat === "regular") filtered = filtered.filter((s) => (s.tags ?? []).length === 0);
+    const mega = m.poolCanMega ?? "all";
+    if (mega === "yes") filtered = filtered.filter((s) => s.canMega);
+    else if (mega === "no") filtered = filtered.filter((s) => !s.canMega);
+    const regions = ensureList(m.poolRegions);
+    if (regions.length) filtered = filtered.filter((s) => regions.includes(s.region ?? ""));
+    if (m.poolBst && m.poolBst !== "any") filtered = filtered.filter((s) => matchesBst(s.bst ?? 0, m.poolBst as string));
+    const roles = ensureList(m.poolRoles);
+    if (roles.length) filtered = filtered.filter((s) => roles.includes(s.role ?? ""));
+    if (m.poolAbility) filtered = filtered.filter((s) => Object.values(s.abilities ?? {}).includes(m.poolAbility as string));
+    if (m.poolMove) {
+      const moveId = (m.poolMove as string).toLowerCase().replace(/[\s-]/g, "");
       filtered = filtered.filter((s) => {
         const sid = (s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
         const baseId = (s.baseSpecies ?? s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
         const moves = learnsets[sid] ?? learnsets[baseId] ?? [];
         return Array.isArray(moves) && moves.includes(moveId);
       });
-    } else if (f === "role" && m.poolRole) filtered = filtered.filter((s) => s.role === m.poolRole);
-    else if (f === "bst" && m.poolBst && m.poolBst !== "any") filtered = filtered.filter((s) => matchesBst(s.bst ?? 0, m.poolBst!));
-    else if (f === "typeCount" && m.poolTypeCount) {
-      const tc = m.poolTypeCount === "dual" ? 2 : 1;
-      filtered = filtered.filter((s) => (s.typeCount ?? 1) === tc);
-    } else if (f === "tags" && m.poolTags) filtered = filtered.filter((s) => (s.tags ?? []).includes(m.poolTags!));
-    else if (f === "eggGroup" && m.poolEggGroup) filtered = filtered.filter((s) => (s.eggGroups ?? []).includes(m.poolEggGroup!));
-    else if (f === "color" && m.poolColor) filtered = filtered.filter((s) => s.color === m.poolColor);
-    else if (f === "generation" && m.poolGeneration) {
-      const gen = parseInt(m.poolGeneration, 10);
-      if (!isNaN(gen)) filtered = filtered.filter((s) => s.generation === gen);
-    } else if (f === "weight" && m.poolWeight && m.poolWeight !== "any") filtered = filtered.filter((s) => matchesWeight(s.weightkg, m.poolWeight!));
-    else if (f === "height" && m.poolHeight && m.poolHeight !== "any") filtered = filtered.filter((s) => matchesHeight(s.heightm, m.poolHeight!));
-    else if (f === "canMega" && m.poolCanMega) {
-      const wantMega = m.poolCanMega === "yes";
-      filtered = filtered.filter((s) => Boolean(s.canMega) === wantMega);
     }
+    const tags = ensureList(m.poolTags);
+    if (tags.length) filtered = filtered.filter((s) => (s.tags ?? []).some((t) => tags.includes(t)));
+    const eggGroups = ensureList(m.poolEggGroups);
+    if (eggGroups.length) filtered = filtered.filter((s) => (s.eggGroups ?? []).some((eg) => eggGroups.includes(eg)));
+    const colors = ensureList(m.poolColors);
+    if (colors.length) filtered = filtered.filter((s) => colors.includes(s.color ?? ""));
+    const gens = ensureList(m.poolGenerations).map((g) => parseInt(g, 10)).filter((g) => !isNaN(g));
+    if (gens.length) filtered = filtered.filter((s) => gens.includes(s.generation ?? 0));
+    if (m.poolWeight && m.poolWeight !== "any") filtered = filtered.filter((s) => matchesWeight(s.weightkg, m.poolWeight as string));
+    if (m.poolHeight && m.poolHeight !== "any") filtered = filtered.filter((s) => matchesHeight(s.heightm, m.poolHeight as string));
+    const tc = m.poolTypeCount;
+    if (tc === "single") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 1);
+    else if (tc === "dual") filtered = filtered.filter((s) => (s.typeCount ?? 1) === 2);
     return filtered.length;
-  }, [species, learnsets, m.poolFilter, m.poolType, m.poolRegion, m.poolEvolutionStage, m.poolAbility, m.poolMove, m.poolRole, m.poolBst, m.poolTypeCount, m.poolTags, m.poolEggGroup, m.poolColor, m.poolGeneration, m.poolWeight, m.poolHeight, m.poolCanMega]);
+  }, [species, learnsets, m, ensureList]);
 
   const getMatchupCount = useCallback((): number => {
     const mode = m.mode ?? "head-to-head";
@@ -312,24 +368,34 @@ export function MatchupSimulator() {
   };
 
   const getFilterValueLabel = (): string => {
-    const f = m.poolFilter ?? "all";
-    if (f === "all") return "—";
-    if (f === "type") return m.poolType || "—";
-    if (f === "region") return m.poolRegion || "—";
-    if (f === "evolution") return EVOLUTION_STAGES.find((e) => e.value === m.poolEvolutionStage)?.label ?? "—";
-    if (f === "ability") return m.poolAbility || "—";
-    if (f === "move") return moves.find((mv) => mv.id === m.poolMove)?.name ?? m.poolMove ?? "—";
-    if (f === "role") return m.poolRole || "—";
-    if (f === "bst") return BST_RANGES.find((b) => b.value === m.poolBst)?.label ?? "—";
-    if (f === "typeCount") return TYPE_COUNT.find((t) => t.value === m.poolTypeCount)?.label ?? "—";
-    if (f === "tags") return m.poolTags || "—";
-    if (f === "eggGroup") return m.poolEggGroup || "—";
-    if (f === "color") return m.poolColor || "—";
-    if (f === "generation") return m.poolGeneration ? `Gen ${m.poolGeneration}` : "—";
-    if (f === "weight") return WEIGHT_RANGES.find((w) => w.value === m.poolWeight)?.label ?? "—";
-    if (f === "height") return HEIGHT_RANGES.find((h) => h.value === m.poolHeight)?.label ?? "—";
-    if (f === "canMega") return m.poolCanMega === "yes" ? "Yes" : "No";
-    return "—";
+    const parts: string[] = [];
+    const evo = ensureList(m.poolEvolutionStages);
+    if (evo.length) parts.push(`Evolution: ${evo.map((v) => EVOLUTION_OPTIONS.find((e) => e.value === v)?.label ?? v).join(", ")}`);
+    const types = ensureList(m.poolTypes);
+    if (types.length) parts.push(`Type: ${types.join(", ")}`);
+    const cat = m.poolCategory ?? "all";
+    if (cat !== "all") parts.push(`Category: ${cat === "legendary" ? "Legendary" : "Regular"}`);
+    const mega = m.poolCanMega ?? "all";
+    if (mega !== "all") parts.push(`Mega: ${mega === "yes" ? "Yes" : "No"}`);
+    const regions = ensureList(m.poolRegions);
+    if (regions.length) parts.push(`Region: ${regions.join(", ")}`);
+    if (m.poolBst && m.poolBst !== "any") parts.push(`BST: ${BST_RANGES.find((b) => b.value === m.poolBst)?.label ?? m.poolBst}`);
+    const roles = ensureList(m.poolRoles);
+    if (roles.length) parts.push(`Role: ${roles.join(", ")}`);
+    if (m.poolTypeCount) parts.push(`Type count: ${TYPE_COUNT.find((t) => t.value === m.poolTypeCount)?.label ?? m.poolTypeCount}`);
+    if (m.poolAbility) parts.push(`Ability: ${m.poolAbility}`);
+    if (m.poolMove) parts.push(`Move: ${moves.find((mv) => mv.id === m.poolMove)?.name ?? m.poolMove}`);
+    const tags = ensureList(m.poolTags);
+    if (tags.length) parts.push(`Tags: ${tags.join(", ")}`);
+    const eggGroups = ensureList(m.poolEggGroups);
+    if (eggGroups.length) parts.push(`Egg group: ${eggGroups.join(", ")}`);
+    const colors = ensureList(m.poolColors);
+    if (colors.length) parts.push(`Color: ${colors.join(", ")}`);
+    const gens = ensureList(m.poolGenerations);
+    if (gens.length) parts.push(`Gen: ${gens.join(", ")}`);
+    if (m.poolWeight && m.poolWeight !== "any") parts.push(`Weight: ${WEIGHT_RANGES.find((w) => w.value === m.poolWeight)?.label ?? m.poolWeight}`);
+    if (m.poolHeight && m.poolHeight !== "any") parts.push(`Height: ${HEIGHT_RANGES.find((h) => h.value === m.poolHeight)?.label ?? m.poolHeight}`);
+    return parts.length ? parts.join(" | ") : "—";
   };
 
   const matches1 = getMatches(m.pokemon1 ?? "");
@@ -356,254 +422,316 @@ export function MatchupSimulator() {
             </select>
           </label>
           {(m.mode ?? "head-to-head") === "matrix" && (
-            <>
-              <label className={labelCls}>
-                <span>Pool filter</span>
-                <select
-                  value={m.poolFilter ?? "all"}
-                  onChange={(e) => updateMatchup({ poolFilter: e.target.value, ...POOL_FILTER_RESET })}
-                  className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                >
-                  <option value="all">All Pokemon</option>
-                  <option value="type">Specific type</option>
-                  <option value="region">Specific region</option>
-                  <option value="evolution">Evolution stage</option>
-                  <option value="ability">Has ability</option>
-                  <option value="move">Can learn move</option>
-                  <option value="role">Role (stat-based)</option>
-                  <option value="bst">Base stat total range</option>
-                  <option value="typeCount">Single vs dual type</option>
-                  <option value="tags">Legendary / Mythical / etc</option>
-                  <option value="eggGroup">Egg group</option>
-                  <option value="color">Color</option>
-                  <option value="generation">Generation</option>
-                  <option value="weight">Weight range</option>
-                  <option value="height">Height range</option>
-                  <option value="canMega">Can Mega Evolve</option>
-                </select>
-              </label>
-              {m.poolFilter === "type" && (
-                <label className={labelCls}>
-                  <span>Type</span>
-                  <select
-                    value={m.poolType ?? ""}
-                    onChange={(e) => updateMatchup({ poolType: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="text-sm font-medium text-[var(--text-muted)]">Pool filters</span>
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setExpandedFilters((prev) => Object.fromEntries(Object.keys(prev).map((k) => [k, true])))}
+                    className="text-xs px-2 py-1 rounded border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50 hover:text-[var(--text)] transition-colors"
                   >
-                    <option value="">Select type</option>
-                    {TYPES.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
+                    Expand all
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedFilters((prev) => Object.fromEntries(Object.keys(prev).map((k) => [k, false])))}
+                    className="text-xs px-2 py-1 rounded border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50 hover:text-[var(--text)] transition-colors"
+                  >
+                    Collapse all
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => updateMatchup({
+                    poolEvolutionStages: [],
+                    poolTypes: [],
+                    poolCategory: "all",
+                    poolCanMega: "all",
+                    poolRegions: [],
+                    poolBst: "any",
+                    poolRoles: [],
+                    poolTypeCount: "",
+                    poolAbility: "",
+                    poolMove: "",
+                    poolTags: [],
+                    poolEggGroups: [],
+                    poolColors: [],
+                    poolGenerations: [],
+                    poolWeight: "any",
+                    poolHeight: "any",
+                  })}
+                    className="text-xs px-2 py-1 rounded border border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50 hover:text-[var(--text)] transition-colors"
+                  >
+                    Reset filters
+                  </button>
+                </div>
+              </div>
+              <FilterSection
+                title="Evolution stage"
+                expanded={expandedFilters.evolution}
+                onToggle={() => toggleFilterSection("evolution")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {EVOLUTION_OPTIONS.map((opt) => (
+                    <FilterChip
+                      key={opt.value}
+                      label={opt.label}
+                      active={(m.poolEvolutionStages ?? []).includes(opt.value)}
+                      onClick={() => togglePoolArray("poolEvolutionStages", opt.value)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Type"
+                expanded={expandedFilters.type}
+                onToggle={() => toggleFilterSection("type")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {TYPES.map((t) => (
+                    <FilterChip
+                      key={t}
+                      label={t}
+                      active={(m.poolTypes ?? []).includes(t)}
+                      onClick={() => togglePoolArray("poolTypes", t)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Category & Mega"
+                expanded={expandedFilters.category}
+                onToggle={() => toggleFilterSection("category")}
+              >
+                <div className="grid grid-cols-2 gap-4 pt-3">
+                  <label className={labelCls}>
+                    <span>Category</span>
+                    <select
+                      value={m.poolCategory ?? "all"}
+                      onChange={(e) => updateMatchup({ poolCategory: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+                    >
+                    <option value="all">All</option>
+                    <option value="legendary">Legendary / Mythical</option>
+                    <option value="regular">Regular only</option>
                   </select>
                 </label>
-              )}
-              {m.poolFilter === "region" && (
-                <label className={labelCls}>
-                  <span>Region</span>
-                  <select
-                    value={m.poolRegion ?? ""}
-                    onChange={(e) => updateMatchup({ poolRegion: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select region</option>
-                    {REGIONS.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "evolution" && (
-                <label className={labelCls}>
-                  <span>Evolution stage</span>
-                  <select
-                    value={m.poolEvolutionStage ?? ""}
-                    onChange={(e) => updateMatchup({ poolEvolutionStage: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select stage</option>
-                    {EVOLUTION_STAGES.map((s) => (
-                      <option key={s.value} value={s.value}>{s.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "ability" && (
-                <label className={labelCls}>
-                  <span>Ability</span>
-                  <select
-                    value={m.poolAbility ?? ""}
-                    onChange={(e) => updateMatchup({ poolAbility: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] max-h-64"
-                  >
-                    <option value="">Select ability</option>
-                    {abilities.map((a) => (
-                      <option key={a.id} value={a.name}>{a.name}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "move" && (
-                <label className={labelCls}>
-                  <span>Move</span>
-                  <select
-                    value={m.poolMove ?? ""}
-                    onChange={(e) => updateMatchup({ poolMove: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] max-h-64"
-                  >
-                    <option value="">Select move</option>
-                    {moves.map((move) => (
-                      <option key={move.id} value={move.id}>{move.name}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "role" && (
-                <label className={labelCls}>
-                  <span>Role</span>
-                  <select
-                    value={m.poolRole ?? ""}
-                    onChange={(e) => updateMatchup({ poolRole: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select role</option>
-                    {ROLES.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "bst" && (
-                <label className={labelCls}>
-                  <span>BST range</span>
-                  <select
-                    value={m.poolBst ?? "any"}
-                    onChange={(e) => updateMatchup({ poolBst: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    {BST_RANGES.map((b) => (
-                      <option key={b.value} value={b.value}>{b.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "typeCount" && (
-                <label className={labelCls}>
-                  <span>Type count</span>
-                  <select
-                    value={m.poolTypeCount ?? ""}
-                    onChange={(e) => updateMatchup({ poolTypeCount: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select</option>
-                    {TYPE_COUNT.map((t) => (
-                      <option key={t.value} value={t.value}>{t.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "tags" && (
-                <label className={labelCls}>
-                  <span>Category</span>
-                  <select
-                    value={m.poolTags ?? ""}
-                    onChange={(e) => updateMatchup({ poolTags: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select</option>
-                    {TAGS.map((t) => (
-                      <option key={t.value} value={t.value}>{t.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "eggGroup" && (
-                <label className={labelCls}>
-                  <span>Egg group</span>
-                  <select
-                    value={m.poolEggGroup ?? ""}
-                    onChange={(e) => updateMatchup({ poolEggGroup: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select</option>
-                    {EGG_GROUPS.map((g) => (
-                      <option key={g} value={g}>{g}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "color" && (
-                <label className={labelCls}>
-                  <span>Color</span>
-                  <select
-                    value={m.poolColor ?? ""}
-                    onChange={(e) => updateMatchup({ poolColor: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select</option>
-                    {COLORS.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "generation" && (
-                <label className={labelCls}>
-                  <span>Generation</span>
-                  <select
-                    value={m.poolGeneration ?? ""}
-                    onChange={(e) => updateMatchup({ poolGeneration: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    <option value="">Select</option>
-                    {GENERATIONS.map((g) => (
-                      <option key={g} value={String(g)}>Gen {g}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "weight" && (
-                <label className={labelCls}>
-                  <span>Weight range</span>
-                  <select
-                    value={m.poolWeight ?? "any"}
-                    onChange={(e) => updateMatchup({ poolWeight: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    {WEIGHT_RANGES.map((w) => (
-                      <option key={w.value} value={w.value}>{w.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "height" && (
-                <label className={labelCls}>
-                  <span>Height range</span>
-                  <select
-                    value={m.poolHeight ?? "any"}
-                    onChange={(e) => updateMatchup({ poolHeight: e.target.value })}
-                    className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
-                  >
-                    {HEIGHT_RANGES.map((h) => (
-                      <option key={h.value} value={h.value}>{h.label}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {m.poolFilter === "canMega" && (
                 <label className={labelCls}>
                   <span>Can Mega Evolve</span>
                   <select
-                    value={m.poolCanMega ?? "yes"}
+                    value={m.poolCanMega ?? "all"}
                     onChange={(e) => updateMatchup({ poolCanMega: e.target.value })}
                     className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
                   >
+                    <option value="all">All</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
                 </label>
-              )}
-              <label className={labelCls}>
-                <span>Pool size limit</span>
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Region"
+                expanded={expandedFilters.region}
+                onToggle={() => toggleFilterSection("region")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {REGIONS.map((r) => (
+                    <FilterChip
+                      key={r}
+                      label={r}
+                      active={(m.poolRegions ?? []).includes(r)}
+                      onClick={() => togglePoolArray("poolRegions", r)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="BST & Type count"
+                expanded={expandedFilters.bst}
+                onToggle={() => toggleFilterSection("bst")}
+              >
+                <div className="grid grid-cols-2 gap-4 pt-3">
+                  <label className={labelCls}>
+                    <span>BST range</span>
+                    <select
+                      value={m.poolBst ?? "any"}
+                      onChange={(e) => updateMatchup({ poolBst: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+                    >
+                      {BST_RANGES.map((b) => (
+                        <option key={b.value} value={b.value}>{b.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className={labelCls}>
+                    <span>Type count</span>
+                    <select
+                      value={m.poolTypeCount ?? ""}
+                      onChange={(e) => updateMatchup({ poolTypeCount: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+                    >
+                      <option value="">Any</option>
+                      {TYPE_COUNT.map((t) => (
+                        <option key={t.value} value={t.value}>{t.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Role"
+                expanded={expandedFilters.role}
+                onToggle={() => toggleFilterSection("role")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {ROLES.map((r) => (
+                    <FilterChip
+                      key={r}
+                      label={r}
+                      active={(m.poolRoles ?? []).includes(r)}
+                      onClick={() => togglePoolArray("poolRoles", r)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Ability & Move"
+                expanded={expandedFilters.ability}
+                onToggle={() => toggleFilterSection("ability")}
+              >
+                <div className="grid grid-cols-2 gap-4 pt-3">
+                  <label className={labelCls}>
+                    <span>Ability</span>
+                    <select
+                      value={m.poolAbility ?? ""}
+                      onChange={(e) => updateMatchup({ poolAbility: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] max-h-64"
+                    >
+                      <option value="">Any</option>
+                      {abilities.map((a) => (
+                        <option key={a.id} value={a.name}>{a.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className={labelCls}>
+                    <span>Can learn move</span>
+                    <select
+                      value={m.poolMove ?? ""}
+                      onChange={(e) => updateMatchup({ poolMove: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] max-h-64"
+                    >
+                      <option value="">Any</option>
+                      {moves.map((move) => (
+                        <option key={move.id} value={move.id}>{move.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Tags (Legendary types)"
+                expanded={expandedFilters.tags}
+                onToggle={() => toggleFilterSection("tags")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {TAGS.map((t) => (
+                    <FilterChip
+                      key={t.value}
+                      label={t.label}
+                      active={(m.poolTags ?? []).includes(t.value)}
+                      onClick={() => togglePoolArray("poolTags", t.value)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Egg group"
+                expanded={expandedFilters.eggGroup}
+                onToggle={() => toggleFilterSection("eggGroup")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {EGG_GROUPS.map((g) => (
+                    <FilterChip
+                      key={g}
+                      label={g}
+                      active={(m.poolEggGroups ?? []).includes(g)}
+                      onClick={() => togglePoolArray("poolEggGroups", g)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Color"
+                expanded={expandedFilters.color}
+                onToggle={() => toggleFilterSection("color")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {COLORS.map((c) => (
+                    <FilterChip
+                      key={c}
+                      label={c}
+                      active={(m.poolColors ?? []).includes(c)}
+                      onClick={() => togglePoolArray("poolColors", c)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Generation"
+                expanded={expandedFilters.generation}
+                onToggle={() => toggleFilterSection("generation")}
+              >
+                <div className="flex flex-wrap gap-2 pt-3">
+                  {GENERATIONS.map((g) => (
+                    <FilterChip
+                      key={g}
+                      label={`Gen ${g}`}
+                      active={(m.poolGenerations ?? []).includes(String(g))}
+                      onClick={() => togglePoolArray("poolGenerations", String(g))}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Weight & Height"
+                expanded={expandedFilters.physical}
+                onToggle={() => toggleFilterSection("physical")}
+              >
+                <div className="grid grid-cols-2 gap-4 pt-3">
+                  <label className={labelCls}>
+                    <span>Weight range</span>
+                    <select
+                      value={m.poolWeight ?? "any"}
+                      onChange={(e) => updateMatchup({ poolWeight: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+                    >
+                      {WEIGHT_RANGES.map((w) => (
+                        <option key={w.value} value={w.value}>{w.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className={labelCls}>
+                    <span>Height range</span>
+                    <select
+                      value={m.poolHeight ?? "any"}
+                      onChange={(e) => updateMatchup({ poolHeight: e.target.value })}
+                      className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+                    >
+                      {HEIGHT_RANGES.map((h) => (
+                        <option key={h.value} value={h.value}>{h.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </FilterSection>
+              <FilterSection
+                title="Pool size limit"
+                expanded={expandedFilters.poolLimit}
+                onToggle={() => toggleFilterSection("poolLimit")}
+              >
+                <label className={cn(labelCls, "block pt-3")}>
+                  <span>Maximum Pokemon in pool</span>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -625,7 +753,8 @@ export function MatchupSimulator() {
                   {getPoolMaxCount()} Pokemon match current filter
                 </span>
               </label>
-            </>
+              </FilterSection>
+            </div>
           )}
         </motion.div>
 
@@ -670,6 +799,25 @@ export function MatchupSimulator() {
               className={inputCls}
             />
           </label>
+          <FilterChip
+            label="Use Smogon presets (recommended)"
+            active={m.useSmogonSets !== false}
+            onClick={() => updateMatchup({ useSmogonSets: m.useSmogonSets === false })}
+          />
+          {m.useSmogonSets !== false && (
+            <label className={labelCls}>
+              <span>Smogon format</span>
+              <select
+                value={m.smogonFormat ?? "gen9ou"}
+                onChange={(e) => updateMatchup({ smogonFormat: e.target.value })}
+                className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+              >
+                {["gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9"].map((f) => (
+                  <option key={f} value={f}>{f}</option>
+                ))}
+              </select>
+            </label>
+          )}
           <label className={labelCls}>
             <span>Threads</span>
             <input
@@ -705,11 +853,7 @@ export function MatchupSimulator() {
           ) : (
             <>
               <div className="flex gap-2">
-                <dt className="text-[var(--text-muted)] min-w-[100px]">Pool filter</dt>
-                <dd className="text-[var(--text)] font-medium">{POOL_FILTER_LABELS[m.poolFilter ?? "all"] ?? m.poolFilter}</dd>
-              </div>
-              <div className="flex gap-2">
-                <dt className="text-[var(--text-muted)] min-w-[100px]">Filter value</dt>
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Pool filters</dt>
                 <dd className="text-[var(--text)] font-medium">{getFilterValueLabel()}</dd>
               </div>
               <div className="flex gap-2">
