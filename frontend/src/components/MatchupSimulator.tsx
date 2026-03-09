@@ -804,15 +804,18 @@ export function MatchupSimulator() {
                 <div className="flex gap-2">
                   <input
                     type="number"
-                    min={2}
+                    min={0}
                     max={2000}
                     value={m.poolLimit ?? 50}
-                    onChange={(e) => updateMatchup({ poolLimit: Math.max(2, parseInt(e.target.value) || 50) })}
+                    onChange={(e) => {
+                      const v = parseInt(e.target.value, 10);
+                      updateMatchup({ poolLimit: Number.isNaN(v) ? 50 : Math.max(0, Math.min(2000, v)) });
+                    }}
                     className={cn(inputCls, "flex-1 min-w-0")}
                   />
                   <button
                     type="button"
-                    onClick={() => updateMatchup({ poolLimit: Math.max(2, getPoolMaxCount()) })}
+                    onClick={() => updateMatchup({ poolLimit: Math.max(0, getPoolMaxCount()) })}
                     className="px-3 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--bg-input)] text-[var(--text)] text-sm font-medium hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50 transition-colors whitespace-nowrap"
                   >
                     Maximum
@@ -1053,7 +1056,7 @@ export function MatchupSimulator() {
         <motion.button
           type="button"
           onClick={runMatchups}
-          disabled={status.running}
+          disabled={status.running || (m.mode === "matrix" && (m.poolLimit ?? 50) === 0)}
           className="px-6 py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:shadow-[0_0_24px_var(--accent-glow)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           whileHover={{ scale: status.running ? 1 : 1.02 }}
           whileTap={{ scale: status.running ? 1 : 0.98 }}
