@@ -7,7 +7,16 @@ from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file
 
+from src.auth import get_user_id_from_request, require_auth
 from src.config import get_config, save_config, DEX_DIR, DATA_DIR
+from src.supabase_client import (
+    get_user_config,
+    save_user_config,
+    create_simulation_run,
+    save_simulation_results,
+    list_user_simulations,
+    get_simulation_results,
+)
 from src.security import (
     validate_config,
     resolve_input_path,
@@ -30,24 +39,42 @@ from src.battle_log_parser import compute_analytics
 api_bp = Blueprint("api", __name__)
 
 
+def _load_config_for_user(user_id):
+    """Load config: Supabase first if user, else file."""
+    if user_id:
+        cfg = get_user_config(user_id)
+        if cfg:
+            save_config(cfg)  # Write to file for scripts
+            return cfg
+    return get_config()
+
+
 @api_bp.route("/config", methods=["GET"])
+@require_auth
 def get_config_route():
-    return jsonify(get_config())
+    user_id = get_user_id_from_request()
+    config = _load_config_for_user(user_id)
+    return jsonify(config)
 
 
 @api_bp.route("/config", methods=["POST"])
+@require_auth
 def save_config_route():
+    user_id = get_user_id_from_request()
     config = request.get_json(silent=True)
     if not config:
         return jsonify({"error": "Invalid config"}), 400
     valid, err = validate_config(config)
     if not valid:
         return jsonify({"error": err}), 400
-    save_config(config)
+    save_config(config)  # Always write to file for scripts
+    if user_id:
+        save_user_config(user_id, config)
     return jsonify({"ok": True})
 
 
 @api_bp.route("/build-trainer", methods=["POST"])
+@require_auth
 def build_trainer():
     config = get_config()
     runs = config.get("trainer", {}).get("run_n_times", 100)
@@ -61,12 +88,14 @@ def build_trainer():
 
 
 @api_bp.route("/build-pokemon", methods=["POST"])
+@require_auth
 def build_pokemon():
     ok, out = run_script("BuildBattles_pokemon-vs-leaders_Gen1.py")
     return jsonify({"ok": ok, "output": out})
 
 
 @api_bp.route("/run-trainer", methods=["POST"])
+@require_auth
 def run_trainer():
     write_trainer_config()
     run_script_background("runSimulations.py")
@@ -74,6 +103,7 @@ def run_trainer():
 
 
 @api_bp.route("/run-pokemon", methods=["POST"])
+@require_auth
 def run_pokemon():
     write_pokemon_config()
     run_script_background("runPokemonSimulations.py")
@@ -88,6 +118,7 @@ def run_matchups():
 
 
 @api_bp.route("/parse-png", methods=["POST"])
+@require_auth
 def parse_png():
     write_parse_config()
     ok, out = run_script("parseOutput.py")
@@ -95,6 +126,7 @@ def parse_png():
 
 
 @api_bp.route("/parse-csv", methods=["POST"])
+@require_auth
 def parse_csv():
     write_parse_config()
     ok, out = run_script("parseOutput_CSV.py")
@@ -102,11 +134,13 @@ def parse_csv():
 
 
 @api_bp.route("/status")
+@require_auth
 def status():
     return jsonify(get_task_status())
 
 
 @api_bp.route("/terminate-task", methods=["POST"])
+@require_auth
 def terminate_task_route():
     if terminate_task():
         return jsonify({"ok": True, "message": "Task terminated"})
@@ -128,6 +162,7 @@ def matchup_data():
 
 
 @api_bp.route("/outputs/matchup-battle-logs")
+@require_auth
 def matchup_battle_logs():
     """Return matchup_battle_logs.json content. 404 if not found."""
     path = DATA_DIR / "matchup_battle_logs.json"
@@ -142,6 +177,7 @@ def matchup_battle_logs():
 
 
 @api_bp.route("/outputs/matchup-battle-analytics")
+@require_auth
 def matchup_battle_analytics():
     """Return parsed analytics from matchup_battle_logs.json. 404 if not found."""
     path = DATA_DIR / "matchup_battle_logs.json"
@@ -157,6 +193,7 @@ def matchup_battle_analytics():
 
 
 @api_bp.route("/outputs")
+@require_auth
 def outputs_list():
     files = []
     for name in [
@@ -175,6 +212,7 @@ def outputs_list():
 
 
 @api_bp.route("/outputs/<filename>", methods=["GET", "DELETE"])
+@require_auth
 def output_file(filename):
     if not validate_output_filename(filename):
         return jsonify({"error": "Not allowed"}), 403
@@ -191,6 +229,7 @@ def output_file(filename):
 
 
 @api_bp.route("/files/read", methods=["POST"])
+@require_auth
 def file_read():
     data = request.get_json(silent=True) or {}
     path = data.get("path", "").strip()
@@ -212,6 +251,7 @@ def file_read():
 
 
 @api_bp.route("/files/write", methods=["POST"])
+@require_auth
 def file_write():
     data = request.get_json(silent=True) or {}
     path = data.get("path", "").strip()
@@ -237,6 +277,7 @@ TIER_PRIORITY = ("ou", "uu", "ru", "nu", "pu", "zu")
 
 
 @api_bp.route("/smogon/formats")
+@require_auth
 def smogon_formats():
     """Return list of available Smogon format IDs from data.pkmn.cc/sets/index.json."""
     import urllib.request
@@ -305,6 +346,7 @@ def _fetch_and_flatten_format(fmt):
 
 
 @api_bp.route("/smogon/sets/newest")
+@require_auth
 def smogon_sets_newest():
     """Return merged sets using the most recent format that has each Pokemon (gen9 first, then gen8, etc.)."""
     import urllib.request
@@ -322,6 +364,7 @@ def smogon_sets_newest():
 
 
 @api_bp.route("/smogon/sets/<format_id>")
+@require_auth
 def smogon_sets(format_id):
     """Proxy Smogon sets. format_id: any valid format from data.pkmn.cc (gen1ou, gen8uu, etc.), or 'newest'."""
     import urllib.request
@@ -344,7 +387,70 @@ def smogon_sets(format_id):
         return jsonify({"error": str(e)}), 502
 
 
+@api_bp.route("/simulations/save-current", methods=["POST"])
+@require_auth
+def save_current_simulation():
+    """Save current matchup outputs to Supabase for the authenticated user."""
+    user_id = get_user_id_from_request()
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
+    run_id = create_simulation_run(user_id, "matchup", get_config())
+    if not run_id:
+        return jsonify({"error": "Failed to create simulation record"}), 500
+    matchup_results = None
+    matchup_matrix_csv = None
+    matchup_battle_logs = None
+    try:
+        p = DATA_DIR / "matchup_results.json"
+        if p.exists():
+            with open(p, encoding="utf-8") as f:
+                matchup_results = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        pass
+    try:
+        p = DATA_DIR / "matchup_matrix.csv"
+        if p.exists():
+            matchup_matrix_csv = p.read_text(encoding="utf-8")
+    except OSError:
+        pass
+    try:
+        p = DATA_DIR / "matchup_battle_logs.json"
+        if p.exists():
+            with open(p, encoding="utf-8") as f:
+                matchup_battle_logs = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        pass
+    if save_simulation_results(user_id, run_id, matchup_results, matchup_matrix_csv, matchup_battle_logs):
+        return jsonify({"ok": True, "run_id": run_id})
+    return jsonify({"error": "Failed to save results"}), 500
+
+
+@api_bp.route("/simulations")
+@require_auth
+def simulations_list():
+    """List user's saved simulations."""
+    user_id = get_user_id_from_request()
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
+    runs = list_user_simulations(user_id)
+    return jsonify(runs)
+
+
+@api_bp.route("/simulations/<run_id>")
+@require_auth
+def simulation_detail(run_id):
+    """Get a single simulation's results."""
+    user_id = get_user_id_from_request()
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
+    results = get_simulation_results(user_id, run_id)
+    if not results:
+        return jsonify({"error": "Simulation not found"}), 404
+    return jsonify(results)
+
+
 @api_bp.route("/dex/<data_type>")
+@require_auth
 def dex(data_type):
     if not validate_dex_type(data_type):
         return jsonify({"error": "Invalid type"}), 400
