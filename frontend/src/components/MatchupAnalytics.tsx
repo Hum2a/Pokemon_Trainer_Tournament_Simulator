@@ -1,0 +1,907 @@
+import React, { useEffect, useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  ScatterChart,
+  Scatter,
+  ZAxis,
+  AreaChart,
+  Area,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+} from "recharts";
+import { api } from "../api";
+import { cn } from "../lib/utils";
+
+interface MatchupResult {
+  p1: string;
+  p2: string;
+  p1_wins: number;
+  p2_wins: number;
+  total: number;
+}
+
+type MatchupData = Record<string, MatchupResult>;
+
+const CHART_COLORS = {
+  primary: "#00f5ff",
+  accent: "#ff00aa",
+  success: "#00ff88",
+  danger: "#ff3366",
+  amber: "#ffb800",
+  muted: "#8b96b0",
+};
+
+function useMatchupData(refreshTrigger: number) {
+  const [data, setData] = useState<MatchupData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    api
+      .get<MatchupData>("/outputs/matchup-data")
+      .then((d) => {
+        if (!cancelled) setData(d);
+      })
+      .catch((e) => {
+        if (!cancelled) setError((e as Error).message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshTrigger]);
+
+  return { data, loading, error };
+}
+
+function SummaryStats({ data }: { data: MatchupData }) {
+  const stats = useMemo(() => {
+    const entries = Object.values(data);
+    const totalMatchups = entries.length;
+    const totalBattles = entries.reduce((s, e) => s + e.total, 0);
+    const completedMatchups = entries.filter((e) => e.total > 0).length;
+    const p1TotalWins = entries.reduce((s, e) => s + e.p1_wins, 0);
+    const p2TotalWins = entries.reduce((s, e) => s + e.p2_wins, 0);
+    const draws = totalBattles - p1TotalWins - p2TotalWins;
+    return {
+      totalMatchups,
+      totalBattles,
+      completedMatchups,
+      p1TotalWins,
+      p2TotalWins,
+      draws,
+      completionRate: totalMatchups > 0 ? (completedMatchups / totalMatchups) * 100 : 0,
+    };
+  }, [data]);
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {[
+        { label: "Total Matchups", value: stats.totalMatchups },
+        { label: "Total Battles", value: stats.totalBattles },
+        { label: "Completed", value: stats.completedMatchups },
+        { label: "P1 Wins", value: stats.p1TotalWins, color: CHART_COLORS.primary },
+        { label: "P2 Wins", value: stats.p2TotalWins, color: CHART_COLORS.accent },
+        { label: "Completion %", value: `${stats.completionRate.toFixed(1)}%` },
+      ].map(({ label, value, color }) => (
+        <div
+          key={label}
+          className="p-3 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50"
+          style={color ? { borderLeftColor: color, borderLeftWidth: 3 } : undefined}
+        >
+          <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider">{label}</div>
+          <div className="text-lg font-semibold text-[var(--text)] mt-0.5">{value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TopPerformersChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const wins: Record<string, number> = {};
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        wins[m.p1] = (wins[m.p1] ?? 0) + m.p1_wins;
+        wins[m.p2] = (wins[m.p2] ?? 0) + m.p2_wins;
+      }
+    }
+    return Object.entries(wins)
+      .map(([name, w]) => ({ name, wins: w }))
+      .sort((a, b) => b.wins - a.wins)
+      .slice(0, 15);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis type="number" stroke={CHART_COLORS.muted} fontSize={11} />
+          <YAxis type="category" dataKey="name" width={90} stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+            labelStyle={{ color: "var(--text)" }}
+          />
+          <Bar dataKey="wins" fill={CHART_COLORS.primary} radius={[0, 4, 4, 0]} name="Wins" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function WinRateDistributionChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const buckets: Record<string, number> = {};
+    for (let i = 0; i <= 10; i++) {
+      buckets[`${i * 10}-${(i + 1) * 10}`] = 0;
+    }
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        const rate = (m.p1_wins / m.total) * 100;
+        const bucket = Math.min(Math.floor(rate / 10) * 10, 100);
+        const key = `${bucket}-${bucket + 10}`;
+        buckets[key] = (buckets[key] ?? 0) + 1;
+      }
+    }
+    return Object.entries(buckets)
+      .filter(([, v]) => v > 0)
+      .map(([name, count]) => ({ range: name, count }));
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} margin={{ top: 5, right: 20, left: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="range" stroke={CHART_COLORS.muted} fontSize={10} />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="count" fill={CHART_COLORS.accent} radius={[4, 4, 0, 0]} name="Matchups" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function WinLossPieChart({ data }: { data: MatchupData }) {
+  const pieData = useMemo(() => {
+    let p1 = 0,
+      p2 = 0,
+      draws = 0;
+    for (const m of Object.values(data)) {
+      p1 += m.p1_wins;
+      p2 += m.p2_wins;
+      draws += m.total - m.p1_wins - m.p2_wins;
+    }
+    return [
+      { name: "P1 Wins", value: p1, color: CHART_COLORS.primary },
+      { name: "P2 Wins", value: p2, color: CHART_COLORS.accent },
+      { name: "Draws/Incomplete", value: draws, color: CHART_COLORS.muted },
+    ].filter((d) => d.value > 0);
+  }, [data]);
+
+  if (pieData.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={pieData}
+            cx="50%"
+            cy="50%"
+            innerRadius={40}
+            outerRadius={70}
+            paddingAngle={2}
+            dataKey="value"
+            nameKey="name"
+            label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+          >
+            {pieData.map((entry, i) => (
+              <Cell key={i} fill={entry.color} />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+            formatter={(value) => [Number(value ?? 0), ""] as [React.ReactNode, string]}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function DominanceChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const dominance: Record<string, number> = {};
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        const d = m.p1_wins - m.p2_wins;
+        dominance[m.p1] = (dominance[m.p1] ?? 0) + d;
+        dominance[m.p2] = (dominance[m.p2] ?? 0) - d;
+      }
+    }
+    return Object.entries(dominance)
+      .map(([name, d]) => ({ name, dominance: d }))
+      .sort((a, b) => b.dominance - a.dominance)
+      .slice(0, 12);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} angle={-35} textAnchor="end" height={60} />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar
+            dataKey="dominance"
+            fill={CHART_COLORS.primary}
+            radius={[4, 4, 0, 0]}
+            name="Net Wins (P1 perspective)"
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function MostOneSidedChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    return Object.entries(data)
+      .filter(([, m]) => m.total >= 3)
+      .map(([key, m]) => {
+        const rate = m.total > 0 ? m.p1_wins / m.total : 0;
+        const margin = Math.abs(rate - 0.5) * 2;
+        return {
+          matchup: key,
+          p1WinRate: rate * 100,
+          margin,
+          total: m.total,
+        };
+      })
+      .sort((a, b) => b.margin - a.margin)
+      .slice(0, 10);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis type="number" domain={[0, 100]} stroke={CHART_COLORS.muted} fontSize={11} unit="%" />
+          <YAxis type="category" dataKey="matchup" width={120} stroke={CHART_COLORS.muted} fontSize={10} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+            formatter={(value) => [`${Number(value ?? 0).toFixed(1)}%`, "P1 Win Rate"] as [React.ReactNode, string]}
+            labelFormatter={(label) => `Matchup: ${label}`}
+          />
+          <Bar
+            dataKey="p1WinRate"
+            fill={CHART_COLORS.amber}
+            radius={[0, 4, 4, 0]}
+            name="P1 Win %"
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function BattlesPerMatchupChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const dist: Record<number, number> = {};
+    for (const m of Object.values(data)) {
+      const t = m.total;
+      dist[t] = (dist[t] ?? 0) + 1;
+    }
+    return Object.entries(dist)
+      .map(([total, count]) => ({ total: parseInt(total, 10), count }))
+      .sort((a, b) => a.total - b.total)
+      .slice(0, 20);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={chartData} margin={{ top: 5, right: 20, left: 20 }}>
+          <defs>
+            <linearGradient id="battlesGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={CHART_COLORS.success} stopOpacity={0.4} />
+              <stop offset="100%" stopColor={CHART_COLORS.success} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="total" stroke={CHART_COLORS.muted} fontSize={11} name="Battles" />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Area
+            type="monotone"
+            dataKey="count"
+            stroke={CHART_COLORS.success}
+            fill="url(#battlesGrad)"
+            name="Matchups"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function MatchupHeatmapPreview({ data }: { data: MatchupData }) {
+  const { pokemon, matrix } = useMemo(() => {
+    const allPokemon = new Set<string>();
+    for (const m of Object.values(data)) {
+      allPokemon.add(m.p1);
+      allPokemon.add(m.p2);
+    }
+    const list = Array.from(allPokemon).sort().slice(0, 12);
+    const idx = Object.fromEntries(list.map((p, i) => [p, i]));
+    const size = list.length;
+    const mat: number[][] = Array(size)
+      .fill(0)
+      .map(() => Array(size).fill(NaN));
+    for (const m of Object.values(data)) {
+      if (m.total > 0 && idx[m.p1] !== undefined && idx[m.p2] !== undefined) {
+        const i = idx[m.p1];
+        const j = idx[m.p2];
+        mat[i][j] = (m.p1_wins / m.total) * 100;
+      }
+    }
+    return { pokemon: list, matrix: mat };
+  }, [data]);
+
+  if (pokemon.length === 0) return null;
+
+  const cellSize = Math.min(24, Math.floor(280 / pokemon.length));
+
+  return (
+    <div className="overflow-x-auto">
+      <div className="inline-block min-w-0">
+        <div className="grid gap-px" style={{ gridTemplateColumns: `repeat(${pokemon.length + 1}, ${cellSize}px)` }}>
+          <div className="bg-transparent" />
+          {pokemon.map((p) => (
+            <div
+              key={`col-${p}`}
+              className="text-[10px] text-[var(--text-muted)] truncate flex items-center justify-center bg-[var(--bg-input)]"
+              title={p}
+            >
+              {p.slice(0, 4)}
+            </div>
+          ))}
+          {matrix.map((row, i) => (
+            <React.Fragment key={`row-${i}`}>
+              <div
+                className="text-[10px] text-[var(--text-muted)] truncate flex items-center justify-end pr-1 bg-[var(--bg-input)]"
+                title={pokemon[i]}
+              >
+                {pokemon[i].slice(0, 4)}
+              </div>
+              {row.map((val, j) => (
+                <div
+                  key={`${i}-${j}`}
+                  className="rounded-sm flex items-center justify-center text-[9px] font-medium"
+                  style={{
+                    backgroundColor:
+                      Number.isNaN(val) || val === undefined
+                        ? "rgba(139,150,176,0.1)"
+                        : `rgba(0,245,255,${0.2 + (val / 100) * 0.8})`,
+                    color: val >= 50 ? "#050508" : "var(--text)",
+                  }}
+                  title={`${pokemon[i]} vs ${pokemon[j]}: ${Number.isNaN(val) ? "—" : val.toFixed(0) + "%"}`}
+                >
+                  {Number.isNaN(val) ? "—" : val.toFixed(0)}
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="text-[10px] text-[var(--text-muted)] mt-2">
+          Rows = P1 (attacker), Cols = P2 (defender). Value = P1 win %.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PokemonWinRateRadar({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const byPokemon: Record<string, { wins: number; total: number }> = {};
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        byPokemon[m.p1] = {
+          wins: (byPokemon[m.p1]?.wins ?? 0) + m.p1_wins,
+          total: (byPokemon[m.p1]?.total ?? 0) + m.total,
+        };
+        byPokemon[m.p2] = {
+          wins: (byPokemon[m.p2]?.wins ?? 0) + m.p2_wins,
+          total: (byPokemon[m.p2]?.total ?? 0) + m.total,
+        };
+      }
+    }
+    return Object.entries(byPokemon)
+      .filter(([, v]) => v.total >= 5)
+      .map(([name, v]) => ({
+        name,
+        winRate: (v.wins / v.total) * 100,
+        fullMark: 100,
+      }))
+      .sort((a, b) => b.winRate - a.winRate)
+      .slice(0, 6);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <RadarChart data={chartData}>
+          <PolarGrid stroke={CHART_COLORS.muted} strokeOpacity={0.3} />
+          <PolarAngleAxis dataKey="name" tick={{ fill: CHART_COLORS.muted, fontSize: 10 }} />
+          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: CHART_COLORS.muted, fontSize: 10 }} />
+          <Radar
+            name="Win Rate %"
+            dataKey="winRate"
+            stroke={CHART_COLORS.primary}
+            fill={CHART_COLORS.primary}
+            fillOpacity={0.3}
+          />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+            formatter={(value) => [`${Number(value ?? 0).toFixed(1)}%`, "Win Rate"] as [React.ReactNode, string]}
+          />
+        </RadarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function LossLeadersChart({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    const losses: Record<string, number> = {};
+    for (const m of Object.values(data)) {
+      if (m.total > 0) {
+        losses[m.p1] = (losses[m.p1] ?? 0) + m.p2_wins;
+        losses[m.p2] = (losses[m.p2] ?? 0) + m.p1_wins;
+      }
+    }
+    return Object.entries(losses)
+      .map(([name, l]) => ({ name, losses: l }))
+      .sort((a, b) => b.losses - a.losses)
+      .slice(0, 10);
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis type="number" stroke={CHART_COLORS.muted} fontSize={11} />
+          <YAxis type="category" dataKey="name" width={90} stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="losses" fill={CHART_COLORS.danger} radius={[0, 4, 4, 0]} name="Losses" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ScatterWinRateVsBattles({ data }: { data: MatchupData }) {
+  const chartData = useMemo(() => {
+    return Object.entries(data)
+      .filter(([, m]) => m.total >= 1)
+      .map(([key, m]) => ({
+        matchup: key,
+        winRate: (m.p1_wins / m.total) * 100,
+        battles: m.total,
+      }));
+  }, [data]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="battles" name="Battles" stroke={CHART_COLORS.muted} fontSize={11} />
+          <YAxis dataKey="winRate" name="P1 Win %" stroke={CHART_COLORS.muted} fontSize={11} domain={[0, 100]} />
+          <ZAxis range={[50, 200]} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+            formatter={(value, name) => [
+              String(name) === "winRate" ? `${Number(value ?? 0).toFixed(1)}%` : String(value ?? ""),
+              String(name) === "winRate" ? "P1 Win %" : "Battles",
+            ] as [React.ReactNode, string]}
+            labelFormatter={(label) => `Matchup: ${label}`}
+          />
+          <Scatter name="Matchups" data={chartData} fill={CHART_COLORS.primary} fillOpacity={0.6} />
+        </ScatterChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+type SmogonSets = Record<string, Record<string, { moves?: unknown[]; ability?: string; item?: string | string[]; nature?: string | string[]; evs?: Record<string, number> }>>;
+
+function PoolSetsWidget({ data, refreshTrigger }: { data: MatchupData; refreshTrigger: number }) {
+  const [smogonSets, setSmogonSets] = useState<SmogonSets | null>(null);
+  const [format, setFormat] = useState("gen9ou");
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const pokemon = useMemo(() => {
+    const set = new Set<string>();
+    for (const m of Object.values(data)) {
+      set.add(m.p1);
+      set.add(m.p2);
+    }
+    return Array.from(set).sort();
+  }, [data]);
+
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get<SmogonSets>(`/smogon/sets/${format}`)
+      .then((s) => {
+        if (!cancelled) setSmogonSets(s);
+      })
+      .catch(() => {
+        if (!cancelled) setSmogonSets(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [format, refreshTrigger]);
+
+  const getSetForPokemon = (name: string): { setName: string; set: { moves?: unknown[]; ability?: string; item?: string | string[] } } | null => {
+    if (!smogonSets) return null;
+    const normalized = name.replace(/[\s-]/g, "");
+    for (const [species, sets] of Object.entries(smogonSets)) {
+      const speciesNorm = species.replace(/[\s-]/g, "");
+      if (speciesNorm === normalized || speciesNorm.toLowerCase() === normalized.toLowerCase()) {
+        const setNames = Object.keys(sets);
+        if (setNames.length === 0) return null;
+        const firstName = setNames[0];
+        return { setName: firstName, set: sets[firstName] ?? {} };
+      }
+    }
+    return null;
+  };
+
+  const flattenMoves = (moves: unknown[] | undefined): string[] => {
+    if (!moves || !Array.isArray(moves)) return [];
+    return moves.slice(0, 4).map((m) => (Array.isArray(m) ? (m[0] as string) : (m as string)));
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm text-[var(--text-muted)]">Smogon format:</span>
+        <select
+          value={format}
+          onChange={(e) => setFormat(e.target.value)}
+          aria-label="Smogon format"
+          className="px-2 py-1 rounded bg-[var(--bg-panel)] border border-[var(--border)] text-[var(--text)] text-sm"
+        >
+          {["gen9ou", "gen9uu", "gen9ru", "gen9nu", "gen9pu", "gen9zu", "gen9"].map((f) => (
+            <option key={f} value={f}>{f}</option>
+          ))}
+        </select>
+      </div>
+      <div className="text-xs text-[var(--text-muted)] mb-2">
+        {pokemon.length} Pokemon in pool. {smogonSets ? "Smogon sets loaded." : "Loading Smogon sets…"}
+      </div>
+      <div className="max-h-80 overflow-y-auto rounded-lg border border-[var(--border)]/50">
+        <table className="w-full text-sm">
+          <thead className="sticky top-0 bg-[var(--bg-input)] border-b border-[var(--border)] z-10">
+            <tr>
+              <th className="px-3 py-2 text-left">Pokemon</th>
+              <th className="px-3 py-2 text-left">Set</th>
+              <th className="px-3 py-2 text-left">Ability / Item</th>
+              <th className="px-3 py-2 text-left w-8" />
+            </tr>
+          </thead>
+          <tbody>
+            {pokemon.map((p) => {
+              const info = getSetForPokemon(p);
+              const moves = info ? flattenMoves(info.set.moves) : [];
+              const isExpanded = expanded === p;
+              return (
+                <tr key={p} className="border-b border-[var(--border)]/30 hover:bg-[var(--primary)]/5">
+                  <td className="px-3 py-2 font-medium text-[var(--text)]">{p}</td>
+                  <td className="px-3 py-2 text-[var(--text-muted)]">
+                    {info ? info.setName : <span className="italic">Default (no Smogon set)</span>}
+                  </td>
+                  <td className="px-3 py-2 text-[var(--text-muted)] text-xs">
+                    {info ? (
+                      <>
+                        {info.set.ability ?? "—"} / {Array.isArray(info.set.item) ? info.set.item[0] : info.set.item ?? "—"}
+                      </>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="px-3 py-2">
+                    {moves.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setExpanded(isExpanded ? null : p)}
+                        className="text-[var(--primary)] hover:underline text-xs"
+                      >
+                        {isExpanded ? "Hide" : "Moves"}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {expanded && (
+        <div className="p-3 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)]/50 text-sm">
+          <strong className="text-[var(--primary)]">{expanded}</strong> moves:{" "}
+          {flattenMoves(getSetForPokemon(expanded)?.set.moves).join(", ") || "—"}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SearchableMatchupTable({ data }: { data: MatchupData }) {
+  const [filter, setFilter] = useState("");
+  const [sortBy, setSortBy] = useState<"matchup" | "p1WinRate" | "total">("matchup");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  const tableData = useMemo(() => {
+    let rows = Object.entries(data).map(([key, m]) => ({
+      matchup: key,
+      p1: m.p1,
+      p2: m.p2,
+      p1Wins: m.p1_wins,
+      p2Wins: m.p2_wins,
+      total: m.total,
+      p1WinRate: m.total > 0 ? (m.p1_wins / m.total) * 100 : null,
+    }));
+    if (filter.trim()) {
+      const q = filter.toLowerCase();
+      rows = rows.filter(
+        (r) =>
+          r.p1.toLowerCase().includes(q) || r.p2.toLowerCase().includes(q) || r.matchup.toLowerCase().includes(q)
+      );
+    }
+    rows.sort((a, b) => {
+      let cmp = 0;
+      if (sortBy === "matchup") cmp = a.matchup.localeCompare(b.matchup);
+      else if (sortBy === "p1WinRate")
+        cmp = (a.p1WinRate ?? -1) - (b.p1WinRate ?? -1);
+      else cmp = a.total - b.total;
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+    return rows.slice(0, 50);
+  }, [data, filter, sortBy, sortDir]);
+
+  const toggleSort = (col: typeof sortBy) => {
+    if (sortBy === col) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
+      setSortBy(col);
+      setSortDir(col === "matchup" ? "asc" : "desc");
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <input
+        type="text"
+        placeholder="Filter by Pokemon name..."
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="w-full px-3 py-2 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)] text-[var(--text)] text-sm placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)]"
+      />
+      <div className="overflow-x-auto max-h-64 overflow-y-auto rounded-lg border border-[var(--border)]/50">
+        <table className="w-full text-sm">
+          <thead className="sticky top-0 bg-[var(--bg-input)] border-b border-[var(--border)]">
+            <tr>
+              <th
+                className="px-3 py-2 text-left cursor-pointer hover:text-[var(--primary)]"
+                onClick={() => toggleSort("matchup")}
+              >
+                Matchup {sortBy === "matchup" && (sortDir === "asc" ? "↑" : "↓")}
+              </th>
+              <th className="px-3 py-2 text-right">P1 W</th>
+              <th className="px-3 py-2 text-right">P2 W</th>
+              <th
+                className="px-3 py-2 text-right cursor-pointer hover:text-[var(--primary)]"
+                onClick={() => toggleSort("total")}
+              >
+                Total {sortBy === "total" && (sortDir === "asc" ? "↑" : "↓")}
+              </th>
+              <th
+                className="px-3 py-2 text-right cursor-pointer hover:text-[var(--primary)]"
+                onClick={() => toggleSort("p1WinRate")}
+              >
+                P1 % {sortBy === "p1WinRate" && (sortDir === "asc" ? "↑" : "↓")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((r) => (
+              <tr key={r.matchup} className="border-b border-[var(--border)]/30 hover:bg-[var(--primary)]/5">
+                <td className="px-3 py-1.5 text-[var(--text)]">{r.matchup}</td>
+                <td className="px-3 py-1.5 text-right text-[var(--primary)]">{r.p1Wins}</td>
+                <td className="px-3 py-1.5 text-right text-[var(--accent)]">{r.p2Wins}</td>
+                <td className="px-3 py-1.5 text-right text-[var(--text-muted)]">{r.total}</td>
+                <td className="px-3 py-1.5 text-right">
+                  {r.p1WinRate != null ? `${r.p1WinRate.toFixed(1)}%` : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-xs text-[var(--text-muted)]">
+        Showing up to 50 matchups. Use filter to narrow. Click column headers to sort.
+      </p>
+    </div>
+  );
+}
+
+function ChartCard({
+  title,
+  description,
+  children,
+  className,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={cn(
+        "p-4 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50 overflow-hidden",
+        className
+      )}
+    >
+      <h4 className="font-display font-semibold text-[var(--primary)] mb-1">{title}</h4>
+      {description && <p className="text-xs text-[var(--text-muted)] mb-3">{description}</p>}
+      {children}
+    </motion.div>
+  );
+}
+
+export function MatchupAnalytics({ refreshTrigger }: { refreshTrigger: number }) {
+  const { data, loading, error } = useMatchupData(refreshTrigger);
+
+  if (loading) {
+    return (
+      <div className="py-8 text-center text-[var(--text-muted)]">
+        Loading matchup data…
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="py-4 text-sm text-[var(--text-muted)]">
+        {error ? `Could not load matchup data: ${error}` : "No matchup data available. Run simulations first."}
+      </div>
+    );
+  }
+
+  const hasData = Object.values(data).some((m) => m.total > 0);
+
+  return (
+    <div className="space-y-6">
+      {!hasData && (
+        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm">
+          Matchup results exist but no battles completed (all 0 wins). This often happens when Pokemon lack proper movesets. Use Smogon presets below and re-run simulations.
+        </div>
+      )}
+      <div>
+        <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Pool Sets</h3>
+        <p className="text-sm text-[var(--text-muted)] mb-3">
+          Pokemon in the pool and their Smogon sets. Simulations use these by default.
+        </p>
+        <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} />
+      </div>
+      {hasData && (
+        <>
+          <div>
+            <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Summary</h3>
+            <SummaryStats data={data} />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <ChartCard title="Top Performers" description="Pokemon with most total wins">
+          <TopPerformersChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Win Rate Distribution" description="P1 win rate buckets (0–10%, 10–20%, …)">
+          <WinRateDistributionChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Win / Loss Split" description="Overall battle outcomes">
+          <WinLossPieChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Dominance Score" description="Net wins per Pokemon (P1 wins − P2 wins)">
+          <DominanceChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Most One-Sided Matchups" description="Largest win rate margins (min 3 battles)">
+          <MostOneSidedChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Battles per Matchup" description="Distribution of battle counts">
+          <BattlesPerMatchupChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Win Rate vs Battle Count" description="Scatter: P1 win % vs battles run">
+          <ScatterWinRateVsBattles data={data} />
+        </ChartCard>
+
+        <ChartCard title="Win Rate by Pokemon" description="Radar of top 6 by win rate (min 5 battles)">
+          <PokemonWinRateRadar data={data} />
+        </ChartCard>
+
+        <ChartCard title="Most Losses" description="Pokemon with highest total losses">
+          <LossLeadersChart data={data} />
+        </ChartCard>
+
+        <ChartCard title="Matchup Heatmap" description="P1 vs P2 win rate matrix (first 12 Pokemon)" className="md:col-span-2 xl:col-span-3">
+          <MatchupHeatmapPreview data={data} />
+        </ChartCard>
+
+      </div>
+        </>
+      )}
+      <ChartCard title="Matchup Table" description="Search and sort all matchups" className="md:col-span-2 xl:col-span-3">
+        <SearchableMatchupTable data={data} />
+      </ChartCard>
+    </div>
+  );
+}
