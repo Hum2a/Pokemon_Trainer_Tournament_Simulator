@@ -11,6 +11,32 @@ CDN = "https://play.pokemonshowdown.com/data"
 OUT = Path(__file__).parent / "dex-export"
 OUT.mkdir(exist_ok=True)
 
+REGIONS = [(1, "Kanto"), (152, "Johto"), (252, "Hoenn"), (387, "Sinnoh"),
+           (494, "Unova"), (650, "Kalos"), (722, "Alola"), (810, "Galar"), (906, "Paldea")]
+
+def _num_to_region(num):
+    for start, name in reversed(REGIONS):
+        if num >= start:
+            return name
+    return "Other"
+
+def _stats_to_role(stats):
+    hp = stats.get("hp", 0) or 0
+    atk = stats.get("atk", 0) or 0
+    defe = stats.get("def", 0) or 0
+    spa = stats.get("spa", 0) or 0
+    spd = stats.get("spd", 0) or 0
+    spe = stats.get("spe", 0) or 0
+    if (defe + spd) >= 200 and spe < 90:
+        return "Wall"
+    if atk >= 100 and atk >= spa and spe >= 80:
+        return "Physical Attacker"
+    if spa >= 100 and spa >= atk and spe >= 80:
+        return "Special Attacker"
+    if (defe + spd) >= 150 and (atk + spa) >= 150:
+        return "Mixed"
+    return "Balanced"
+
 def fetch(name):
     url = f"{CDN}/{name}"
     req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
@@ -25,13 +51,18 @@ def main():
     for sid, data in pokedex.items():
         if data.get("isNonstandard") or sid.endswith("gmax"):
             continue
+        stats = data.get("baseStats", {})
+        num = data.get("num", 0)
         species.append({
             "id": sid,
             "name": data.get("name", sid),
             "baseSpecies": data.get("baseSpecies", data.get("name", sid)),
+            "num": num,
             "types": data.get("types", []),
-            "baseStats": data.get("baseStats", {}),
+            "baseStats": stats,
             "abilities": data.get("abilities", {}),
+            "region": _num_to_region(num),
+            "role": _stats_to_role(stats),
         })
     (OUT / "species.json").write_text(json.dumps(species), encoding="utf-8")
     print(f"  {len(species)} species")
