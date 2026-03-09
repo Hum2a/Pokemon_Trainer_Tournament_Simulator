@@ -225,8 +225,8 @@ def main():
 
     # Support nested config from UI
     m = config.get("matchups", config)
-    level = m.get("setLevel", m.get("setLevel", 50))
-    n_battles = m.get("battlesPerMatchup", 100)
+    level = m.get("setLevel", m.get("setLevel", 100))
+    n_battles = m.get("battlesPerMatchup", 5)
     threads = m.get("noOfThreads", 4)
     mode = m.get("mode", "head-to-head")
     pool_limit = m.get("poolLimit", 50)
