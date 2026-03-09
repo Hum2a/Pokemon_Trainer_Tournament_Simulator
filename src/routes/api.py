@@ -112,6 +112,20 @@ def terminate_task_route():
     return jsonify({"ok": False, "message": "No task running"}), 400
 
 
+@api_bp.route("/outputs/matchup-data")
+def matchup_data():
+    """Return matchup_results.json content for charts. 404 if not found."""
+    path = DATA_DIR / "matchup_results.json"
+    if not path.exists():
+        return jsonify({"error": "File not found"}), 404
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return jsonify(data)
+    except (json.JSONDecodeError, OSError) as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @api_bp.route("/outputs")
 def outputs_list():
     files = []
