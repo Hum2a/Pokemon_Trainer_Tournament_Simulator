@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Panel } from "./Panel";
 import { useApp } from "../context/AppContext";
 import { api } from "../api";
+import { cn } from "../lib/utils";
 
 const TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
 const REGIONS = ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unova", "Kalos", "Alola", "Galar", "Paldea", "Other"];
@@ -13,6 +15,27 @@ const SMOGON_FORMATS = [
   { value: "gen9nu", label: "Gen 9 NU" },
   { value: "gen9", label: "All Gen 9" },
 ];
+
+const TYPE_COLORS: Record<string, string> = {
+  Normal: "bg-amber-100/80 text-amber-900",
+  Fire: "bg-orange-500/80 text-white",
+  Water: "bg-blue-500/80 text-white",
+  Electric: "bg-yellow-400/90 text-yellow-900",
+  Grass: "bg-green-500/80 text-white",
+  Ice: "bg-cyan-300/80 text-cyan-900",
+  Fighting: "bg-red-600/80 text-white",
+  Poison: "bg-purple-500/80 text-white",
+  Ground: "bg-amber-700/80 text-amber-100",
+  Flying: "bg-purple-300/80 text-purple-900",
+  Psychic: "bg-pink-500/80 text-white",
+  Bug: "bg-lime-500/80 text-white",
+  Rock: "bg-stone-600/80 text-stone-100",
+  Ghost: "bg-violet-700/80 text-violet-100",
+  Dragon: "bg-indigo-600/80 text-indigo-100",
+  Dark: "bg-slate-800/80 text-slate-100",
+  Steel: "bg-slate-400/80 text-slate-900",
+  Fairy: "bg-pink-300/80 text-pink-900",
+};
 
 interface Species {
   id: string;
@@ -217,9 +240,9 @@ export function TeamBuilder() {
     appendLog(`Exported ${team.length} Pokemon(s) to editor.`);
   };
 
-  const inputCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded px-3 py-2 text-[var(--text)]";
-  const selectCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded px-3 py-2 text-[var(--text)] font-mono text-sm min-w-[140px]";
-  const labelCls = "flex flex-col gap-1 text-sm font-medium";
+  const inputCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] transition-all focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]";
+  const selectCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] font-mono text-sm min-w-[140px] transition-all focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]";
+  const labelCls = "flex flex-col gap-1.5 text-sm font-medium text-[var(--text)]";
 
   const matches = getDropdownMatches();
   const moveOpts = selectedSpecies
@@ -240,10 +263,10 @@ export function TeamBuilder() {
 
   return (
     <Panel title="Team Builder">
-      <p className="text-sm text-[var(--text-muted)] mb-4">
+      <p className="text-sm text-[var(--text-muted)] mb-5 leading-relaxed">
         Build Pokemon in Showdown format. Filter by type, region, or role. Import popular Smogon sets.
       </p>
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="flex flex-wrap gap-4 mb-5">
         <label className={labelCls}>
           <span>Type</span>
           <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={selectCls}>
@@ -272,8 +295,8 @@ export function TeamBuilder() {
           </select>
         </label>
       </div>
-      <div className="flex flex-wrap gap-4 mb-4 items-end">
-        <label className={`${labelCls} relative`}>
+      <div className="flex flex-wrap gap-4 mb-5 items-end">
+        <label className={cn(labelCls, "relative")}>
           <span>Pokemon</span>
           <input
             ref={inputRef}
@@ -282,67 +305,88 @@ export function TeamBuilder() {
             onChange={(e) => setSpeciesQuery(e.target.value)}
             onFocus={() => setShowDropdown(true)}
             placeholder="Search species (e.g. Pikachu)"
-            className={`${inputCls} min-w-[200px]`}
+            className={cn(inputCls, "min-w-[200px]")}
           />
-          {showDropdown && (
-            <div
-              ref={dropdownRef}
-              className="absolute top-full left-0 mt-1 bg-[var(--bg-panel)] border border-[var(--border)] rounded max-h-48 overflow-auto z-[100] min-w-[200px] shadow-lg"
-            >
-              {dexLoading ? (
-                <div className="px-3 py-2 text-[var(--text-muted)] text-sm">Loading dex...</div>
-              ) : matches.length === 0 ? (
-                <div className="px-3 py-2 text-[var(--text-muted)] text-sm space-y-2">
-                  <div>
-                    {dexData.species.length === 0
-                      ? "API unreachable. Start Flask: python app.py"
-                      : "No matches"}
+          <AnimatePresence>
+            {showDropdown && (
+              <motion.div
+                ref={dropdownRef}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-full left-0 mt-2 bg-[var(--bg-panel)] border border-[var(--border)] rounded-xl max-h-52 overflow-auto z-[100] min-w-[200px] shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+              >
+                {dexLoading ? (
+                  <div className="px-4 py-3 text-[var(--text-muted)] text-sm flex items-center gap-2">
+                    <motion.span className="w-4 h-4 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
+                    Loading dex...
                   </div>
-                  {dexData.species.length === 0 && (
-                    <button
-                      type="button"
-                      onClick={(e) => { e.preventDefault(); loadDexData(); }}
-                      className="text-[var(--accent)] hover:underline text-sm"
+                ) : matches.length === 0 ? (
+                  <div className="px-4 py-3 text-[var(--text-muted)] text-sm space-y-2">
+                    <div>
+                      {dexData.species.length === 0
+                        ? "API unreachable. Start Flask: python app.py"
+                        : "No matches"}
+                    </div>
+                    {dexData.species.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); loadDexData(); }}
+                        className="text-[var(--accent)] hover:underline text-sm font-medium"
+                      >
+                        Retry
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  matches.map((s, i) => (
+                    <motion.div
+                      key={s.id}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.02 }}
+                      className="px-4 py-2.5 cursor-pointer hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] transition-colors flex items-center gap-2"
+                      onMouseDown={(e) => { e.preventDefault(); selectSpecies(s); }}
                     >
-                      Retry
-                    </button>
-                  )}
-                </div>
-              ) : (
-                matches.map((s) => (
-                  <div
-                    key={s.id}
-                    className="px-3 py-2 cursor-pointer hover:bg-white/10"
-                    onMouseDown={(e) => { e.preventDefault(); selectSpecies(s); }}
-                  >
-                    {s.name}
-                  </div>
-                ))
-              )}
-            </div>
-          )}
+                      <span>{s.name}</span>
+                      {s.types && s.types.length > 0 && (
+                        <span className={cn("text-xs px-2 py-0.5 rounded-full font-medium", TYPE_COLORS[s.types[0]] || "bg-gray-500/80 text-white")}>
+                          {s.types[0]}
+                        </span>
+                      )}
+                    </motion.div>
+                  ))
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </label>
         <label className={labelCls}>
           <span>Level</span>
           <div className="flex items-center gap-2">
-            <input type="number" value={level} onChange={(e) => setLevel(parseInt(e.target.value) || 50)} min={1} max={100} className={`${inputCls} w-16`} />
-            <button type="button" onClick={() => setLevel(50)} className="px-2 py-1.5 text-sm rounded border border-[var(--border)] bg-[var(--bg-input)] hover:bg-white/5">
+            <input type="number" value={level} onChange={(e) => setLevel(parseInt(e.target.value) || 50)} min={1} max={100} className={cn(inputCls, "w-16")} />
+            <motion.button type="button" onClick={() => setLevel(50)} className="px-2.5 py-1.5 text-sm rounded-lg border border-[var(--border)] bg-[var(--bg-input)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)] transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               50
-            </button>
-            <button type="button" onClick={() => setLevel(100)} className="px-2 py-1.5 text-sm rounded border border-[var(--border)] bg-[var(--bg-input)] hover:bg-white/5">
+            </motion.button>
+            <motion.button type="button" onClick={() => setLevel(100)} className="px-2.5 py-1.5 text-sm rounded-lg border border-[var(--border)] bg-[var(--bg-input)] hover:bg-[var(--primary)]/10 hover:border-[var(--primary)] transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               100
-            </button>
+            </motion.button>
           </div>
         </label>
       </div>
-      <div className="flex flex-wrap gap-3 mb-4">
+      <div className="flex flex-wrap gap-2 mb-5">
         {(["hp", "atk", "def", "spa", "spd", "spe"] as const).map((stat) => (
-          <span key={stat} className="px-2 py-1 text-sm font-mono bg-[var(--bg-input)] rounded">
+          <motion.span
+            key={stat}
+            className="px-3 py-1.5 text-sm font-mono bg-[var(--bg-input)] rounded-lg border border-[var(--border)]/50"
+            whileHover={{ scale: 1.05, borderColor: "rgba(0,245,255,0.3)" }}
+          >
             {STAT_LABELS[stat]} {selectedSpecies?.baseStats?.[stat] ?? "—"}
-          </span>
+          </motion.span>
         ))}
       </div>
-      <div className="flex flex-col gap-4 mb-4">
+      <div className="flex flex-col gap-5 mb-5">
         <div className="flex flex-wrap gap-4 items-end">
           <label className={labelCls}>
             <span>Smogon Sets</span>
@@ -354,14 +398,23 @@ export function TeamBuilder() {
           </label>
           <div className="flex flex-wrap gap-2">
             {smogonLoading ? (
-              <span className="text-[var(--text-muted)] text-sm">Loading...</span>
+              <span className="text-[var(--text-muted)] text-sm flex items-center gap-2">
+                <motion.span className="w-3 h-3 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
+                Loading...
+              </span>
             ) : Object.keys(smogonSets).length === 0 && selectedSpecies ? (
               <span className="text-[var(--text-muted)] text-sm">No sets for this Pokemon.</span>
             ) : (
               Object.keys(smogonSets).map((name) => (
-                <button key={name} type="button" onClick={() => importSmogonSet(name)} className="px-2 py-1 text-xs rounded border border-[var(--border)] bg-[var(--bg-input)] hover:bg-[var(--accent)] hover:text-[#1a1a1a]">
+                <motion.button
+                  key={name}
+                  type="button"
+                  onClick={() => importSmogonSet(name)}
+                  className="px-3 py-1.5 text-xs rounded-lg border border-[var(--border)] bg-[var(--bg-input)] hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)] transition-all"
+                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                >
                   {name}
-                </button>
+                </motion.button>
               ))
             )}
           </div>
@@ -404,26 +457,35 @@ export function TeamBuilder() {
             </label>
           ))}
         </div>
-        <div className="flex gap-2">
-          <button type="button" onClick={addToTeam} className="px-4 py-2 rounded bg-[var(--accent)] text-[#1a1a1a] hover:opacity-90">
+        <div className="flex gap-3">
+          <motion.button type="button" onClick={addToTeam} className="px-5 py-2.5 rounded-xl bg-[var(--accent)] text-white font-medium hover:shadow-[0_0_24px_var(--accent-glow)] transition-all" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             Add to Team
-          </button>
-          <button type="button" onClick={exportToEditor} className="px-4 py-2 rounded bg-[var(--primary)] text-white hover:opacity-90">
+          </motion.button>
+          <motion.button type="button" onClick={exportToEditor} className="px-5 py-2.5 rounded-xl bg-[var(--primary)] text-[#050508] font-medium hover:shadow-[0_0_24px_var(--primary-glow)] transition-all" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             Export to Editor
-          </button>
+          </motion.button>
         </div>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Current Team</h4>
+        <h4 className="font-display font-semibold mb-3 text-[var(--primary)]">Current Team</h4>
         <div className="space-y-2">
-          {team.map((set, i) => (
-            <div key={i} className="flex items-center justify-between bg-[var(--bg-input)] rounded px-3 py-2">
-              <span>{set.split("\n")[0].replace("|", "")}</span>
-              <button type="button" onClick={() => setTeam((prev) => prev.filter((_, j) => j !== i))} className="text-[var(--danger)] hover:underline">
-                ×
-              </button>
-            </div>
-          ))}
+          <AnimatePresence mode="popLayout">
+            {team.map((set, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                className="flex items-center justify-between bg-[var(--bg-input)] rounded-xl px-4 py-3 border border-[var(--border)]/50 hover:border-[var(--primary)]/30 transition-colors"
+              >
+                <span className="font-medium">{set.split("\n")[0].replace("|", "")}</span>
+                <motion.button type="button" onClick={() => setTeam((prev) => prev.filter((_, j) => j !== i))} className="text-[var(--danger)] hover:text-[var(--danger)]/80 hover:scale-110 transition-all text-xl font-bold w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[var(--danger)]/10" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  ×
+                </motion.button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </Panel>

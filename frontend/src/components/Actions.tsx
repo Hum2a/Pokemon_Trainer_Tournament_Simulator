@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Panel } from "./Panel";
 import { useApp } from "../context/AppContext";
 import { api } from "../api";
@@ -74,45 +75,63 @@ export function Actions() {
     }
   };
 
-  const btnPrimary = "px-4 py-2 rounded bg-[var(--primary)] text-white hover:opacity-90";
-  const btnAccent = "px-4 py-2 rounded bg-[var(--accent)] text-[#1a1a1a] hover:opacity-90";
+  const btnBase = "px-5 py-3 rounded-xl font-medium transition-all duration-300";
+  const btnPrimary = `${btnBase} bg-[var(--primary)] text-[#050508] hover:shadow-[0_0_24px_var(--primary-glow)]`;
+  const btnAccent = `${btnBase} bg-[var(--accent)] text-white hover:shadow-[0_0_24px_var(--accent-glow)]`;
+
+  const actionGroups = [
+    {
+      title: "Build Phase",
+      items: [
+        { label: "Build Trainer Battles", onClick: () => callAction("build-trainer", "Build Trainer Battles"), accent: false },
+        { label: "Build Pokemon vs Leaders", onClick: () => callAction("build-pokemon", "Build Pokemon vs Leaders"), accent: false },
+      ],
+    },
+    {
+      title: "Run Phase",
+      items: [
+        { label: "Run Trainer Simulations", onClick: runTrainer, accent: true },
+        { label: "Run Pokemon Simulations", onClick: runPokemon, accent: true },
+      ],
+    },
+    {
+      title: "Parse Phase",
+      items: [
+        { label: "Parse to PNG Matrix", onClick: () => callAction("parse-png", "Parse to PNG Matrix"), accent: false },
+        { label: "Parse to CSV", onClick: () => callAction("parse-csv", "Parse to CSV"), accent: false },
+      ],
+    },
+  ];
 
   return (
     <Panel title="Actions">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-2">
-          <h3 className="font-semibold text-sm">Build Phase</h3>
-          <div className="flex flex-col gap-2">
-            <button type="button" className={btnPrimary} onClick={() => callAction("build-trainer", "Build Trainer Battles")}>
-              Build Trainer Battles
-            </button>
-            <button type="button" className={btnPrimary} onClick={() => callAction("build-pokemon", "Build Pokemon vs Leaders")}>
-              Build Pokemon vs Leaders
-            </button>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-sm">Run Phase</h3>
-          <div className="flex flex-col gap-2">
-            <button type="button" className={btnAccent} onClick={runTrainer}>
-              Run Trainer Simulations
-            </button>
-            <button type="button" className={btnAccent} onClick={runPokemon}>
-              Run Pokemon Simulations
-            </button>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-sm">Parse Phase</h3>
-          <div className="flex flex-col gap-2">
-            <button type="button" className={btnPrimary} onClick={() => callAction("parse-png", "Parse to PNG")}>
-              Parse to PNG Matrix
-            </button>
-            <button type="button" className={btnPrimary} onClick={() => callAction("parse-csv", "Parse to CSV")}>
-              Parse to CSV
-            </button>
-          </div>
-        </div>
+        {actionGroups.map((group, gi) => (
+          <motion.div
+            key={group.title}
+            className="space-y-3 p-4 rounded-xl bg-black/20 border border-[var(--border)]/50"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: gi * 0.05 }}
+            whileHover={{ borderColor: "rgba(0,245,255,0.2)" }}
+          >
+            <h3 className="font-display font-semibold text-sm text-[var(--primary)]">{group.title}</h3>
+            <div className="flex flex-col gap-2">
+              {group.items.map((item) => (
+                <motion.button
+                  key={item.label}
+                  type="button"
+                  className={item.accent ? btnAccent : btnPrimary}
+                  onClick={item.onClick}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </Panel>
   );
