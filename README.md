@@ -49,11 +49,11 @@ python app.py
 
 Open http://127.0.0.1:5000 in your browser.
 
-## Deployment
+## Auth & Deployment
 
-To deploy to a live site, use **Render** (recommended). Netlify and Cloudflare are not suitable for this app because it requires a Python backend, Node.js subprocesses, and long-running simulations.
+This app uses **Supabase** for authentication and per-user storage. See **[AUTH_SETUP.md](AUTH_SETUP.md)** for setup.
 
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for platform comparison and step-by-step Render instructions.
+To deploy to a live site, use **Render** (recommended). See **[DEPLOYMENT.md](DEPLOYMENT.md)** for platform comparison and step-by-step Render instructions.
 
 ## Running Simulations Yourself
 

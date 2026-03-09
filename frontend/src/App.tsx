@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { setAuthTokenGetter } from "./api";
 import { AppProvider, useApp } from "./context/AppContext";
 import { Modal } from "./components/Modal";
+import { AuthGuard } from "./components/AuthGuard";
 import { TournamentPage } from "./pages/TournamentPage";
 import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 
@@ -13,10 +17,37 @@ const container = {
   },
 };
 
+function AuthTokenBridge() {
+  const { getAccessToken } = useAuth();
+  useEffect(() => {
+    setAuthTokenGetter(getAccessToken);
+  }, [getAccessToken]);
+  return null;
+}
+
+function UserMenu() {
+  const { user, signOut } = useAuth();
+  if (!user) return null;
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-sm text-[var(--text-muted)] truncate max-w-[140px]" title={user.email ?? ""}>
+        {user.email}
+      </span>
+      <button
+        onClick={() => signOut()}
+        className="text-sm text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"
+      >
+        Sign out
+      </button>
+    </div>
+  );
+}
+
 function AppContent() {
   const { status, modal, hideModal } = useApp();
   return (
     <>
+      <AuthTokenBridge />
       {modal && (
         <Modal
           isOpen
@@ -70,16 +101,21 @@ function AppContent() {
                 </NavLink>
               </nav>
             </div>
-            <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--bg-panel)] border border-[var(--border)]">
-              <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
-              <span className="text-sm font-medium">{status.text}</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--bg-panel)] border border-[var(--border)]">
+                <span className={`w-3 h-3 rounded-full ${status.running ? "bg-[var(--accent)]" : "bg-[var(--success)]"}`} />
+                <span className="text-sm font-medium">{status.text}</span>
+              </div>
+              <UserMenu />
             </div>
           </header>
             <main>
-              <Routes>
-                <Route path="/" element={<MatchupSimulatorPage />} />
-                <Route path="/tournament" element={<TournamentPage />} />
-              </Routes>
+              <AuthGuard>
+                <Routes>
+                  <Route path="/" element={<MatchupSimulatorPage />} />
+                  <Route path="/tournament" element={<TournamentPage />} />
+                </Routes>
+              </AuthGuard>
             </main>
           </motion.div>
         </div>
@@ -90,8 +126,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </AuthProvider>
   );
 }

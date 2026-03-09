@@ -553,8 +553,10 @@ def main():
     thread_names = list(range(1, threads + 1))
     lock = threading.Lock()
 
-    def run_one(m):
+    def run_one(args):
+        idx, m = args
         p1, p2 = m
+        print(f"  Running {p1} vs {p2} ({idx + 1}/{len(matchups)})...", flush=True)
         with lock:
             tn = thread_names.pop(0) if thread_names else 1
         try:
@@ -565,7 +567,7 @@ def main():
                 thread_names.append(tn)
 
     with ThreadPoolExecutor(max_workers=threads) as ex:
-        futures = [ex.submit(run_one, m) for m in matchups]
+        futures = [ex.submit(run_one, (i, m)) for i, m in enumerate(matchups)]
         done = 0
         for f in as_completed(futures):
             try:
@@ -574,9 +576,8 @@ def main():
                 results[key] = {"p1": p1, "p2": p2, "p1_wins": w1, "p2_wins": w2, "total": w1 + w2}
                 battle_logs[key] = logs
                 done += 1
-                if done % 10 == 0 or done == len(matchups):
-                    pct = 100 * done // len(matchups)
-                    print(f"  Completed {done}/{len(matchups)} ({pct}%)", flush=True)
+                pct = 100 * done // len(matchups)
+                print(f"  Completed {p1} vs {p2} — {done}/{len(matchups)} ({pct}%)", flush=True)
             except Exception as e:
                 print(f"  Error: {e}", flush=True)
 

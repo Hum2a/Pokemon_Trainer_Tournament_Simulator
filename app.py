@@ -4,6 +4,9 @@ Entry point for the Flask application.
 Serves the React SPA from frontend/dist via src.routes.pages.
 """
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask
 
 from src.routes import register_blueprints

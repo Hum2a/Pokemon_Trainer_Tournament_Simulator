@@ -31,6 +31,7 @@ export function Outputs() {
   const [files, setFiles] = useState<OutputFile[]>([]);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
   const { showModal } = useApp();
 
   const refresh = async () => {
@@ -90,6 +91,18 @@ export function Outputs() {
       appendLog("Exported analytics as JSON");
     } catch (e) {
       appendLog(`Export failed: ${(e as Error).message}`, "error");
+    }
+  };
+
+  const handleSaveToAccount = async () => {
+    setSaving(true);
+    try {
+      await api.post("/simulations/save-current");
+      appendLog("Saved simulation results to your account");
+    } catch (e) {
+      appendLog(`Save failed: ${(e as Error).message}`, "error");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -166,6 +179,18 @@ export function Outputs() {
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h3 className="font-display font-semibold text-[var(--primary)]">Matchup Analytics</h3>
             <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleSaveToAccount}
+                disabled={saving}
+                className={cn(
+                  "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  "bg-[var(--accent)]/20 text-[var(--accent)] hover:bg-[var(--accent)]/30",
+                  "disabled:opacity-50 disabled:cursor-not-allowed"
+                )}
+              >
+                {saving ? "Saving…" : "Save to my account"}
+              </button>
               <button
                 type="button"
                 onClick={handleExportAnalyticsJson}

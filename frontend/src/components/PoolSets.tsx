@@ -98,7 +98,7 @@ function SetEditorModal({
       ability: ability || undefined,
       item: item || undefined,
       nature: nature || undefined,
-      evs: Object.fromEntries(EV_STATS.map((s) => [s, evs[s] ?? 0]).filter(([, v]) => v > 0)) || undefined,
+      evs: Object.fromEntries(EV_STATS.map((s) => [s, evs[s] ?? 0]).filter(([, v]) => Number(v) > 0)) || undefined,
     });
     onClose();
   };

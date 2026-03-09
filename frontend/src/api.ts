@@ -1,7 +1,24 @@
 const API_BASE = '/api';
 
+let getAuthToken: (() => Promise<string | null>) | null = null;
+
+/** Set the auth token getter (called by AuthProvider). */
+export function setAuthTokenGetter(fn: () => Promise<string | null>) {
+  getAuthToken = fn;
+}
+
+async function authHeaders(): Promise<HeadersInit> {
+  const headers: Record<string, string> = {};
+  if (getAuthToken) {
+    const token = await getAuthToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 export async function apiGet<T = unknown>(endpoint: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${endpoint}`);
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}${endpoint}`, { headers });
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
     throw new Error((data as { error?: string }).error || res.statusText);
@@ -10,9 +27,10 @@ export async function apiGet<T = unknown>(endpoint: string): Promise<T> {
 }
 
 export async function apiPost<T = unknown>(endpoint: string, body?: object): Promise<T> {
+  const headers = await authHeaders();
   const res = await fetch(`${API_BASE}${endpoint}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...headers },
     body: body ? JSON.stringify(body) : undefined,
   });
   const data = await res.json().catch(() => ({}));
@@ -21,7 +39,8 @@ export async function apiPost<T = unknown>(endpoint: string, body?: object): Pro
 }
 
 export async function apiDelete<T = unknown>(endpoint: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE' });
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE', headers });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error((data as { error?: string }).error || res.statusText);
   return data as T;
@@ -29,7 +48,8 @@ export async function apiDelete<T = unknown>(endpoint: string): Promise<T> {
 
 /** Fetch a file and trigger browser download. */
 export async function downloadFile(endpoint: string, filename: string): Promise<void> {
-  const res = await fetch(`${API_BASE}${endpoint}`);
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}${endpoint}`, { headers });
   if (!res.ok) throw new Error(res.statusText);
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);
