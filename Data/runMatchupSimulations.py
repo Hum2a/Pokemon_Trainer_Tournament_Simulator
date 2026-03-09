@@ -289,7 +289,11 @@ def load_smogon_sets(format_id="gen9ou"):
         with urllib.request.urlopen(req, timeout=15) as r:
             data = json.loads(r.read().decode())
     except Exception as e:
-        print(f"  Warning: Could not load Smogon sets from {url}: {e}", flush=True)
+        print(
+            f"  Info: Smogon sets for {format_id} unavailable ({e}). "
+            "Using default/learnset-based sets instead—simulation will run normally.",
+            flush=True,
+        )
         return {}
     # Generation-level formats (gen9, gen8, etc.) have tier structure
     if re.match(r"^gen\d+$", format_id):

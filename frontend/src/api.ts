@@ -1,18 +1,12 @@
+import { supabase } from './lib/supabase';
+
 const API_BASE = '/api';
-
-let getAuthToken: (() => Promise<string | null>) | null = null;
-
-/** Set the auth token getter (called by AuthProvider). */
-export function setAuthTokenGetter(fn: () => Promise<string | null>) {
-  getAuthToken = fn;
-}
 
 async function authHeaders(): Promise<HeadersInit> {
   const headers: Record<string, string> = {};
-  if (getAuthToken) {
-    const token = await getAuthToken();
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-  }
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (token) headers['Authorization'] = `Bearer ${token}`;
   return headers;
 }
 

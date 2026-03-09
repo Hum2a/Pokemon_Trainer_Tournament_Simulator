@@ -406,6 +406,7 @@ export function PoolSets({
   editable = false,
 }: PoolSetsProps) {
   const [smogonSets, setSmogonSets] = useState<SmogonSets | null>(null);
+  const [isLoadingSets, setIsLoadingSets] = useState(true);
   const [formats, setFormats] = useState<string[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [editingPokemon, setEditingPokemon] = useState<string | null>(null);
@@ -445,10 +446,21 @@ export function PoolSets({
 
   useEffect(() => {
     let cancelled = false;
+    setIsLoadingSets(true);
     api
       .get<SmogonSets>(`/smogon/sets/${format}`)
-      .then((s) => { if (!cancelled) setSmogonSets(s); })
-      .catch(() => { if (!cancelled) setSmogonSets(null); });
+      .then((s) => {
+        if (!cancelled) {
+          setSmogonSets(s);
+          setIsLoadingSets(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSmogonSets(null);
+          setIsLoadingSets(false);
+        }
+      });
     return () => { cancelled = true; };
   }, [format, refreshTrigger ?? 0]);
 
@@ -502,9 +514,23 @@ export function PoolSets({
             </optgroup>
           ))}
         </select>
+        {isLoadingSets && (
+          <span
+            className="inline-block w-3 h-3 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin"
+            aria-hidden
+          />
+        )}
       </div>
       <div className="text-xs text-[var(--text-muted)] mb-2">
-        {pokemon.length} Pokemon in pool. {smogonSets ? "Smogon sets loaded." : "Loading Smogon sets…"} Click a card to expand. {editable && "Use Edit to customize a set."}
+        {pokemon.length} Pokemon in pool.{" "}
+        {isLoadingSets ? (
+          <span className="text-[var(--primary)]">Loading sets for {format}…</span>
+        ) : smogonSets ? (
+          "Smogon sets loaded."
+        ) : (
+          "Failed to load sets."
+        )}{" "}
+        Click a card to expand. {editable && "Use Edit to customize a set."}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 max-h-[28rem] overflow-y-auto pr-1">
         {pokemon.map((p) => (
