@@ -589,6 +589,405 @@ function PoolSetsWidget({ data, refreshTrigger, smogonFormat }: { data: MatchupD
 
 type BattleLogsData = Record<string, Array<{ winner: string | null; log: string }>>;
 
+interface ParsedEvent {
+  type: "switch" | "move" | "damage" | "heal" | "boost" | "unboost" | "status" | "faint" | "supereffective" | "resisted" | "crit" | "miss" | "weather" | "ability" | "enditem" | "prepare" | "activate" | "other";
+  side?: "p1" | "p2";
+  pokemon?: string;
+  target?: string;
+  move?: string;
+  value?: string;
+  raw?: string;
+}
+
+interface ParsedTurn {
+  turnNum: number;
+  events: ParsedEvent[];
+  p1Hp?: { current: number; max: number };
+  p2Hp?: { current: number; max: number };
+}
+
+function parseBattleLog(log: string, matchup: string): { turns: ParsedTurn[]; p1Name: string; p2Name: string; winner: string | null } {
+  const [p1Name, p2Name] = matchup.split(" vs ");
+  const lines = log.split("\n").map((l) => l.trim()).filter(Boolean);
+  const turns: ParsedTurn[] = [];
+  let currentTurn: ParsedTurn | null = null;
+  let p1Hp: { current: number; max: number } | null = null;
+  let p2Hp: { current: number; max: number } | null = null;
+  let winner: string | null = null;
+
+  const parseHp = (hpStr: string): { current: number; max: number } | null => {
+    const m = hpStr.match(/(\d+)\/(\d+)|(\d+)\s*fnt/);
+    if (!m) return null;
+    if (m[3]) return { current: 0, max: p1Hp?.max ?? p2Hp?.max ?? 1 };
+    return { current: parseInt(m[1], 10), max: parseInt(m[2], 10) };
+  };
+
+  const getSide = (pos: string): "p1" | "p2" => (pos.startsWith("p1") ? "p1" : "p2");
+  const getPokemon = (pos: string): string => {
+    const m = pos.match(/(?:p1a|p2a):\s*([^|]+)/);
+    return m ? m[1].trim() : pos;
+  };
+
+  for (const line of lines) {
+    if (!line.startsWith("|")) continue;
+    const parts = line.slice(1).split("|");
+    const cmd = parts[0];
+    const arg1 = parts[1] ?? "";
+    const arg2 = parts[2] ?? "";
+    const arg3 = parts[3] ?? "";
+
+    if (cmd === "switch") {
+      const hp = parseHp(arg2);
+      if (arg1.includes("p1a")) {
+        p1Hp = hp ?? p1Hp;
+      } else if (arg1.includes("p2a")) {
+        p2Hp = hp ?? p2Hp;
+      }
+      if (currentTurn) {
+        currentTurn.events.push({
+          type: "switch",
+          side: getSide(arg1),
+          pokemon: getPokemon(arg1),
+          value: arg2,
+        });
+        currentTurn.p1Hp = p1Hp ?? undefined;
+        currentTurn.p2Hp = p2Hp ?? undefined;
+      }
+    } else if (cmd === "-damage") {
+      const hp = parseHp(arg2);
+      if (arg1.includes("p1a")) p1Hp = hp ?? p1Hp;
+      else if (arg1.includes("p2a")) p2Hp = hp ?? p2Hp;
+      if (currentTurn) {
+        currentTurn.events.push({
+          type: "damage",
+          side: getSide(arg1),
+          pokemon: getPokemon(arg1),
+          value: arg2,
+          raw: arg3,
+        });
+        currentTurn.p1Hp = p1Hp ?? undefined;
+        currentTurn.p2Hp = p2Hp ?? undefined;
+      }
+    } else if (cmd === "-heal") {
+      const hp = parseHp(arg2);
+      if (arg1.includes("p1a")) p1Hp = hp ?? p1Hp;
+      else if (arg1.includes("p2a")) p2Hp = hp ?? p2Hp;
+      if (currentTurn) {
+        currentTurn.events.push({ type: "heal", side: getSide(arg1), pokemon: getPokemon(arg1), value: arg2, raw: arg3 });
+        currentTurn.p1Hp = p1Hp ?? undefined;
+        currentTurn.p2Hp = p2Hp ?? undefined;
+      }
+    } else if (cmd === "move") {
+      if (!currentTurn) continue;
+      currentTurn.events.push({
+        type: "move",
+        side: getSide(arg1),
+        pokemon: getPokemon(arg1),
+        move: arg2,
+        target: arg3 ? getPokemon(arg3) : undefined,
+      });
+    } else if (cmd === "-boost") {
+      if (currentTurn) {
+        currentTurn.events.push({
+          type: "boost",
+          side: getSide(arg1),
+          pokemon: getPokemon(arg1),
+          value: `${arg2} +${arg3}`,
+        });
+      }
+    } else if (cmd === "-unboost") {
+      if (currentTurn) {
+        currentTurn.events.push({
+          type: "unboost",
+          side: getSide(arg1),
+          pokemon: getPokemon(arg1),
+          value: `${arg2} -${arg3}`,
+        });
+      }
+    } else if (cmd === "-faint") {
+      if (arg1.includes("p1a")) p1Hp = { current: 0, max: p1Hp ? (p1Hp as { max: number }).max : 1 };
+      else if (arg1.includes("p2a")) p2Hp = { current: 0, max: p2Hp ? (p2Hp as { max: number }).max : 1 };
+      if (currentTurn) {
+        currentTurn.events.push({ type: "faint", side: getSide(arg1), pokemon: getPokemon(arg1) });
+        currentTurn.p1Hp = p1Hp ?? undefined;
+        currentTurn.p2Hp = p2Hp ?? undefined;
+      }
+    } else if (cmd === "-supereffective") {
+      if (currentTurn) currentTurn.events.push({ type: "supereffective", side: getSide(arg1), pokemon: getPokemon(arg1) });
+    } else if (cmd === "-resisted") {
+      if (currentTurn) currentTurn.events.push({ type: "resisted", side: getSide(arg1), pokemon: getPokemon(arg1) });
+    } else if (cmd === "-crit") {
+      if (currentTurn) currentTurn.events.push({ type: "crit", side: getSide(arg1), pokemon: getPokemon(arg1) });
+    } else if (cmd === "-miss") {
+      if (currentTurn) currentTurn.events.push({ type: "miss", pokemon: arg1, target: arg2 });
+    } else if (cmd === "-weather") {
+      if (currentTurn) currentTurn.events.push({ type: "weather", value: arg1 });
+    } else if (cmd === "-ability") {
+      if (currentTurn) currentTurn.events.push({ type: "ability", side: getSide(arg1), pokemon: getPokemon(arg1), value: arg2 });
+    } else if (cmd === "-enditem") {
+      if (currentTurn) currentTurn.events.push({ type: "enditem", side: getSide(arg1), pokemon: getPokemon(arg1), value: arg2 });
+    } else if (cmd === "-prepare") {
+      if (currentTurn) currentTurn.events.push({ type: "prepare", side: getSide(arg1), pokemon: getPokemon(arg1), move: arg2 });
+    } else if (cmd === "-activate" && arg2 !== "confusion") {
+      if (currentTurn) currentTurn.events.push({ type: "activate", side: getSide(arg1), pokemon: getPokemon(arg1), value: arg2 });
+    } else if (cmd === "-status") {
+      if (currentTurn) currentTurn.events.push({ type: "status", side: getSide(arg1), pokemon: getPokemon(arg1), value: arg2 });
+    } else if (cmd === "turn") {
+      currentTurn = { turnNum: parseInt(arg1, 10) || 0, events: [], p1Hp: p1Hp ?? undefined, p2Hp: p2Hp ?? undefined };
+      turns.push(currentTurn);
+    } else if (cmd === "win") {
+      winner = arg1.includes("Bot 1") ? "p1" : arg1.includes("Bot 2") ? "p2" : null;
+    } else if (cmd === "start" && !currentTurn) {
+      currentTurn = { turnNum: 0, events: [], p1Hp: p1Hp ?? undefined, p2Hp: p2Hp ?? undefined };
+      turns.push(currentTurn);
+    }
+  }
+
+  return { turns, p1Name, p2Name, winner };
+}
+
+function BattleReplay({ log, matchup, winner }: { log: string; matchup: string; winner: string | null }) {
+  const parsed = useMemo(() => parseBattleLog(log, matchup), [log, matchup]);
+  const { turns, p1Name, p2Name } = parsed;
+
+  const isErrorLog = log.includes("Error:") || log.includes("MODULE_NOT_FOUND") || log.includes("node:internal");
+  if (isErrorLog || !log.includes("|turn|")) {
+    return (
+      <pre className="p-4 text-xs text-[var(--text-muted)] bg-[var(--bg-input)] rounded-lg overflow-x-auto max-h-64 overflow-y-auto whitespace-pre-wrap font-mono border border-[var(--border)]/50">
+        {log}
+      </pre>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-4 py-2 px-3 rounded-xl bg-[var(--bg-panel)]/80 border border-[var(--border)]/40">
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-[var(--primary)] truncate">{p1Name}</div>
+          <div className="text-xs text-[var(--text-muted)] mt-0.5">Player 1</div>
+        </div>
+        <div className="flex-shrink-0 px-2 py-1 rounded-lg bg-[var(--bg-input)] text-sm font-medium text-[var(--text-muted)]">
+          VS
+        </div>
+        <div className="flex-1 min-w-0 text-right">
+          <div className="font-semibold text-[var(--accent)] truncate">{p2Name}</div>
+          <div className="text-xs text-[var(--text-muted)] mt-0.5">Player 2</div>
+        </div>
+      </div>
+
+      {turns.map((turn, idx) => (
+        <motion.div
+          key={turn.turnNum}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.03 }}
+          className="rounded-xl border border-[var(--border)]/50 overflow-hidden bg-[var(--bg-input)]/30"
+        >
+          <div className="px-4 py-2 bg-[var(--bg-panel)]/60 border-b border-[var(--border)]/30">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-display font-semibold text-[var(--primary)]">Turn {turn.turnNum}</span>
+            </div>
+            {(turn.p1Hp || turn.p2Hp) && (
+              <div className="flex gap-4">
+                {turn.p1Hp && (
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between text-xs mb-0.5">
+                      <span className="text-[var(--primary)] truncate">{p1Name}</span>
+                      <span className="text-[var(--text-muted)]">{turn.p1Hp.current}/{turn.p1Hp.max}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-[var(--border)]/50 overflow-hidden">
+                      <div
+                        className={cn(
+                          "h-full rounded-full transition-all",
+                          turn.p1Hp.current / turn.p1Hp.max > 0.5 ? "bg-[var(--primary)]" : turn.p1Hp.current / turn.p1Hp.max > 0.2 ? "bg-[var(--amber)]" : "bg-[var(--danger)]"
+                        )}
+                        style={{ width: `${Math.max(0, (turn.p1Hp.current / turn.p1Hp.max) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+                {turn.p2Hp && (
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between text-xs mb-0.5">
+                      <span className="text-[var(--accent)] truncate">{p2Name}</span>
+                      <span className="text-[var(--text-muted)]">{turn.p2Hp.current}/{turn.p2Hp.max}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-[var(--border)]/50 overflow-hidden">
+                      <div
+                        className={cn(
+                          "h-full rounded-full transition-all",
+                          turn.p2Hp.current / turn.p2Hp.max > 0.5 ? "bg-[var(--accent)]" : turn.p2Hp.current / turn.p2Hp.max > 0.2 ? "bg-[var(--amber)]" : "bg-[var(--danger)]"
+                        )}
+                        style={{ width: `${Math.max(0, (turn.p2Hp.current / turn.p2Hp.max) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="p-3 space-y-2">
+            {turn.events.map((ev, i) => {
+              if (ev.type === "switch") {
+                const m = ev.value?.match(/(\d+)\/(\d+)/);
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className={cn("px-2 py-1 rounded-lg text-sm font-medium", ev.side === "p1" ? "bg-[var(--primary)]/20 text-[var(--primary)]" : "bg-[var(--accent)]/20 text-[var(--accent)]")}>
+                      {ev.pokemon}
+                    </span>
+                    <span className="text-sm text-[var(--text-muted)]">entered the battle</span>
+                    {m && <span className="text-xs text-[var(--text-muted)]">({m[1]}/{m[2]} HP)</span>}
+                  </div>
+                );
+              }
+              if (ev.type === "move") {
+                return (
+                  <div key={i} className="flex items-center gap-2 flex-wrap">
+                    <span className={cn("px-2 py-1 rounded-lg text-sm font-medium", ev.side === "p1" ? "bg-[var(--primary)]/20 text-[var(--primary)]" : "bg-[var(--accent)]/20 text-[var(--accent)]")}>
+                      {ev.pokemon}
+                    </span>
+                    <span className="text-[var(--text-muted)]">used</span>
+                    <span className="px-2 py-1 rounded-lg bg-[var(--amber)]/20 text-[var(--amber)] font-medium text-sm">
+                      {ev.move}
+                    </span>
+                    {ev.target && ev.target !== ev.pokemon && (
+                      <>
+                        <span className="text-[var(--text-muted)]">→</span>
+                        <span className="text-[var(--text)]">{ev.target}</span>
+                      </>
+                    )}
+                  </div>
+                );
+              }
+              if (ev.type === "damage") {
+                const m = ev.value?.match(/(\d+)\/(\d+)|(\d+)\s*fnt/);
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className={cn("w-2 h-2 rounded-full", ev.side === "p1" ? "bg-[var(--primary)]" : "bg-[var(--accent)]")} />
+                    <span className="text-sm text-[var(--text-muted)]">
+                      {ev.pokemon} took damage
+                      {ev.raw && <span className="text-[var(--text)]/70"> ({ev.raw})</span>}
+                    </span>
+                    {m && !m[3] && (
+                      <span className="text-xs text-[var(--danger)]">→ {m[1]}/{m[2]}</span>
+                    )}
+                  </div>
+                );
+              }
+              if (ev.type === "heal") {
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[var(--success)]" />
+                    <span className="text-sm text-[var(--success)]">{ev.pokemon} healed</span>
+                    {ev.raw && <span className="text-xs text-[var(--text-muted)]">{ev.raw}</span>}
+                  </div>
+                );
+              }
+              if (ev.type === "boost") {
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[var(--success)]" />
+                    <span className="text-sm text-[var(--success)]">{ev.pokemon} {ev.value}</span>
+                  </div>
+                );
+              }
+              if (ev.type === "unboost") {
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[var(--danger)]" />
+                    <span className="text-sm text-[var(--danger)]">{ev.pokemon} {ev.value}</span>
+                  </div>
+                );
+              }
+              if (ev.type === "faint") {
+                return (
+                  <div key={i} className="flex items-center gap-2 py-1">
+                    <span className="px-2 py-0.5 rounded bg-[var(--danger)]/30 text-[var(--danger)] font-medium text-sm">
+                      {ev.pokemon} fainted!
+                    </span>
+                  </div>
+                );
+              }
+              if (ev.type === "supereffective") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--amber)]/20 text-[var(--amber)] text-xs font-medium">
+                    Super effective!
+                  </span>
+                );
+              }
+              if (ev.type === "resisted") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--primary)]/20 text-[var(--primary)] text-xs">
+                    Resisted
+                  </span>
+                );
+              }
+              if (ev.type === "crit") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--danger)]/20 text-[var(--danger)] text-xs font-medium">
+                    Critical hit!
+                  </span>
+                );
+              }
+              if (ev.type === "miss") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--text-muted)]/20 text-[var(--text-muted)] text-xs">
+                    Miss!
+                  </span>
+                );
+              }
+              if (ev.type === "weather") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--primary)]/10 text-[var(--primary)] text-xs">
+                    Weather: {ev.value}
+                  </span>
+                );
+              }
+              if (ev.type === "ability") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--accent)]/20 text-[var(--accent)] text-xs">
+                    {ev.pokemon}'s {ev.value}
+                  </span>
+                );
+              }
+              if (ev.type === "status") {
+                const statusPhrases: Record<string, string> = { tox: "was poisoned", brn: "was burned", par: "was paralyzed", slp: "fell asleep", frz: "was frozen" };
+                const phrase = statusPhrases[ev.value ?? ""] ?? `got ${ev.value}`;
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--danger)]/20 text-[var(--danger)] text-xs">
+                    {ev.pokemon} {phrase}
+                  </span>
+                );
+              }
+              if (ev.type === "prepare") {
+                return (
+                  <span key={i} className="inline-block px-2 py-0.5 rounded bg-[var(--amber)]/20 text-[var(--amber)] text-xs">
+                    {ev.pokemon} is preparing {ev.move}!
+                  </span>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </motion.div>
+      ))}
+
+      {winner && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="rounded-xl border-2 border-[var(--success)]/50 bg-[var(--success)]/10 p-4 text-center"
+        >
+          <div className="text-sm text-[var(--text-muted)]">Winner</div>
+          <div className={cn("font-display font-bold text-lg mt-1", winner === "p1" ? "text-[var(--primary)]" : "text-[var(--accent)]")}>
+            {winner === "p1" ? p1Name : p2Name}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 function BattleLogsViewer({ refreshTrigger }: { refreshTrigger: number }) {
   const [logs, setLogs] = useState<BattleLogsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -633,25 +1032,34 @@ function BattleLogsViewer({ refreshTrigger }: { refreshTrigger: number }) {
       </select>
       {selectedMatchup && battles.length > 0 && (
         <div className="space-y-2">
-          {battles.map((b, i) => (
-            <div key={i} className="rounded-lg border border-[var(--border)]/50 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setExpandedBattle(expandedBattle === i ? null : i)}
-                className="w-full px-4 py-2 flex items-center justify-between text-left bg-[var(--bg-input)] hover:bg-[var(--primary)]/5 transition-colors"
-              >
-                <span className="text-sm font-medium text-[var(--text)]">
-                  Battle {i + 1}: {b.winner === "p1" ? "P1 wins" : b.winner === "p2" ? "P2 wins" : "No result"}
-                </span>
-                <span className="text-[var(--primary)] text-sm">{expandedBattle === i ? "▲" : "▼"}</span>
-              </button>
-              {expandedBattle === i && (
-                <pre className="p-4 text-xs text-[var(--text-muted)] bg-[var(--bg-panel)] overflow-x-auto max-h-64 overflow-y-auto whitespace-pre-wrap font-mono">
-                  {b.log}
-                </pre>
-              )}
-            </div>
-          ))}
+          {battles.map((b, i) => {
+            const [p1, p2] = selectedMatchup.split(" vs ");
+            const winnerName = b.winner === "p1" ? p1 : b.winner === "p2" ? p2 : null;
+            return (
+              <div key={i} className="rounded-xl border border-[var(--border)]/50 overflow-hidden bg-[var(--bg-input)]/30">
+                <button
+                  type="button"
+                  onClick={() => setExpandedBattle(expandedBattle === i ? null : i)}
+                  className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-[var(--primary)]/5 transition-colors"
+                >
+                  <span className="text-sm font-medium text-[var(--text)]">
+                    Battle {i + 1}
+                    {winnerName && (
+                      <span className={cn("ml-2 px-2 py-0.5 rounded-lg text-xs font-semibold", b.winner === "p1" ? "bg-[var(--primary)]/20 text-[var(--primary)]" : "bg-[var(--accent)]/20 text-[var(--accent)]")}>
+                        {winnerName} wins
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-[var(--primary)] text-sm">{expandedBattle === i ? "▲" : "▼"}</span>
+                </button>
+                {expandedBattle === i && (
+                  <div className="p-4 bg-[var(--bg-panel)] max-h-[70vh] overflow-y-auto border-t border-[var(--border)]/30">
+                    <BattleReplay log={b.log} matchup={selectedMatchup} winner={b.winner} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
