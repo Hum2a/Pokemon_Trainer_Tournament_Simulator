@@ -4,8 +4,12 @@ Entry point for the Flask application.
 Serves the React SPA from frontend/dist via src.routes.pages.
 """
 
+from pathlib import Path
+
 from dotenv import load_dotenv
-load_dotenv()
+
+# Load .env from project root (directory containing app.py)
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 from flask import Flask
 

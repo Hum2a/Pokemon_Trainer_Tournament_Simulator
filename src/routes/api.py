@@ -39,6 +39,27 @@ from src.battle_log_parser import compute_analytics
 api_bp = Blueprint("api", __name__)
 
 
+@api_bp.route("/auth/check")
+def auth_check():
+    """Diagnostic endpoint: check if auth is working (no auth required)."""
+    from src.auth import get_user_id_from_request, _auth_configured
+    auth_header = request.headers.get("Authorization")
+    has_auth_header = bool(auth_header and auth_header.startswith("Bearer "))
+    server_configured = _auth_configured()
+    user_id = get_user_id_from_request()
+    return jsonify({
+        "has_auth_header": has_auth_header,
+        "server_configured": server_configured,
+        "auth_valid": user_id is not None,
+        "hint": (
+            "Add SUPABASE_URL and SUPABASE_ANON_KEY to backend .env" if not server_configured
+            else "Sign in again and retry" if not has_auth_header
+            else "Token invalid or expired" if not user_id
+            else "Auth OK"
+        ),
+    })
+
+
 def _load_config_for_user(user_id):
     """Load config: Supabase first if user, else file."""
     if user_id:
@@ -373,38 +394,42 @@ def smogon_sets(format_id):
 @require_auth
 def save_current_simulation():
     """Save current matchup outputs to Supabase for the authenticated user."""
-    user_id = get_user_id_from_request()
-    if not user_id:
-        return jsonify({"error": "Authentication required"}), 401
-    run_id = create_simulation_run(user_id, "matchup", get_config())
-    if not run_id:
-        return jsonify({"error": "Failed to create simulation record"}), 500
-    matchup_results = None
-    matchup_matrix_csv = None
-    matchup_battle_logs = None
     try:
-        p = DATA_DIR / "matchup_results.json"
-        if p.exists():
-            with open(p, encoding="utf-8") as f:
-                matchup_results = json.load(f)
-    except (json.JSONDecodeError, OSError):
-        pass
-    try:
-        p = DATA_DIR / "matchup_matrix.csv"
-        if p.exists():
-            matchup_matrix_csv = p.read_text(encoding="utf-8")
-    except OSError:
-        pass
-    try:
-        p = DATA_DIR / "matchup_battle_logs.json"
-        if p.exists():
-            with open(p, encoding="utf-8") as f:
-                matchup_battle_logs = json.load(f)
-    except (json.JSONDecodeError, OSError):
-        pass
-    if save_simulation_results(user_id, run_id, matchup_results, matchup_matrix_csv, matchup_battle_logs):
-        return jsonify({"ok": True, "run_id": run_id})
-    return jsonify({"error": "Failed to save results"}), 500
+        user_id = get_user_id_from_request()
+        if not user_id:
+            return jsonify({"error": "Authentication required"}), 401
+        config = get_config()
+        run_id = create_simulation_run(user_id, "matchup", config)
+        if not run_id:
+            return jsonify({"error": "Failed to create simulation record"}), 500
+        matchup_results = None
+        matchup_matrix_csv = None
+        matchup_battle_logs = None
+        try:
+            p = DATA_DIR / "matchup_results.json"
+            if p.exists():
+                with open(p, encoding="utf-8") as f:
+                    matchup_results = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            pass
+        try:
+            p = DATA_DIR / "matchup_matrix.csv"
+            if p.exists():
+                matchup_matrix_csv = p.read_text(encoding="utf-8")
+        except OSError:
+            pass
+        try:
+            p = DATA_DIR / "matchup_battle_logs.json"
+            if p.exists():
+                with open(p, encoding="utf-8") as f:
+                    matchup_battle_logs = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            pass
+        if save_simulation_results(user_id, run_id, matchup_results, matchup_matrix_csv, matchup_battle_logs):
+            return jsonify({"ok": True, "run_id": run_id})
+        return jsonify({"error": "Failed to save results"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @api_bp.route("/simulations")

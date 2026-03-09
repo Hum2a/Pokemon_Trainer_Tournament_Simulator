@@ -14,7 +14,7 @@ This app uses [Supabase](https://supabase.com) for authentication and per-user s
 In the Supabase Dashboard:
 
 1. Open **SQL Editor**
-2. Copy the contents of `supabase/migrations/001_initial_schema.sql`
+2. Copy the contents of `supabase_migrations/migrations/001_initial_schema.sql`
 3. Paste and run it
 
 This creates `user_configs`, `simulation_runs`, and `simulation_results` tables with RLS.
@@ -24,11 +24,10 @@ This creates `user_configs`, `simulation_runs`, and `simulation_results` tables 
 In Supabase: **Project Settings** → **API** (or **API Keys**)
 
 - **Project URL** → `SUPABASE_URL` (backend) and `VITE_SUPABASE_URL` (frontend)
-- **Publishable key** (`sb_publishable_...`) → `VITE_SUPABASE_PUBLISHABLE_KEY` (frontend)
+- **Publishable key** (`sb_publishable_...`) or **anon key** → `VITE_SUPABASE_PUBLISHABLE_KEY` (frontend) and `SUPABASE_ANON_KEY` (backend)
 - **Secret key** (`sb_secret_...`) → `SUPABASE_SECRET_KEY` (backend only; keep secret)
-- **JWT Secret** → `SUPABASE_JWT_SECRET` (backend; under "JWT Settings" for verifying auth tokens)
 
-Legacy keys still work: `anon` → `VITE_SUPABASE_ANON_KEY`, `service_role` → `SUPABASE_SERVICE_ROLE_KEY`.
+No JWT secret needed—auth is verified via Supabase’s API.
 
 ## 4. Configure Environment Variables
 
@@ -38,9 +37,11 @@ Create `.env` in the project root:
 
 ```
 SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_JWT_SECRET=your-jwt-secret
+SUPABASE_ANON_KEY=your-anon-or-publishable-key
 SUPABASE_SECRET_KEY=your-secret-key
 ```
+
+Use the same **anon** or **publishable** key you use in the frontend for `SUPABASE_ANON_KEY`.
 
 ### Frontend
 
@@ -67,12 +68,21 @@ By default Supabase allows email signup. To customize:
 
 - **Authentication** → **Providers** → **Email**: enable/disable, set email templates
 
-## 7. Deploy (Render)
+## 7. Troubleshooting
+
+**"Save failed: Authentication required"** when saving simulations:
+
+1. **Backend not configured**: Ensure `SUPABASE_URL` and `SUPABASE_ANON_KEY` are set in your root `.env`. Use the same anon/publishable key as the frontend.
+2. **Token not reaching backend**: Visit `http://localhost:5173/api/auth/check` while signed in—it shows whether the auth header is received and the server is configured.
+3. **Token expired**: Sign out and sign in again to refresh your session.
+4. **Same origin**: If you switch between dev (localhost:5173) and prod (localhost:5000), sign in again—sessions are stored per origin.
+
+## 8. Deploy (Render)
 
 Add these as environment variables in Render:
 
 - `SUPABASE_URL`
-- `SUPABASE_JWT_SECRET`
+- `SUPABASE_ANON_KEY`
 - `SUPABASE_SECRET_KEY`
 
 For the frontend build, add:

@@ -105,6 +105,14 @@ export function Outputs() {
       appendLog("Saved simulation results to your account");
     } catch (e) {
       appendLog(`Save failed: ${(e as Error).message}`, "error");
+      try {
+        const check = await api.get<{ hint: string }>("/auth/check");
+        if (check.hint && check.hint !== "Auth OK") {
+          appendLog(`Tip: ${check.hint}`, "error");
+        }
+      } catch {
+        // Ignore auth check failure
+      }
     } finally {
       setSaving(false);
     }
