@@ -34,6 +34,12 @@ A web interface is available to run all simulator functions through buttons and 
 
 The UI lets you build battles, run trainer or Pokemon simulations, parse results to PNG/CSV, and download outputs—all configurable via the Settings panel.
 
+**Project structure:** The codebase is modular. See `.cursorrules` for conventions. Key directories:
+- `app.py` – entry point
+- `src/` – backend (config, security, services, routes)
+- `static/js/` – frontend modules (api, config, file-editor, teambuilder, actions, outputs)
+- `templates/` – Jinja2 templates with partials
+
 **Team Builder:** To use the Team Builder (pick any Pokemon, moves, abilities, items), run once:
 ```
 cd Data/UsefulDatasets && python fetch_dex_data.py
