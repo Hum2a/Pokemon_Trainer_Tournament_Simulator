@@ -36,6 +36,64 @@ interface MatchupResult {
 
 type MatchupData = Record<string, MatchupResult>;
 
+interface BattleLogAnalytics {
+  global: {
+    totalBattles: number;
+    totalMatchups: number;
+    avgTurns: number;
+    totalMoves: number;
+    superEffective: number;
+    resisted: number;
+    crits: number;
+    misses: number;
+    boosts: number;
+    heals: number;
+    recoil: number;
+    itemsConsumed: number;
+    statuses: Record<string, number>;
+    turnDistribution: Record<number, number>;
+  };
+  byMatchup: Record<
+    string,
+    {
+      p1: string;
+      p2: string;
+      totalBattles: number;
+      p1Wins: number;
+      p2Wins: number;
+      avgTurns: number;
+      turns: number[];
+      movesP1: Record<string, number>;
+      movesP2: Record<string, number>;
+      superEffective: number;
+      resisted: number;
+      crits: number;
+      misses: number;
+      statuses: Record<string, number>;
+      boosts: number;
+      heals: number;
+      recoil: number;
+    }
+  >;
+  byPokemon: Record<
+    string,
+    {
+      wins: number;
+      losses: number;
+      totalBattles: number;
+      avgTurnsWhenWin: number;
+      avgTurnsWhenLoss: number;
+      moves: Record<string, number>;
+      koMoves: Record<string, number>;
+      superEffective: number;
+      crits: number;
+      misses: number;
+    }
+  >;
+  topMoves: { move: string; count: number }[];
+  topStatuses: { status: string; count: number }[];
+}
+
 const CHART_COLORS = {
   primary: "#00f5ff",
   accent: "#ff00aa",
@@ -71,6 +129,34 @@ function useMatchupData(refreshTrigger: number) {
   }, [refreshTrigger]);
 
   return { data, loading, error };
+}
+
+function useBattleLogAnalytics(refreshTrigger: number) {
+  const [analytics, setAnalytics] = useState<BattleLogAnalytics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    api
+      .get<BattleLogAnalytics>("/outputs/matchup-battle-analytics")
+      .then((d) => {
+        if (!cancelled) setAnalytics(d);
+      })
+      .catch((e) => {
+        if (!cancelled) setError((e as Error).message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshTrigger]);
+
+  return { analytics, loading, error };
 }
 
 function SummaryStats({ data }: { data: MatchupData }) {
@@ -361,6 +447,267 @@ function BattlesPerMatchupChart({ data }: { data: MatchupData }) {
           />
         </AreaChart>
       </ResponsiveContainer>
+    </div>
+  );
+}
+
+function BattleLengthChart({ analytics }: { analytics: BattleLogAnalytics }) {
+  const g = analytics.global;
+  if (g.totalBattles === 0) return null;
+  const turnDist = Object.entries(g.turnDistribution)
+    .map(([t, c]) => ({ turns: parseInt(t, 10), count: c }))
+    .sort((a, b) => a.turns - b.turns);
+  if (turnDist.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={turnDist} margin={{ top: 5, right: 20, left: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="turns" stroke={CHART_COLORS.muted} fontSize={11} name="Turns" />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="count" fill={CHART_COLORS.primary} radius={[4, 4, 0, 0]} name="Battles" />
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="text-xs text-[var(--text-muted)] mt-2">Avg: {g.avgTurns.toFixed(1)} turns per battle</p>
+    </div>
+  );
+}
+
+function TopMovesChart({ analytics }: { analytics: BattleLogAnalytics }) {
+  const top = analytics.topMoves.slice(0, 12);
+  if (top.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={top} layout="vertical" margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis type="number" stroke={CHART_COLORS.muted} fontSize={11} />
+          <YAxis type="category" dataKey="move" width={100} stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="count" fill={CHART_COLORS.amber} radius={[0, 4, 4, 0]} name="Uses" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function TypeEffectivenessPie({ analytics }: { analytics: BattleLogAnalytics }) {
+  const g = analytics.global;
+  const total = g.superEffective + g.resisted + Math.max(0, g.totalMoves - g.superEffective - g.resisted);
+  if (total === 0) return null;
+  const neutral = Math.max(0, g.totalMoves - g.superEffective - g.resisted);
+  const data = [
+    { name: "Super effective", value: g.superEffective, color: CHART_COLORS.success },
+    { name: "Resisted", value: g.resisted, color: CHART_COLORS.danger },
+    { name: "Neutral", value: neutral, color: CHART_COLORS.muted },
+  ].filter((d) => d.value > 0);
+
+  if (data.length === 0) return null;
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={35}
+            outerRadius={65}
+            paddingAngle={2}
+            dataKey="value"
+            nameKey="name"
+            label={({ name, value }) => `${name}: ${value}`}
+          >
+            {data.map((entry, i) => (
+              <Cell key={i} fill={entry.color} />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function CritMissStats({ analytics }: { analytics: BattleLogAnalytics }) {
+  const g = analytics.global;
+  if (g.totalMoves === 0) return null;
+  const critRate = ((g.crits / g.totalMoves) * 100).toFixed(2);
+  const missRate = ((g.misses / g.totalMoves) * 100).toFixed(2);
+
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="p-3 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)]/50">
+          <div className="text-xs text-[var(--text-muted)] uppercase">Critical Hits</div>
+          <div className="text-xl font-bold text-[var(--danger)]">{g.crits}</div>
+          <div className="text-xs text-[var(--text-muted)]">{critRate}% of moves</div>
+        </div>
+        <div className="p-3 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)]/50">
+          <div className="text-xs text-[var(--text-muted)] uppercase">Misses</div>
+          <div className="text-xl font-bold text-[var(--amber)]">{g.misses}</div>
+          <div className="text-xs text-[var(--text-muted)]">{missRate}% of moves</div>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <span className="px-2 py-1 rounded bg-[var(--success)]/20 text-[var(--success)] text-xs">
+          Boosts: {g.boosts}
+        </span>
+        <span className="px-2 py-1 rounded bg-[var(--primary)]/20 text-[var(--primary)] text-xs">
+          Heals: {g.heals}
+        </span>
+        <span className="px-2 py-1 rounded bg-[var(--danger)]/20 text-[var(--danger)] text-xs">
+          Recoil: {g.recoil}
+        </span>
+        <span className="px-2 py-1 rounded bg-[var(--amber)]/20 text-[var(--amber)] text-xs">
+          Items consumed: {g.itemsConsumed}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function StatusBreakdownChart({ analytics }: { analytics: BattleLogAnalytics }) {
+  const statuses = analytics.topStatuses;
+  if (statuses.length === 0) return null;
+
+  const statusLabels: Record<string, string> = {
+    frz: "Freeze",
+    brn: "Burn",
+    par: "Paralysis",
+    psn: "Poison",
+    tox: "Toxic",
+    slp: "Sleep",
+  };
+
+  const data = statuses.map((s) => ({
+    name: statusLabels[s.status] ?? s.status,
+    count: s.count,
+  }));
+
+  return (
+    <div className="h-40">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 5, right: 20, left: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="count" fill={CHART_COLORS.accent} radius={[4, 4, 0, 0]} name="Occurrences" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function AvgTurnsByPokemonChart({ analytics }: { analytics: BattleLogAnalytics }) {
+  const chartData = useMemo(() => {
+    return Object.entries(analytics.byPokemon)
+      .filter(([, p]) => p.totalBattles >= 2)
+      .map(([name, p]) => ({
+        name,
+        avgWin: p.avgTurnsWhenWin,
+        avgLoss: p.avgTurnsWhenLoss,
+        wins: p.wins,
+        losses: p.losses,
+      }))
+      .sort((a, b) => b.wins - a.wins)
+      .slice(0, 10);
+  }, [analytics]);
+
+  if (chartData.length === 0) return null;
+
+  return (
+    <div className="h-56">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData} margin={{ left: 8, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} angle={-35} textAnchor="end" height={60} />
+          <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
+          <Tooltip
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
+          />
+          <Bar dataKey="avgWin" fill={CHART_COLORS.success} radius={[4, 4, 0, 0]} name="Avg turns when winning" />
+          <Bar dataKey="avgLoss" fill={CHART_COLORS.danger} radius={[4, 4, 0, 0]} name="Avg turns when losing" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function MatchupDetailPanel({ analytics }: { analytics: BattleLogAnalytics }) {
+  const [selected, setSelected] = useState("");
+  const matchups = Object.keys(analytics.byMatchup).sort();
+  const detail = selected ? analytics.byMatchup[selected] : null;
+
+  if (matchups.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <label className="block text-sm font-medium text-[var(--text-muted)]">Select matchup for details</label>
+      <select
+        aria-label="Select matchup for details"
+        value={selected}
+        onChange={(e) => setSelected(e.target.value)}
+        className="w-full px-3 py-2 rounded-lg bg-[var(--bg-panel)] border border-[var(--border)] text-[var(--text)] text-sm"
+      >
+        <option value="">—</option>
+        {matchups.map((m) => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      {detail && (
+        <div className="p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border)]/50 space-y-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+            <div><span className="text-[var(--text-muted)]">Battles:</span> {detail.totalBattles}</div>
+            <div><span className="text-[var(--text-muted)]">P1 wins:</span> {detail.p1Wins}</div>
+            <div><span className="text-[var(--text-muted)]">P2 wins:</span> {detail.p2Wins}</div>
+            <div><span className="text-[var(--text-muted)]">Avg turns:</span> {detail.avgTurns.toFixed(1)}</div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="px-2 py-1 rounded bg-[var(--amber)]/20 text-xs">Super: {detail.superEffective}</span>
+            <span className="px-2 py-1 rounded bg-[var(--danger)]/20 text-xs">Resisted: {detail.resisted}</span>
+            <span className="px-2 py-1 rounded bg-[var(--danger)]/20 text-xs">Crits: {detail.crits}</span>
+            <span className="px-2 py-1 rounded bg-[var(--text-muted)]/20 text-xs">Misses: {detail.misses}</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div className="text-xs text-[var(--primary)] font-medium mb-1">{detail.p1} moves</div>
+              <div className="flex flex-wrap gap-1">
+                {Object.entries(detail.movesP1)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 6)
+                  .map(([m, c]) => (
+                    <span key={m} className="px-2 py-0.5 rounded bg-[var(--primary)]/20 text-xs">{m} ({c})</span>
+                  ))}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs text-[var(--accent)] font-medium mb-1">{detail.p2} moves</div>
+              <div className="flex flex-wrap gap-1">
+                {Object.entries(detail.movesP2)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 6)
+                  .map(([m, c]) => (
+                    <span key={m} className="px-2 py-0.5 rounded bg-[var(--accent)]/20 text-xs">{m} ({c})</span>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1285,6 +1632,7 @@ function ChartCard({
 
 export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrigger: number; smogonFormat?: string }) {
   const { data, loading, error } = useMatchupData(refreshTrigger);
+  const { analytics: battleAnalytics, loading: analyticsLoading } = useBattleLogAnalytics(refreshTrigger);
 
   if (loading) {
     return (
@@ -1367,6 +1715,38 @@ export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrig
         </ChartCard>
 
       </div>
+
+          {!analyticsLoading && battleAnalytics && battleAnalytics.global.totalBattles > 0 && (
+            <>
+              <h3 className="font-display font-semibold text-[var(--primary)] mt-8 mb-3">Battle Log Analytics</h3>
+              <p className="text-sm text-[var(--text-muted)] mb-4">
+                Stats derived from turn-by-turn battle logs: move usage, type effectiveness, crits, status, and more.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <ChartCard title="Battle Length" description="Distribution of turns per battle">
+                  <BattleLengthChart analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Top Moves" description="Most used moves across all battles">
+                  <TopMovesChart analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Type Effectiveness" description="Super effective vs resisted vs neutral">
+                  <TypeEffectivenessPie analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Crits & Misses" description="Critical hits, misses, boosts, heals">
+                  <CritMissStats analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Status Effects" description="Most common status conditions">
+                  <StatusBreakdownChart analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Turns by Pokemon" description="Avg turns when winning vs losing (min 2 battles)">
+                  <AvgTurnsByPokemonChart analytics={battleAnalytics} />
+                </ChartCard>
+                <ChartCard title="Per-Matchup Details" description="Drill down into moves and stats for a specific matchup" className="md:col-span-2 xl:col-span-3">
+                  <MatchupDetailPanel analytics={battleAnalytics} />
+                </ChartCard>
+              </div>
+            </>
+          )}
         </>
       )}
       <ChartCard title="Matchup Table" description="Search and sort all matchups" className="md:col-span-2 xl:col-span-3">

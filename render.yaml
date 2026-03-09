@@ -1,0 +1,13 @@
+# Render Blueprint - Pokemon Battle Simulator
+# Deploy: Connect repo at dashboard.render.com, or use "New > Blueprint"
+# Docs: https://render.com/docs/infrastructure-as-code
+
+services:
+  - type: web
+    name: pokemon-simulator
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    # Render sets PORT automatically; gunicorn in Dockerfile uses it
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
