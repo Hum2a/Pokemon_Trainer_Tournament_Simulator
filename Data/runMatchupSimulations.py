@@ -500,7 +500,7 @@ def main():
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
 
-    print("Stage 0/4: Building pokemon-showdown...", flush=True)
+    print("Stage 0/5: Building pokemon-showdown...", flush=True)
     ps_dir = Path(__file__).parent.parent / "pokemon-showdown"
     build_result = subprocess.run(
         ["node", "build"],
