@@ -1,13 +1,27 @@
 /**
- * Team Builder - Pokemon set creation
+ * Team Builder - Pokemon set creation with filters and Smogon import
  */
 
 const TeamBuilder = {
   dexData: { species: [], moves: [], abilities: [], items: [], learnsets: {}, natures: [] },
   team: [],
+  smogonSets: null,
+  selectedSpecies: null,
 
   toId(s) {
     return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  },
+
+  getFilteredSpecies() {
+    const typeFilter = document.getElementById('builderFilterType')?.value || '';
+    const regionFilter = document.getElementById('builderFilterRegion')?.value || '';
+    const roleFilter = document.getElementById('builderFilterRole')?.value || '';
+    return this.dexData.species.filter(s => {
+      if (typeFilter && !(s.types || []).includes(typeFilter)) return false;
+      if (regionFilter && s.region !== regionFilter) return false;
+      if (roleFilter && s.role !== roleFilter) return false;
+      return true;
+    });
   },
 
   async loadDexData() {
@@ -34,9 +48,95 @@ const TeamBuilder = {
     }
   },
 
+  pickFirst(val) {
+    if (Array.isArray(val)) return val[0];
+    return val;
+  },
+
+  flattenMoves(moves) {
+    const result = [];
+    for (const m of moves || []) {
+      result.push(Array.isArray(m) ? m[0] : m);
+    }
+    return result.slice(0, 4);
+  },
+
+  smogonLookupKey(data, species) {
+    const name = species?.name;
+    if (!name || !data) return null;
+    if (data[name]) return data[name];
+    const id = species?.id || '';
+    const base = species?.baseSpecies || name;
+    if (base !== name && data[base]) return data[base];
+    const alt = name.replace(/\s+/g, '-');
+    if (data[alt]) return data[alt];
+    return null;
+  },
+
+  async loadSmogonSets() {
+    const species = this.selectedSpecies;
+    if (!species) return;
+    const format = document.getElementById('builderSmogonFormat')?.value || 'gen9ou';
+    const el = document.getElementById('builderSmogonSets');
+    el.innerHTML = '<span class="smogon-sets-loading">Loading...</span>';
+    try {
+      const data = await API.get(`/smogon/sets/${format}`);
+      const sets = this.smogonLookupKey(data, species);
+      if (!sets || Object.keys(sets).length === 0) {
+        el.innerHTML = '<span class="smogon-sets-loading">No sets for this Pokemon in this format.</span>';
+        return;
+      }
+      this.smogonSets = sets;
+      el.innerHTML = Object.keys(sets).map(name =>
+        `<button type="button" class="smogon-set-btn" data-set="${this.escapeHtml(name)}">${this.escapeHtml(name)}</button>`
+      ).join('');
+      el.querySelectorAll('.smogon-set-btn').forEach(btn => {
+        btn.addEventListener('click', () => this.importSmogonSet(btn.dataset.set));
+      });
+    } catch (e) {
+      el.innerHTML = '<span class="smogon-sets-loading">Could not load sets.</span>';
+      Logger.append('Smogon sets: ' + e.message, 'error');
+    }
+  },
+
+  importSmogonSet(setName) {
+    const set = this.smogonSets?.[setName];
+    if (!set) return;
+    const ability = this.pickFirst(set.ability);
+    const item = this.pickFirst(set.item);
+    const nature = this.pickFirst(set.nature) || 'Hardy';
+    const moves = this.flattenMoves(set.moves);
+    if (ability) {
+      const abSelect = document.getElementById('builderAbility');
+      const opts = Array.from(abSelect.options);
+      const match = opts.find(o => o.value === ability);
+      if (match) abSelect.value = ability;
+    }
+    if (item) {
+      const itemSelect = document.getElementById('builderItem');
+      const opts = Array.from(itemSelect.options);
+      const match = opts.find(o => o.value === item);
+      if (match) itemSelect.value = item;
+    }
+    document.getElementById('builderNature').value = nature;
+    [1, 2, 3, 4].forEach((i, idx) => {
+      const moveSelect = document.getElementById(`builderMove${i}`);
+      const moveName = moves[idx];
+      if (moveName && moveSelect) {
+        const opts = Array.from(moveSelect.options);
+        const match = opts.find(o => o.value === moveName);
+        if (match) moveSelect.value = moveName;
+      }
+    });
+    Logger.append(`Imported Smogon set: ${setName}`);
+  },
+
   selectSpecies(species) {
-    const sel = this.dexData.species.find(s => s.id === species.id || s.name === species.name);
+    const filtered = this.getFilteredSpecies();
+    const sel = filtered.find(s => s.id === species.id || s.name === species.name)
+      || this.dexData.species.find(s => s.id === species.id || s.name === species.name);
     if (!sel) return;
+    this.selectedSpecies = sel;
     document.getElementById('builderSpecies').value = sel.name;
     document.getElementById('builderSpeciesList').innerHTML = '';
     document.getElementById('builderSpeciesList').style.display = 'none';
@@ -55,6 +155,8 @@ const TeamBuilder = {
     ['builderMove1', 'builderMove2', 'builderMove3', 'builderMove4'].forEach(id => {
       document.getElementById(id).innerHTML = '<option value="">(none)</option>' + moveOpts.map(m => `<option value="${m.name}">${m.name}</option>`).join('');
     });
+
+    this.loadSmogonSets();
   },
 
   buildSet() {
@@ -123,7 +225,10 @@ const TeamBuilder = {
         list.style.display = 'none';
         return;
       }
-      const matches = this.dexData.species.filter(s => s.name.toLowerCase().includes(q) || s.id.includes(q)).slice(0, 20);
+      const filtered = this.getFilteredSpecies();
+      const matches = filtered.filter(s =>
+        s.name.toLowerCase().includes(q) || s.id.includes(q)
+      ).slice(0, 25);
       list.innerHTML = matches.map(s => `<div class="dropdown-item" data-id="${s.id}" data-name="${s.name}">${s.name}</div>`).join('');
       list.style.display = matches.length ? 'block' : 'none';
       list.querySelectorAll('.dropdown-item').forEach(el => {
@@ -135,6 +240,20 @@ const TeamBuilder = {
       if (!e.target.closest('#builderSpecies') && !e.target.closest('#builderSpeciesList')) {
         document.getElementById('builderSpeciesList').style.display = 'none';
       }
+    });
+
+    ['builderFilterType', 'builderFilterRegion', 'builderFilterRole'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => {
+        const q = document.getElementById('builderSpecies').value.trim().toLowerCase();
+        if (q.length >= 2) {
+          document.getElementById('builderSpecies').dispatchEvent(new Event('input'));
+        }
+      });
+    });
+
+    document.getElementById('builderSmogonFormat')?.addEventListener('change', () => {
+      if (this.selectedSpecies) this.loadSmogonSets();
     });
 
     document.getElementById('builderAdd').addEventListener('click', () => this.addToTeam());
