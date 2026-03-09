@@ -1,88 +1,13 @@
 # Pokemon Battle Simulator - Project Rules
 
-## Project Overview
-This is a Pokemon battle simulator with a web UI. It runs large-scale Pokemon Showdown simulations (trainer vs trainer, Pokemon vs leaders), parses results, and provides a team builder. The backend is Flask (Python); the frontend is vanilla JS with modular structure.
+Project rules have been moved to `.cursor/rules/` for better organization.
 
-## Codebase Structure
-
-```
-Pokemon_Trainer_Tournament_Simulator/
-├── app.py                 # Entry point, creates Flask app
-├── src/
-│   ├── config.py         # Paths, config loading, constants
-│   ├── security.py       # Validation, path sanitization
-│   ├── services.py       # Script execution, task state
-│   └── routes/
-│       ├── pages.py      # Page routes (index)
-│       └── api.py        # API routes
-├── static/
-│   ├── style.css
-│   └── js/
-│       ├── api.js        # API client
-│       ├── logger.js     # Logging, status
-│       ├── config.js     # Settings
-│       ├── file-editor.js
-│       ├── teambuilder.js
-│       ├── actions.js
-│       ├── outputs.js
-│       └── main.js       # Entry, init
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   └── partials/         # Reusable template fragments
-└── Data/                 # Simulator scripts, inputs, outputs
-```
-
-## Security
-
-- **Path validation**: All file paths must be under `Data/Inputs/`. Use `resolve_input_path()` in security.py. Reject paths with `..`, absolute paths, or invalid characters.
-- **Input validation**: Validate config (threads 1-64, non-negative numbers). Validate file content size (max 10 MB).
-- **Output allowlist**: Only serve files in `ALLOWED_OUTPUT_FILES`. Never serve arbitrary paths.
-- **Headers**: X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy are set on all responses.
-- **Request size**: MAX_CONTENT_LENGTH limits request body size.
-
-## Code Style
-
-- **Python**: PEP 8. Use type hints where helpful. Docstrings for public functions. Max line length 100.
-- **JavaScript**: ES5-compatible (no build step). Use `const`/`let`. Avoid global pollution; use namespaced objects (API, Logger, Config, etc.).
-- **Naming**: snake_case for Python, camelCase for JS. Be descriptive.
-
-## Error Handling
-
-- **API**: Return JSON `{"error": "message"}` with appropriate HTTP status (400, 403, 404, 500).
-- **Frontend**: Catch fetch errors, log via Logger.append, show user-friendly messages.
-- **Subprocess**: Catch TimeoutExpired, OSError. Log failures; don't expose stack traces to client.
-
-## Testing
-
-- Prefer unit tests for security (path validation, config validation) and services.
-- Integration tests for API endpoints if feasible.
-- Manual testing for UI flows.
-
-## Documentation
-
-- Keep README.md up to date with setup, run instructions, and Team Builder dex fetch step.
-- Comment non-obvious logic. Prefer self-documenting code.
-
-## Dependencies
-
-- Minimize dependencies. Use stdlib where possible.
-- Pin versions in requirements.txt.
-- Document why each dependency exists.
-
-## Data & Files
-
-- Simulator scripts live in `Data/`. They read `config.json` (flat format) when run.
-- Dex data: run `Data/UsefulDatasets/fetch_dex_data.py` once for Team Builder.
-- Never commit `config.json` if it contains user-specific paths (add to .gitignore if needed).
-
-## Performance
-
-- Dex data is loaded on demand by the frontend. Keep JSON files reasonably sized.
-- Long-running simulations run in background threads; poll `/api/status` for progress.
-- Avoid loading entire output.txt into memory; stream if possible for very large files.
-
-## Accessibility & UX
-
-- Use semantic HTML. Labels for form inputs. ARIA where helpful.
-- Collapsible panels for long forms. Clear feedback on actions (log, status).
+See:
+- `.cursor/rules/project-overview.mdc` - Structure, run commands
+- `.cursor/rules/python-backend.mdc` - Flask, src/
+- `.cursor/rules/security.mdc` - Path validation, config validation
+- `.cursor/rules/frontend-react.mdc` - React, Vite, Tailwind
+- `.cursor/rules/api-conventions.mdc` - API responses, error handling
+- `.cursor/rules/code-style.mdc` - Naming, formatting
+- `.cursor/rules/data-files.mdc` - Data/, scripts, config
+- `.cursor/rules/accessibility-ux.mdc` - A11y, form labels, feedback
