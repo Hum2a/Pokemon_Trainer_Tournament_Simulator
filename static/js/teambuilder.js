@@ -141,6 +141,13 @@ const TeamBuilder = {
     document.getElementById('builderSpeciesList').innerHTML = '';
     document.getElementById('builderSpeciesList').style.display = 'none';
 
+    const statLabels = { hp: 'HP', atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
+    const stats = sel.baseStats || {};
+    ['hp', 'atk', 'def', 'spa', 'spd', 'spe'].forEach(stat => {
+      const el = document.querySelector(`#builderStats [data-stat="${stat}"]`);
+      if (el) el.textContent = `${statLabels[stat]} ${stats[stat] ?? '—'}`;
+    });
+
     const abs = sel.abilities || {};
     const abOpts = Object.values(abs).filter(Boolean);
     document.getElementById('builderAbility').innerHTML = abOpts.length ? abOpts.map(a => `<option value="${a}">${a}</option>`).join('') : '<option value="">(unknown)</option>';
@@ -216,25 +223,28 @@ const TeamBuilder = {
     });
   },
 
-  init() {
-    document.getElementById('builderSpecies').addEventListener('input', () => {
-      const q = document.getElementById('builderSpecies').value.trim().toLowerCase();
-      const list = document.getElementById('builderSpeciesList');
-      if (q.length < 2) {
-        list.innerHTML = '';
-        list.style.display = 'none';
-        return;
-      }
-      const filtered = this.getFilteredSpecies();
-      const matches = filtered.filter(s =>
+  updateSpeciesDropdown() {
+    const q = document.getElementById('builderSpecies').value.trim().toLowerCase();
+    const list = document.getElementById('builderSpeciesList');
+    let filtered = this.getFilteredSpecies();
+    if (q.length >= 2) {
+      filtered = filtered.filter(s =>
         s.name.toLowerCase().includes(q) || s.id.includes(q)
-      ).slice(0, 25);
-      list.innerHTML = matches.map(s => `<div class="dropdown-item" data-id="${s.id}" data-name="${s.name}">${s.name}</div>`).join('');
-      list.style.display = matches.length ? 'block' : 'none';
-      list.querySelectorAll('.dropdown-item').forEach(el => {
-        el.addEventListener('click', () => this.selectSpecies({ id: el.dataset.id, name: el.dataset.name }));
-      });
+      );
+    }
+    const limit = q.length >= 2 ? 25 : 50;
+    const matches = filtered.slice(0, limit);
+    list.innerHTML = matches.map(s => `<div class="dropdown-item" data-id="${s.id}" data-name="${s.name}">${s.name}</div>`).join('');
+    list.style.display = matches.length ? 'block' : 'none';
+    list.querySelectorAll('.dropdown-item').forEach(el => {
+      el.addEventListener('click', () => this.selectSpecies({ id: el.dataset.id, name: el.dataset.name }));
     });
+  },
+
+  init() {
+    const speciesInput = document.getElementById('builderSpecies');
+    speciesInput.addEventListener('input', () => this.updateSpeciesDropdown());
+    speciesInput.addEventListener('focus', () => this.updateSpeciesDropdown());
 
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#builderSpecies') && !e.target.closest('#builderSpeciesList')) {
@@ -244,12 +254,7 @@ const TeamBuilder = {
 
     ['builderFilterType', 'builderFilterRegion', 'builderFilterRole'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.addEventListener('change', () => {
-        const q = document.getElementById('builderSpecies').value.trim().toLowerCase();
-        if (q.length >= 2) {
-          document.getElementById('builderSpecies').dispatchEvent(new Event('input'));
-        }
-      });
+      if (el) el.addEventListener('change', () => this.updateSpeciesDropdown());
     });
 
     document.getElementById('builderSmogonFormat')?.addEventListener('change', () => {
