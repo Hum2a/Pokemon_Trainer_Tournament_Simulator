@@ -19,6 +19,7 @@ from src.services import (
     run_script,
     run_script_background,
     get_task_status,
+    terminate_task,
     write_trainer_config,
     write_pokemon_config,
     write_parse_config,
@@ -102,6 +103,13 @@ def parse_csv():
 @api_bp.route("/status")
 def status():
     return jsonify(get_task_status())
+
+
+@api_bp.route("/terminate-task", methods=["POST"])
+def terminate_task_route():
+    if terminate_task():
+        return jsonify({"ok": True, "message": "Task terminated"})
+    return jsonify({"ok": False, "message": "No task running"}), 400
 
 
 @api_bp.route("/outputs")
