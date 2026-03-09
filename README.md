@@ -39,7 +39,7 @@ A web interface is available to run all simulator functions through buttons and 
 
 The UI lets you build battles, run trainer or Pokemon simulations, parse results to PNG/CSV, and download outputs—all configurable via the Settings panel.
 
-**Project structure:** The codebase is modular. See `.cursorrules` for conventions. Key directories:
+**Project structure:** The codebase is modular. See `.cursor/rules/` for conventions. Key directories:
 - `app.py` – entry point
 - `src/` – backend (config, security, services, routes)
 - `frontend/` – React + Vite + Tailwind frontend (builds to `frontend/dist/`)
