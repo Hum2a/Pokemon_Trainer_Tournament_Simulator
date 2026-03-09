@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../api";
 import type { CustomSet } from "../context/AppContext";
@@ -110,16 +111,35 @@ function SetEditorModal({
   if (!isOpen) return null;
 
   const moveOptions = moves.map((m) => m.name);
-  return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} aria-hidden />
+  const modalContent = (
+    <div
+      className="flex items-center justify-center p-4"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 2147483647,
+        overflow: "auto",
+      }}
+    >
+      <div
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+        style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        onClick={onClose}
+        aria-hidden
+      />
       <motion.div
         role="dialog"
         aria-modal="true"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="relative w-full max-w-lg rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-xl overflow-hidden max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-lg rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-xl overflow-hidden max-h-[90vh] flex flex-col shrink-0"
+        style={{ margin: "auto" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-4 border-b border-[var(--border)]">
@@ -228,6 +248,8 @@ function SetEditorModal({
       </motion.div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 function getSetMoves(display: CustomSet | SmogonSetData | null): string[] {
