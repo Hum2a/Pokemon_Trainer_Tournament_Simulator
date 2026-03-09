@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Flask
+instance/
+.webassets-cache
+
+# Node.js (pokemon-showdown)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Project outputs & runtime
+Data/config.json
+Data/output.txt
+Data/ErrorOutputs.txt
+Data/WorkerFiles/
+Data/WorkerOutputs/
+Data/battle_matrix_plot.png
+Data/trainer_stats.csv
+Data/battle_matrix.csv
+Data/scores.json
+Data/builds.json
+Data/average_scores.json
+Data/Pokemon_Simulation_Outputs/
+
+# IDE & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Cursor (optional - uncomment if you don't want to track)
+# .cursor/
