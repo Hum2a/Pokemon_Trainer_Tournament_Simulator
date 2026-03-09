@@ -142,9 +142,19 @@ def get_keys_from_value(d, val):
     return [k for k, v in d.items() if v == val]
 
 leaders_filename = "Inputs/" + "GymLeaderPokemon.txt"
-pokemon_filename = "Inputs/" + "PokemonBuilds.txt"    
+pokemon_filename = "Inputs/" + "PokemonBuilds.txt"
 
-noOfThreads = 1 # Change this to fit your CPU
+# Load config from file if present (for UI)
+config = {}
+if os.path.exists('config.json'):
+    try:
+        with open('config.json') as f:
+            config = json.load(f)
+    except Exception:
+        pass
+
+noOfThreads = config.get('noOfThreads', 1)
+n = config.get('n', 2000)  # battle cap (None = all)
 
 #read in teams
 with open('Inputs/tournament_battles.json', 'r') as infile:
@@ -175,9 +185,9 @@ leader_teams = {
 leader_teamNumbers = {k: v for k, v in teamNumbers.items() if any(k.startswith(name) for name in leader_teams.keys())}
 
 print(len(teams))
-setLevel = None # If not None, all pokemon will be set to this level
-n = 2000 # number of battles to stop running after
-# teams = teams[:n] # comment this out to simulate all battles
+setLevel = None
+if n is not None:
+    teams = teams[:n]
 
 n = len(teams)
 noOfTeams = len(teamNumbers)
