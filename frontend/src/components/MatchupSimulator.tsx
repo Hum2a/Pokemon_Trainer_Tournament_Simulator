@@ -58,10 +58,61 @@ const HEIGHT_RANGES = [
   { value: "large", label: "Large (> 2 m)" },
 ];
 
+const POOL_FILTER_LABELS: Record<string, string> = {
+  all: "All Pokemon",
+  type: "Specific type",
+  region: "Specific region",
+  evolution: "Evolution stage",
+  ability: "Has ability",
+  move: "Can learn move",
+  role: "Role",
+  bst: "BST range",
+  typeCount: "Single vs dual type",
+  tags: "Legendary / Mythical / etc",
+  eggGroup: "Egg group",
+  color: "Color",
+  generation: "Generation",
+  weight: "Weight range",
+  height: "Height range",
+  canMega: "Can Mega Evolve",
+};
+
+const POOL_FILTER_RESET: Record<string, string> = {
+  poolType: "",
+  poolRegion: "",
+  poolEvolutionStage: "",
+  poolAbility: "",
+  poolMove: "",
+  poolRole: "",
+  poolBst: "any",
+  poolTypeCount: "",
+  poolTags: "",
+  poolEggGroup: "",
+  poolColor: "",
+  poolGeneration: "",
+  poolWeight: "any",
+  poolHeight: "any",
+  poolCanMega: "yes",
+};
+
 interface Species {
   id: string;
   name: string;
   types?: string[];
+  region?: string;
+  evolutionStage?: string;
+  abilities?: Record<string, string>;
+  role?: string;
+  bst?: number;
+  color?: string;
+  eggGroups?: string[];
+  weightkg?: number;
+  heightm?: number;
+  tags?: string[];
+  canMega?: boolean;
+  typeCount?: number;
+  generation?: number;
+  baseSpecies?: string;
 }
 
 interface DexItem {
@@ -74,6 +125,7 @@ export function MatchupSimulator() {
   const [species, setSpecies] = useState<Species[]>([]);
   const [abilities, setAbilities] = useState<DexItem[]>([]);
   const [moves, setMoves] = useState<DexItem[]>([]);
+  const [learnsets, setLearnsets] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(true);
   const [showDropdown1, setShowDropdown1] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
@@ -95,14 +147,16 @@ export function MatchupSimulator() {
     const load = async () => {
       setLoading(true);
       try {
-        const [speciesData, abilitiesData, movesData] = await Promise.all([
+        const [speciesData, abilitiesData, movesData, learnsetsData] = await Promise.all([
           api.get<Species[]>("/dex/species"),
           api.get<DexItem[]>("/dex/abilities"),
           api.get<DexItem[]>("/dex/moves"),
+          api.get<Record<string, string[]>>("/dex/learnsets"),
         ]);
         setSpecies(speciesData);
         setAbilities(abilitiesData);
         setMoves(movesData);
+        setLearnsets(learnsetsData ?? {});
       } catch (e) {
         appendLog("Failed to load dex data: " + (e as Error).message, "error");
       } finally {
@@ -164,6 +218,87 @@ export function MatchupSimulator() {
   const inputCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] transition-all focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]";
   const labelCls = "flex flex-col gap-1.5 text-sm font-medium text-[var(--text)]";
 
+  const getPoolMaxCount = useCallback((): number => {
+    const f = m.poolFilter ?? "all";
+    const matchesBst = (bst: number, key: string) => {
+      if (!key || key === "any") return true;
+      if (key === "under400") return bst < 400;
+      if (key === "400-500") return 400 <= bst && bst < 500;
+      if (key === "500-600") return 500 <= bst && bst < 600;
+      if (key === "600+") return bst >= 600;
+      return true;
+    };
+    const matchesWeight = (w: number | undefined, key: string) => {
+      if (!key || key === "any") return true;
+      const val = w ?? 0;
+      if (key === "light") return val < 50;
+      if (key === "medium") return val >= 50 && val <= 150;
+      if (key === "heavy") return val > 150;
+      return true;
+    };
+    const matchesHeight = (h: number | undefined, key: string) => {
+      if (!key || key === "any") return true;
+      const val = h ?? 0;
+      if (key === "small") return val < 1;
+      if (key === "medium") return val >= 1 && val <= 2;
+      if (key === "large") return val > 2;
+      return true;
+    };
+    let filtered = [...species];
+    if (f === "all") return filtered.length;
+    if (f === "type" && m.poolType) filtered = filtered.filter((s) => (s.types ?? []).includes(m.poolType!));
+    else if (f === "region" && m.poolRegion) filtered = filtered.filter((s) => s.region === m.poolRegion);
+    else if (f === "evolution" && m.poolEvolutionStage) filtered = filtered.filter((s) => s.evolutionStage === m.poolEvolutionStage);
+    else if (f === "ability" && m.poolAbility) filtered = filtered.filter((s) => Object.values(s.abilities ?? {}).includes(m.poolAbility!));
+    else if (f === "move" && m.poolMove) {
+      const moveId = m.poolMove.toLowerCase().replace(/[\s-]/g, "");
+      filtered = filtered.filter((s) => {
+        const sid = (s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
+        const baseId = (s.baseSpecies ?? s.id ?? "").toLowerCase().replace(/[\s-]/g, "");
+        const moves = learnsets[sid] ?? learnsets[baseId] ?? [];
+        return Array.isArray(moves) && moves.includes(moveId);
+      });
+    } else if (f === "role" && m.poolRole) filtered = filtered.filter((s) => s.role === m.poolRole);
+    else if (f === "bst" && m.poolBst && m.poolBst !== "any") filtered = filtered.filter((s) => matchesBst(s.bst ?? 0, m.poolBst!));
+    else if (f === "typeCount" && m.poolTypeCount) {
+      const tc = m.poolTypeCount === "dual" ? 2 : 1;
+      filtered = filtered.filter((s) => (s.typeCount ?? 1) === tc);
+    } else if (f === "tags" && m.poolTags) filtered = filtered.filter((s) => (s.tags ?? []).includes(m.poolTags!));
+    else if (f === "eggGroup" && m.poolEggGroup) filtered = filtered.filter((s) => (s.eggGroups ?? []).includes(m.poolEggGroup!));
+    else if (f === "color" && m.poolColor) filtered = filtered.filter((s) => s.color === m.poolColor);
+    else if (f === "generation" && m.poolGeneration) {
+      const gen = parseInt(m.poolGeneration, 10);
+      if (!isNaN(gen)) filtered = filtered.filter((s) => s.generation === gen);
+    } else if (f === "weight" && m.poolWeight && m.poolWeight !== "any") filtered = filtered.filter((s) => matchesWeight(s.weightkg, m.poolWeight!));
+    else if (f === "height" && m.poolHeight && m.poolHeight !== "any") filtered = filtered.filter((s) => matchesHeight(s.heightm, m.poolHeight!));
+    else if (f === "canMega" && m.poolCanMega) {
+      const wantMega = m.poolCanMega === "yes";
+      filtered = filtered.filter((s) => Boolean(s.canMega) === wantMega);
+    }
+    return filtered.length;
+  }, [species, learnsets, m.poolFilter, m.poolType, m.poolRegion, m.poolEvolutionStage, m.poolAbility, m.poolMove, m.poolRole, m.poolBst, m.poolTypeCount, m.poolTags, m.poolEggGroup, m.poolColor, m.poolGeneration, m.poolWeight, m.poolHeight, m.poolCanMega]);
+
+  const getFilterValueLabel = (): string => {
+    const f = m.poolFilter ?? "all";
+    if (f === "all") return "—";
+    if (f === "type") return m.poolType || "—";
+    if (f === "region") return m.poolRegion || "—";
+    if (f === "evolution") return EVOLUTION_STAGES.find((e) => e.value === m.poolEvolutionStage)?.label ?? "—";
+    if (f === "ability") return m.poolAbility || "—";
+    if (f === "move") return moves.find((mv) => mv.id === m.poolMove)?.name ?? m.poolMove ?? "—";
+    if (f === "role") return m.poolRole || "—";
+    if (f === "bst") return BST_RANGES.find((b) => b.value === m.poolBst)?.label ?? "—";
+    if (f === "typeCount") return TYPE_COUNT.find((t) => t.value === m.poolTypeCount)?.label ?? "—";
+    if (f === "tags") return m.poolTags || "—";
+    if (f === "eggGroup") return m.poolEggGroup || "—";
+    if (f === "color") return m.poolColor || "—";
+    if (f === "generation") return m.poolGeneration ? `Gen ${m.poolGeneration}` : "—";
+    if (f === "weight") return WEIGHT_RANGES.find((w) => w.value === m.poolWeight)?.label ?? "—";
+    if (f === "height") return HEIGHT_RANGES.find((h) => h.value === m.poolHeight)?.label ?? "—";
+    if (f === "canMega") return m.poolCanMega === "yes" ? "Yes" : "No";
+    return "—";
+  };
+
   const matches1 = getMatches(m.pokemon1 ?? "");
   const matches2 = getMatches(m.pokemon2 ?? "");
 
@@ -193,7 +328,7 @@ export function MatchupSimulator() {
                 <span>Pool filter</span>
                 <select
                   value={m.poolFilter ?? "all"}
-                  onChange={(e) => updateMatchup({ poolFilter: e.target.value })}
+                  onChange={(e) => updateMatchup({ poolFilter: e.target.value, ...POOL_FILTER_RESET })}
                   className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
                 >
                   <option value="all">All Pokemon</option>
@@ -436,14 +571,26 @@ export function MatchupSimulator() {
               )}
               <label className={labelCls}>
                 <span>Pool size limit</span>
-                <input
-                  type="number"
-                  min={2}
-                  max={200}
-                  value={m.poolLimit ?? 50}
-                  onChange={(e) => updateMatchup({ poolLimit: parseInt(e.target.value) || 50 })}
-                  className={inputCls}
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min={2}
+                    max={2000}
+                    value={m.poolLimit ?? 50}
+                    onChange={(e) => updateMatchup({ poolLimit: Math.max(2, parseInt(e.target.value) || 50) })}
+                    className={cn(inputCls, "flex-1 min-w-0")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => updateMatchup({ poolLimit: Math.max(2, getPoolMaxCount()) })}
+                    className="px-3 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--bg-input)] text-[var(--text)] text-sm font-medium hover:bg-[var(--primary)]/10 hover:border-[var(--primary)]/50 transition-colors whitespace-nowrap"
+                  >
+                    Maximum
+                  </button>
+                </div>
+                <span className="text-xs text-[var(--text-muted)]">
+                  {getPoolMaxCount()} Pokemon match current filter
+                </span>
               </label>
             </>
           )}
@@ -457,8 +604,8 @@ export function MatchupSimulator() {
               type="number"
               min={1}
               max={100}
-              value={m.setLevel ?? 50}
-              onChange={(e) => updateMatchup({ setLevel: parseInt(e.target.value) || 50 })}
+              value={m.setLevel ?? 100}
+              onChange={(e) => updateMatchup({ setLevel: parseInt(e.target.value) || 100 })}
               className={inputCls}
             />
           </label>
@@ -468,8 +615,8 @@ export function MatchupSimulator() {
               type="number"
               min={1}
               max={1000}
-              value={m.battlesPerMatchup ?? 100}
-              onChange={(e) => updateMatchup({ battlesPerMatchup: parseInt(e.target.value) || 100 })}
+              value={m.battlesPerMatchup ?? 5}
+              onChange={(e) => updateMatchup({ battlesPerMatchup: parseInt(e.target.value) || 5 })}
               className={inputCls}
             />
           </label>
@@ -485,6 +632,55 @@ export function MatchupSimulator() {
             />
           </label>
         </motion.div>
+      </div>
+
+      <div className="mb-6 p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border)]">
+        <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Current Parameters</h3>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm">
+          <div className="flex gap-2">
+            <dt className="text-[var(--text-muted)] min-w-[100px]">Mode</dt>
+            <dd className="text-[var(--text)] font-medium">{(m.mode ?? "head-to-head") === "head-to-head" ? "Head-to-Head" : "Matrix"}</dd>
+          </div>
+          {(m.mode ?? "head-to-head") === "head-to-head" ? (
+            <>
+              <div className="flex gap-2">
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Pokemon 1</dt>
+                <dd className="text-[var(--text)] font-medium">{m.pokemon1 || "—"}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Pokemon 2</dt>
+                <dd className="text-[var(--text)] font-medium">{m.pokemon2 || "—"}</dd>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex gap-2">
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Pool filter</dt>
+                <dd className="text-[var(--text)] font-medium">{POOL_FILTER_LABELS[m.poolFilter ?? "all"] ?? m.poolFilter}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Filter value</dt>
+                <dd className="text-[var(--text)] font-medium">{getFilterValueLabel()}</dd>
+              </div>
+              <div className="flex gap-2">
+                <dt className="text-[var(--text-muted)] min-w-[100px]">Pool limit</dt>
+                <dd className="text-[var(--text)] font-medium">{m.poolLimit ?? 50}</dd>
+              </div>
+            </>
+          )}
+          <div className="flex gap-2">
+            <dt className="text-[var(--text-muted)] min-w-[100px]">Level</dt>
+            <dd className="text-[var(--text)] font-medium">{m.setLevel ?? 100}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="text-[var(--text-muted)] min-w-[100px]">Battles/matchup</dt>
+            <dd className="text-[var(--text)] font-medium">{m.battlesPerMatchup ?? 5}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="text-[var(--text-muted)] min-w-[100px]">Threads</dt>
+            <dd className="text-[var(--text)] font-medium">{m.noOfThreads ?? 4}</dd>
+          </div>
+        </dl>
       </div>
 
       {(m.mode ?? "head-to-head") === "head-to-head" && (
