@@ -16,7 +16,7 @@ RUN npm run build
 
 # Stage 2: Build pokemon-showdown (git submodule)
 FROM node:20-slim AS ps-builder
-RUN apt-get update && apt-get install -y --no-install-recommends git \
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY . ./
