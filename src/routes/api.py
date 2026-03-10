@@ -334,6 +334,7 @@ def _load_config_for_user(user_id):
 
 
 @api_bp.route("/config", methods=["GET"])
+@require_auth
 def get_config_route():
     user_id = get_user_id_from_request()
     config = _load_config_for_user(user_id)
@@ -341,6 +342,7 @@ def get_config_route():
 
 
 @api_bp.route("/config", methods=["POST"])
+@require_auth
 def save_config_route():
     user_id = get_user_id_from_request()
     config = request.get_json(silent=True)
@@ -356,6 +358,7 @@ def save_config_route():
 
 
 @api_bp.route("/build-trainer", methods=["POST"])
+@require_auth
 def build_trainer():
     config = get_config()
     runs = config.get("trainer", {}).get("run_n_times", 100)
@@ -369,12 +372,14 @@ def build_trainer():
 
 
 @api_bp.route("/build-pokemon", methods=["POST"])
+@require_auth
 def build_pokemon():
     ok, out = run_script("BuildBattles_pokemon-vs-leaders_Gen1.py")
     return jsonify({"ok": ok, "output": out})
 
 
 @api_bp.route("/run-trainer", methods=["POST"])
+@require_auth
 def run_trainer():
     write_trainer_config()
     run_script_background("runSimulations.py")
@@ -382,6 +387,7 @@ def run_trainer():
 
 
 @api_bp.route("/run-pokemon", methods=["POST"])
+@require_auth
 def run_pokemon():
     write_pokemon_config()
     run_script_background("runPokemonSimulations.py")
@@ -389,6 +395,7 @@ def run_pokemon():
 
 
 @api_bp.route("/run-matchups", methods=["POST"])
+@require_auth
 def run_matchups():
     write_matchup_config()
     run_script_background("runMatchupSimulations.py")
@@ -396,6 +403,7 @@ def run_matchups():
 
 
 @api_bp.route("/parse-png", methods=["POST"])
+@require_auth
 def parse_png():
     write_parse_config()
     ok, out = run_script("parseOutput.py")
@@ -403,6 +411,7 @@ def parse_png():
 
 
 @api_bp.route("/parse-csv", methods=["POST"])
+@require_auth
 def parse_csv():
     write_parse_config()
     ok, out = run_script("parseOutput_CSV.py")
@@ -410,6 +419,7 @@ def parse_csv():
 
 
 @api_bp.route("/status")
+@require_auth
 def status():
     return jsonify(get_task_status())
 
@@ -422,6 +432,7 @@ def terminate_task_route():
 
 
 @api_bp.route("/outputs/matchup-data")
+@require_auth
 def matchup_data():
     """Return matchup_results.json content for charts. 404 if not found."""
     path = DATA_DIR / "matchup_results.json"
@@ -465,6 +476,7 @@ def matchup_battle_analytics():
 
 
 @api_bp.route("/outputs")
+@require_auth
 def outputs_list():
     files = []
     for name in [
@@ -500,6 +512,7 @@ def output_file(filename):
 
 
 @api_bp.route("/files/read", methods=["POST"])
+@require_auth
 def file_read():
     data = request.get_json(silent=True) or {}
     path = data.get("path", "").strip()
@@ -521,6 +534,7 @@ def file_read():
 
 
 @api_bp.route("/files/write", methods=["POST"])
+@require_auth
 def file_write():
     data = request.get_json(silent=True) or {}
     path = data.get("path", "").strip()

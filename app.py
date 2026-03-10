@@ -26,7 +26,9 @@ def create_app():
     # CORS for split deployment (frontend on different origin)
     cors_origins = os.environ.get("CORS_ORIGINS", "")
     if cors_origins:
-        CORS(app, origins=[o.strip() for o in cors_origins.split(",")], supports_credentials=True)
+        origins = [o.strip() for o in cors_origins.split(",") if o.strip() and o.strip() != "*"]
+        if origins:
+            CORS(app, origins=origins, supports_credentials=True)
 
     register_blueprints(app)
     register_security_headers(app)
@@ -43,6 +45,14 @@ def register_security_headers(app):
         response.headers["X-Frame-Options"] = "SAMEORIGIN"
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        # CSP: allow self, Supabase, Showdown sprites. Only applies when serving HTML.
+        csp = (
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+            "img-src 'self' data: https: https://play.pokemonshowdown.com; "
+            "connect-src 'self' https://*.supabase.co https://*.supabase.in https://data.pkmn.cc; "
+            "frame-ancestors 'self'"
+        )
+        response.headers["Content-Security-Policy"] = csp
         return response
 
 
