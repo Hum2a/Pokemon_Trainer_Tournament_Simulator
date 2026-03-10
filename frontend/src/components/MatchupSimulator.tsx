@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Panel } from "./Panel";
 import { PoolSets } from "./PoolSets";
+import { PokemonSprite } from "./PokemonSprite";
 import { useApp, type Config } from "../context/AppContext";
 import { api } from "../api";
 import { cn } from "../lib/utils";
@@ -123,6 +124,7 @@ function FilterSection({
 interface Species {
   id: string;
   name: string;
+  num?: number;
   types?: string[];
   region?: string;
   evolutionStage?: string;
@@ -191,28 +193,63 @@ export function MatchupSimulator() {
     updateMatchup({ [key]: next });
   };
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      try {
-        const [speciesData, abilitiesData, movesData, learnsetsData] = await Promise.all([
-          api.get<Species[]>("/dex/species"),
-          api.get<DexItem[]>("/dex/abilities"),
-          api.get<DexItem[]>("/dex/moves"),
-          api.get<Record<string, string[]>>("/dex/learnsets"),
-        ]);
-        setSpecies(speciesData);
-        setAbilities(abilitiesData);
-        setMoves(movesData);
-        setLearnsets(learnsetsData ?? {});
-      } catch (e) {
-        appendLog("Failed to load dex data: " + (e as Error).message, "error");
-      } finally {
-        setLoading(false);
+  const [dexLoadError, setDexLoadError] = useState<string | null>(null);
+  const [loadingStep, setLoadingStep] = useState<"species" | "abilities" | "moves" | "learnsets" | null>(null);
+  const [spritesReady, setSpritesReady] = useState(false);
+
+  const DEX_STEPS = ["species", "abilities", "moves", "learnsets"] as const;
+  const loadingStepIndex = loadingStep ? DEX_STEPS.indexOf(loadingStep) + 1 : 0;
+  const loadingProgress = loadingStep ? (loadingStepIndex / DEX_STEPS.length) * 100 : 0;
+
+  const loadDexData = useCallback(async () => {
+    setDexLoadError(null);
+    setLoading(true);
+    setLoadingStep("species");
+    try {
+      setLoadingStep("species");
+      const speciesData = await api.get<Species[]>("/dex/species");
+      setSpecies(Array.isArray(speciesData) ? speciesData : []);
+      if (!Array.isArray(speciesData) || speciesData.length === 0) {
+        setDexLoadError("Dex data empty or invalid. Run Data/UsefulDatasets/fetch_dex_data.py first.");
       }
-    };
-    load();
+
+      setLoadingStep("abilities");
+      const abilitiesData = await api.get<DexItem[]>("/dex/abilities");
+      setAbilities(Array.isArray(abilitiesData) ? abilitiesData : []);
+
+      setLoadingStep("moves");
+      const movesData = await api.get<DexItem[]>("/dex/moves");
+      setMoves(Array.isArray(movesData) ? movesData : []);
+
+      setLoadingStep("learnsets");
+      const learnsetsData = await api.get<Record<string, string[]>>("/dex/learnsets");
+      setLearnsets(learnsetsData && typeof learnsetsData === "object" ? learnsetsData : {});
+    } catch (e) {
+      const msg = (e as Error).message;
+      setDexLoadError(msg || "Failed to load dex data");
+      appendLog("Failed to load dex data: " + msg, "error");
+      setSpecies([]);
+      setAbilities([]);
+      setMoves([]);
+      setLearnsets({});
+    } finally {
+      setLoading(false);
+      setLoadingStep(null);
+    }
   }, [appendLog]);
+
+  useEffect(() => {
+    loadDexData();
+  }, [loadDexData]);
+
+  useEffect(() => {
+    if (loading) {
+      setSpritesReady(false);
+      return;
+    }
+    const id = requestAnimationFrame(() => setSpritesReady(true));
+    return () => cancelAnimationFrame(id);
+  }, [loading]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -830,9 +867,41 @@ export function MatchupSimulator() {
                     Maximum
                   </button>
                 </div>
-                <span className="text-xs text-[var(--text-muted)]">
-                  {getPoolMaxCount()} Pokemon match current filter
-                </span>
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-[var(--text-muted)]">
+                    {loading
+                      ? `Loading ${loadingStep ?? "dex"}... (${loadingStepIndex}/${DEX_STEPS.length})`
+                      : dexLoadError
+                        ? "Dex data not loaded."
+                        : species.length === 0
+                          ? "No dex data."
+                          : getPoolMaxCount() === 0 && species.length > 0
+                            ? "No Pokemon match. Try resetting filters."
+                            : `${getPoolMaxCount()} Pokemon match current filter`}
+                  </span>
+                  {loading && (
+                    <div className="h-1.5 w-full rounded-full bg-[var(--bg-input)] overflow-hidden border border-[var(--border)]/50">
+                      <div
+                        className="h-full bg-[var(--primary)]/70 transition-all duration-300 ease-out"
+                        style={{ width: `${loadingProgress}%` }}
+                      />
+                    </div>
+                  )}
+                </div>
+                {dexLoadError && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={loadDexData}
+                      className="text-xs px-2 py-1 rounded border border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)]/10 transition-colors"
+                    >
+                      Retry
+                    </button>
+                    <span className="text-xs text-[var(--text-muted)]">
+                      Run: python Data/UsefulDatasets/fetch_dex_data.py
+                    </span>
+                  </div>
+                )}
               </label>
               </FilterSection>
             </div>
@@ -1019,22 +1088,28 @@ export function MatchupSimulator() {
         <p className="text-sm text-[var(--text-muted)] mb-3">
           Pokemon that will compete and their sets. Click a card to expand and view set details before running.
         </p>
-        <PoolSets
-          pokemon={
-            (m.mode ?? "head-to-head") === "head-to-head"
-              ? [m.pokemon1, m.pokemon2].filter((x): x is string => !!x)
-              : getFilteredPool()
-          }
-          format={m.smogonFormat ?? "gen9ou"}
-          onFormatChange={(f) => updateMatchup({ smogonFormat: f })}
-          customSets={m.customSets ?? {}}
-          onCustomSetChange={(species, set) => {
-            const prev = m.customSets ?? {};
-            const next = set ? { ...prev, [species]: set } : (() => { const n = { ...prev }; delete n[species]; return n; })();
-            updateMatchup({ customSets: next });
-          }}
-          editable
-        />
+        {!spritesReady ? (
+          <div className="py-8 text-center text-[var(--text-muted)] text-sm">
+            {loading ? "Loading dex data..." : "Preparing..."}
+          </div>
+        ) : (
+          <PoolSets
+            pokemon={
+              (m.mode ?? "head-to-head") === "head-to-head"
+                ? [m.pokemon1, m.pokemon2].filter((x): x is string => !!x)
+                : getFilteredPool()
+            }
+            format={m.smogonFormat ?? "gen9ou"}
+            onFormatChange={(f) => updateMatchup({ smogonFormat: f })}
+            customSets={m.customSets ?? {}}
+            onCustomSetChange={(species, set) => {
+              const prev = m.customSets ?? {};
+              const next = set ? { ...prev, [species]: set } : (() => { const n = { ...prev }; delete n[species]; return n; })();
+              updateMatchup({ customSets: next });
+            }}
+            editable
+          />
+        )}
       </div>
 
       {(m.mode ?? "head-to-head") === "head-to-head" && (
@@ -1061,10 +1136,15 @@ export function MatchupSimulator() {
                   matches1.map((s) => (
                     <div
                       key={s.id}
-                      className="px-4 py-2 cursor-pointer hover:bg-[var(--primary)]/10"
+                      className="px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-[var(--primary)]/10"
                       onMouseDown={(e) => { e.preventDefault(); updateMatchup({ pokemon1: s.name }); setShowDropdown1(false); }}
                     >
-                      {s.name}
+                      {spritesReady ? (
+                        <PokemonSprite name={s.name} num={s.num} size={24} />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-[var(--bg-input)] border border-[var(--border)] shrink-0" />
+                      )}
+                      <span>{s.name}</span>
                     </div>
                   ))
                 )}
@@ -1094,10 +1174,15 @@ export function MatchupSimulator() {
                   matches2.map((s) => (
                     <div
                       key={s.id}
-                      className="px-4 py-2 cursor-pointer hover:bg-[var(--primary)]/10"
+                      className="px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-[var(--primary)]/10"
                       onMouseDown={(e) => { e.preventDefault(); updateMatchup({ pokemon2: s.name }); setShowDropdown2(false); }}
                     >
-                      {s.name}
+                      {spritesReady ? (
+                        <PokemonSprite name={s.name} num={s.num} size={24} />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-[var(--bg-input)] border border-[var(--border)] shrink-0" />
+                      )}
+                      <span>{s.name}</span>
                     </div>
                   ))
                 )}

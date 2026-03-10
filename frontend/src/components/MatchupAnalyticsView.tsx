@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PokemonSprite } from "./PokemonSprite";
 import {
   BarChart,
   Bar,
@@ -167,8 +168,18 @@ export function MatchupAnalyticsView({
                       idx % 2 === 1 && "bg-[var(--bg-input)]/30"
                     )}
                   >
-                    <td className="px-3 py-2 text-[var(--text)]">{m.p1}</td>
-                    <td className="px-3 py-2 text-[var(--text)]">{m.p2}</td>
+                    <td className="px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <PokemonSprite name={m.p1} size={24} />
+                        <span className="text-[var(--text)]">{m.p1}</span>
+                      </div>
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <PokemonSprite name={m.p2} size={24} />
+                        <span className="text-[var(--text)]">{m.p2}</span>
+                      </div>
+                    </td>
                     <td className="px-3 py-2 text-right text-[var(--text)]">{m.p1_wins}</td>
                     <td className="px-3 py-2 text-right text-[var(--text)]">{m.p2_wins}</td>
                     <td className="px-3 py-2 text-right text-[var(--primary)]">
@@ -194,12 +205,13 @@ export function MatchupAnalyticsView({
           </p>
           <div className="flex flex-wrap gap-2">
             {data.pool!.map((name) => (
-              <span
+              <div
                 key={name}
-                className="px-2 py-1 rounded-md bg-[var(--bg-input)] text-sm text-[var(--text)]"
+                className="flex items-center gap-2 px-2 py-1 rounded-md bg-[var(--bg-input)] text-sm text-[var(--text)]"
               >
-                {name}
-              </span>
+                <PokemonSprite name={name} size={32} />
+                <span>{name}</span>
+              </div>
             ))}
           </div>
         </SimulationDetailSection>
@@ -216,8 +228,9 @@ export function MatchupAnalyticsView({
                 key={name}
                 className="rounded-lg border border-[var(--border)] overflow-hidden"
               >
-                <div className="px-3 py-2 bg-[var(--bg-input)] text-sm font-medium text-[var(--primary)]">
-                  {name}
+                <div className="px-3 py-2 flex items-center gap-2 bg-[var(--bg-input)] text-sm font-medium text-[var(--primary)]">
+                  <PokemonSprite name={name} size={32} />
+                  <span>{name}</span>
                 </div>
                 <pre className="p-3 text-xs text-[var(--text)] overflow-x-auto whitespace-pre-wrap font-mono">
                   {setStr}
