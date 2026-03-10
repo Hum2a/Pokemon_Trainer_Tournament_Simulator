@@ -95,6 +95,170 @@ def admin_update_role(user_id):
     return jsonify({"error": "Failed to update role"}), 500
 
 
+@api_bp.route("/admin/health")
+@require_admin
+def admin_health():
+    """Check health of all integrations and APIs. Admin/developer only."""
+    import urllib.request
+    import time
+
+    results = []
+
+    # 1. Backend status
+    try:
+        start = time.perf_counter()
+        get_task_status()
+        elapsed = (time.perf_counter() - start) * 1000
+        results.append({
+            "name": "Backend status",
+            "status": "ok",
+            "message": "Task status available",
+            "ms": round(elapsed, 1),
+        })
+    except Exception as e:
+        results.append({
+            "name": "Backend status",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 2. Auth check
+    try:
+        user_id = get_user_id_from_request()
+        results.append({
+            "name": "Auth (Supabase JWT)",
+            "status": "ok" if user_id else "warn",
+            "message": "Authenticated" if user_id else "No user or token invalid",
+        })
+    except Exception as e:
+        results.append({
+            "name": "Auth (Supabase JWT)",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 3. Supabase REST (user_profiles)
+    try:
+        users = list_users_with_roles()
+        results.append({
+            "name": "Supabase (user_profiles)",
+            "status": "ok" if users is not None else "warn",
+            "message": f"{len(users)} users" if users else "Not configured or empty",
+        })
+    except Exception as e:
+        results.append({
+            "name": "Supabase (user_profiles)",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 4. Dex data (local)
+    try:
+        from src.config import DEX_DIR
+        species_path = DEX_DIR / "species.json"
+        exists = species_path.exists()
+        results.append({
+            "name": "Dex data (local)",
+            "status": "ok" if exists else "warn",
+            "message": "species.json found" if exists else "Run fetch_dex_data.py",
+        })
+    except Exception as e:
+        results.append({
+            "name": "Dex data (local)",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 5. Smogon / data.pkmn.cc
+    try:
+        start = time.perf_counter()
+        req = urllib.request.Request(
+            "https://data.pkmn.cc/sets/index.json",
+            headers={"User-Agent": "PokemonSimulator/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read().decode())
+        elapsed = (time.perf_counter() - start) * 1000
+        count = len(data) if isinstance(data, dict) else 0
+        results.append({
+            "name": "Smogon sets (data.pkmn.cc)",
+            "status": "ok",
+            "message": f"{count} formats",
+            "ms": round(elapsed, 1),
+        })
+    except Exception as e:
+        results.append({
+            "name": "Smogon sets (data.pkmn.cc)",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 6. Pokemon Showdown CDN (sprites)
+    try:
+        start = time.perf_counter()
+        req = urllib.request.Request(
+            "https://play.pokemonshowdown.com/sprites/dex/pikachu.png",
+            headers={"User-Agent": "PokemonSimulator/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=8) as r:
+            r.read()
+        elapsed = (time.perf_counter() - start) * 1000
+        results.append({
+            "name": "Showdown CDN (sprites)",
+            "status": "ok",
+            "message": "Sprite reachable",
+            "ms": round(elapsed, 1),
+        })
+    except Exception as e:
+        results.append({
+            "name": "Showdown CDN (sprites)",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 7. PokéAPI
+    try:
+        start = time.perf_counter()
+        req = urllib.request.Request(
+            "https://pokeapi.co/api/v2/pokemon/pikachu",
+            headers={"Accept": "application/json", "User-Agent": "PokemonSimulator/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.loads(r.read().decode())
+        elapsed = (time.perf_counter() - start) * 1000
+        name = data.get("name", "?")
+        results.append({
+            "name": "PokéAPI",
+            "status": "ok",
+            "message": f"OK ({name})",
+            "ms": round(elapsed, 1),
+        })
+    except Exception as e:
+        results.append({
+            "name": "PokéAPI",
+            "status": "error",
+            "message": str(e),
+        })
+
+    # 8. Config file
+    try:
+        from src.config import CONFIG_PATH
+        exists = CONFIG_PATH.exists()
+        results.append({
+            "name": "Config file",
+            "status": "ok" if exists else "warn",
+            "message": "config.json found" if exists else "Missing",
+        })
+    except Exception as e:
+        results.append({
+            "name": "Config file",
+            "status": "error",
+            "message": str(e),
+        })
+
+    return jsonify({"checks": results})
+
+
 def _load_config_for_user(user_id):
     """Load config: Supabase first if user, else file."""
     if user_id:
