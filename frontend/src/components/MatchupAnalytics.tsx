@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BarChart,
   Bar,
@@ -103,6 +104,74 @@ const CHART_COLORS = {
   muted: "#8b96b0",
 };
 
+function AnalyticsDetailModal({
+  title,
+  description,
+  children,
+  open,
+  onClose,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  open: boolean;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (open) document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open, onClose]);
+
+  const modalContent = open && typeof document !== "undefined" ? (
+    <AnimatePresence>
+      <motion.div
+        key="analytics-modal"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-2rem)] max-w-2xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-2xl overflow-hidden sm:max-w-3xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="analytics-detail-title"
+      >
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] shrink-0">
+          <div className="min-w-0">
+            <h2 id="analytics-detail-title" className="font-display font-semibold text-base text-[var(--primary)] truncate">
+              {title}
+            </h2>
+            {description && (
+              <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate">{description}</p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-input)] transition-colors shrink-0"
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="flex-1 min-h-0 overflow-auto p-4">
+          {children ?? (
+            <p className="text-sm text-[var(--text-muted)] py-8 text-center">No data to display</p>
+          )}
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  ) : null;
+
+  return typeof document !== "undefined"
+    ? createPortal(modalContent, document.body)
+    : null;
+}
+
 function useMatchupData(refreshTrigger: number) {
   const [data, setData] = useState<MatchupData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -202,7 +271,7 @@ function SummaryStats({ data }: { data: MatchupData }) {
   );
 }
 
-function TopPerformersChart({ data }: { data: MatchupData }) {
+function TopPerformersChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const wins: Record<string, number> = {};
     for (const m of Object.values(data)) {
@@ -214,13 +283,13 @@ function TopPerformersChart({ data }: { data: MatchupData }) {
     return Object.entries(wins)
       .map(([name, w]) => ({ name, wins: w }))
       .sort((a, b) => b.wins - a.wins)
-      .slice(0, 15);
-  }, [data]);
+      .slice(0, expanded ? 25 : 15);
+  }, [data, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-64">
+    <div className={expanded ? "h-80" : "h-64"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
@@ -237,7 +306,7 @@ function TopPerformersChart({ data }: { data: MatchupData }) {
   );
 }
 
-function WinRateDistributionChart({ data }: { data: MatchupData }) {
+function WinRateDistributionChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const buckets: Record<string, number> = {};
     for (let i = 0; i <= 10; i++) {
@@ -259,11 +328,11 @@ function WinRateDistributionChart({ data }: { data: MatchupData }) {
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-72" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 5, right: 20, left: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis dataKey="range" stroke={CHART_COLORS.muted} fontSize={10} />
+          <XAxis dataKey="range" stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 10} />
           <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
@@ -275,7 +344,7 @@ function WinRateDistributionChart({ data }: { data: MatchupData }) {
   );
 }
 
-function WinLossPieChart({ data }: { data: MatchupData }) {
+function WinLossPieChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const pieData = useMemo(() => {
     let p1 = 0,
       p2 = 0,
@@ -295,15 +364,15 @@ function WinLossPieChart({ data }: { data: MatchupData }) {
   if (pieData.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-72" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={pieData}
             cx="50%"
             cy="50%"
-            innerRadius={40}
-            outerRadius={70}
+            innerRadius={expanded ? 55 : 40}
+            outerRadius={expanded ? 85 : 70}
             paddingAngle={2}
             dataKey="value"
             nameKey="name"
@@ -323,7 +392,7 @@ function WinLossPieChart({ data }: { data: MatchupData }) {
   );
 }
 
-function DominanceChart({ data }: { data: MatchupData }) {
+function DominanceChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const dominance: Record<string, number> = {};
     for (const m of Object.values(data)) {
@@ -336,17 +405,17 @@ function DominanceChart({ data }: { data: MatchupData }) {
     return Object.entries(dominance)
       .map(([name, d]) => ({ name, dominance: d }))
       .sort((a, b) => b.dominance - a.dominance)
-      .slice(0, 12);
-  }, [data]);
+      .slice(0, expanded ? 20 : 12);
+  }, [data, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} angle={-35} textAnchor="end" height={60} />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 10} angle={-35} textAnchor="end" height={60} />
           <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
@@ -363,7 +432,7 @@ function DominanceChart({ data }: { data: MatchupData }) {
   );
 }
 
-function MostOneSidedChart({ data }: { data: MatchupData }) {
+function MostOneSidedChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     return Object.entries(data)
       .filter(([, m]) => m.total >= 3)
@@ -378,18 +447,18 @@ function MostOneSidedChart({ data }: { data: MatchupData }) {
         };
       })
       .sort((a, b) => b.margin - a.margin)
-      .slice(0, 10);
-  }, [data]);
+      .slice(0, expanded ? 20 : 10);
+  }, [data, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis type="number" domain={[0, 100]} stroke={CHART_COLORS.muted} fontSize={11} unit="%" />
-          <YAxis type="category" dataKey="matchup" width={120} stroke={CHART_COLORS.muted} fontSize={10} />
+          <XAxis type="number" domain={[0, 100]} stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 11} unit="%" />
+          <YAxis type="category" dataKey="matchup" width={expanded ? 160 : 120} stroke={CHART_COLORS.muted} fontSize={expanded ? 11 : 10} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
             formatter={(value) => [`${Number(value ?? 0).toFixed(1)}%`, "P1 Win Rate"] as [React.ReactNode, string]}
@@ -407,7 +476,7 @@ function MostOneSidedChart({ data }: { data: MatchupData }) {
   );
 }
 
-function BattlesPerMatchupChart({ data }: { data: MatchupData }) {
+function BattlesPerMatchupChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const dist: Record<number, number> = {};
     for (const m of Object.values(data)) {
@@ -423,7 +492,7 @@ function BattlesPerMatchupChart({ data }: { data: MatchupData }) {
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-72" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 5, right: 20, left: 20 }}>
           <defs>
@@ -451,7 +520,7 @@ function BattlesPerMatchupChart({ data }: { data: MatchupData }) {
   );
 }
 
-function BattleLengthChart({ analytics }: { analytics: BattleLogAnalytics }) {
+function BattleLengthChart({ analytics, expanded }: { analytics: BattleLogAnalytics; expanded?: boolean }) {
   const g = analytics.global;
   if (g.totalBattles === 0) return null;
   const turnDist = Object.entries(g.turnDistribution)
@@ -460,7 +529,7 @@ function BattleLengthChart({ analytics }: { analytics: BattleLogAnalytics }) {
   if (turnDist.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-72" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={turnDist} margin={{ top: 5, right: 20, left: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
@@ -477,12 +546,12 @@ function BattleLengthChart({ analytics }: { analytics: BattleLogAnalytics }) {
   );
 }
 
-function TopMovesChart({ analytics }: { analytics: BattleLogAnalytics }) {
-  const top = analytics.topMoves.slice(0, 12);
+function TopMovesChart({ analytics, expanded }: { analytics: BattleLogAnalytics; expanded?: boolean }) {
+  const top = analytics.topMoves.slice(0, expanded ? 20 : 12);
   if (top.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={top} layout="vertical" margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
@@ -498,7 +567,7 @@ function TopMovesChart({ analytics }: { analytics: BattleLogAnalytics }) {
   );
 }
 
-function TypeEffectivenessPie({ analytics }: { analytics: BattleLogAnalytics }) {
+function TypeEffectivenessPie({ analytics, expanded }: { analytics: BattleLogAnalytics; expanded?: boolean }) {
   const g = analytics.global;
   const total = g.superEffective + g.resisted + Math.max(0, g.totalMoves - g.superEffective - g.resisted);
   if (total === 0) return null;
@@ -512,15 +581,15 @@ function TypeEffectivenessPie({ analytics }: { analytics: BattleLogAnalytics }) 
   if (data.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-72" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            innerRadius={35}
-            outerRadius={65}
+            innerRadius={expanded ? 55 : 35}
+            outerRadius={expanded ? 85 : 65}
             paddingAngle={2}
             dataKey="value"
             nameKey="name"
@@ -577,7 +646,7 @@ function CritMissStats({ analytics }: { analytics: BattleLogAnalytics }) {
   );
 }
 
-function StatusBreakdownChart({ analytics }: { analytics: BattleLogAnalytics }) {
+function StatusBreakdownChart({ analytics, expanded }: { analytics: BattleLogAnalytics; expanded?: boolean }) {
   const statuses = analytics.topStatuses;
   if (statuses.length === 0) return null;
 
@@ -596,11 +665,11 @@ function StatusBreakdownChart({ analytics }: { analytics: BattleLogAnalytics }) 
   }));
 
   return (
-    <div className="h-40">
+    <div className={expanded ? "h-72" : "h-40"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 5, right: 20, left: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 10} />
           <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
@@ -612,7 +681,7 @@ function StatusBreakdownChart({ analytics }: { analytics: BattleLogAnalytics }) 
   );
 }
 
-function AvgTurnsByPokemonChart({ analytics }: { analytics: BattleLogAnalytics }) {
+function AvgTurnsByPokemonChart({ analytics, expanded }: { analytics: BattleLogAnalytics; expanded?: boolean }) {
   const chartData = useMemo(() => {
     return Object.entries(analytics.byPokemon)
       .filter(([, p]) => p.totalBattles >= 2)
@@ -624,17 +693,17 @@ function AvgTurnsByPokemonChart({ analytics }: { analytics: BattleLogAnalytics }
         losses: p.losses,
       }))
       .sort((a, b) => b.wins - a.wins)
-      .slice(0, 10);
-  }, [analytics]);
+      .slice(0, expanded ? 20 : 10);
+  }, [analytics, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={10} angle={-35} textAnchor="end" height={60} />
+          <XAxis dataKey="name" stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 10} angle={-35} textAnchor="end" height={60} />
           <YAxis stroke={CHART_COLORS.muted} fontSize={11} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
@@ -712,14 +781,14 @@ function MatchupDetailPanel({ analytics }: { analytics: BattleLogAnalytics }) {
   );
 }
 
-function MatchupHeatmapPreview({ data }: { data: MatchupData }) {
+function MatchupHeatmapPreview({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const { pokemon, matrix } = useMemo(() => {
     const allPokemon = new Set<string>();
     for (const m of Object.values(data)) {
       allPokemon.add(m.p1);
       allPokemon.add(m.p2);
     }
-    const list = Array.from(allPokemon).sort().slice(0, 12);
+    const list = Array.from(allPokemon).sort().slice(0, expanded ? 20 : 12);
     const idx = Object.fromEntries(list.map((p, i) => [p, i]));
     const size = list.length;
     const mat: number[][] = Array(size)
@@ -733,11 +802,11 @@ function MatchupHeatmapPreview({ data }: { data: MatchupData }) {
       }
     }
     return { pokemon: list, matrix: mat };
-  }, [data]);
+  }, [data, expanded]);
 
   if (pokemon.length === 0) return null;
 
-  const cellSize = Math.min(24, Math.floor(280 / pokemon.length));
+  const cellSize = expanded ? Math.min(32, Math.floor(600 / pokemon.length)) : Math.min(24, Math.floor(280 / pokemon.length));
 
   return (
     <div className="overflow-x-auto">
@@ -788,7 +857,7 @@ function MatchupHeatmapPreview({ data }: { data: MatchupData }) {
   );
 }
 
-function PokemonWinRateRadar({ data }: { data: MatchupData }) {
+function PokemonWinRateRadar({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const byPokemon: Record<string, { wins: number; total: number }> = {};
     for (const m of Object.values(data)) {
@@ -811,13 +880,13 @@ function PokemonWinRateRadar({ data }: { data: MatchupData }) {
         fullMark: 100,
       }))
       .sort((a, b) => b.winRate - a.winRate)
-      .slice(0, 6);
-  }, [data]);
+      .slice(0, expanded ? 10 : 6);
+  }, [data, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={chartData}>
           <PolarGrid stroke={CHART_COLORS.muted} strokeOpacity={0.3} />
@@ -840,7 +909,7 @@ function PokemonWinRateRadar({ data }: { data: MatchupData }) {
   );
 }
 
-function LossLeadersChart({ data }: { data: MatchupData }) {
+function LossLeadersChart({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     const losses: Record<string, number> = {};
     for (const m of Object.values(data)) {
@@ -852,18 +921,18 @@ function LossLeadersChart({ data }: { data: MatchupData }) {
     return Object.entries(losses)
       .map(([name, l]) => ({ name, losses: l }))
       .sort((a, b) => b.losses - a.losses)
-      .slice(0, 10);
-  }, [data]);
+      .slice(0, expanded ? 20 : 10);
+  }, [data, expanded]);
 
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-48">
+    <div className={expanded ? "h-80" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
-          <XAxis type="number" stroke={CHART_COLORS.muted} fontSize={11} />
-          <YAxis type="category" dataKey="name" width={90} stroke={CHART_COLORS.muted} fontSize={11} />
+          <XAxis type="number" stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 11} />
+          <YAxis type="category" dataKey="name" width={expanded ? 120 : 90} stroke={CHART_COLORS.muted} fontSize={expanded ? 12 : 11} />
           <Tooltip
             contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", borderRadius: 8 }}
           />
@@ -874,7 +943,7 @@ function LossLeadersChart({ data }: { data: MatchupData }) {
   );
 }
 
-function ScatterWinRateVsBattles({ data }: { data: MatchupData }) {
+function ScatterWinRateVsBattles({ data, expanded }: { data: MatchupData; expanded?: boolean }) {
   const chartData = useMemo(() => {
     return Object.entries(data)
       .filter(([, m]) => m.total >= 1)
@@ -888,7 +957,7 @@ function ScatterWinRateVsBattles({ data }: { data: MatchupData }) {
   if (chartData.length === 0) return null;
 
   return (
-    <div className="h-56">
+    <div className={expanded ? "h-80" : "h-56"}>
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,150,176,0.2)" />
@@ -1608,31 +1677,79 @@ function ChartCard({
   description,
   children,
   className,
+  onClick,
 }: {
   title: string;
   description?: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) {
+  const content = (
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <h4 className="font-display font-semibold text-[var(--primary)] mb-1">{title}</h4>
+        {onClick && (
+          <span className="text-xs text-[var(--primary)] font-medium flex items-center gap-1 shrink-0">
+            View details
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </span>
+        )}
+      </div>
+      {description && <p className="text-xs text-[var(--text-muted)] mb-3">{description}</p>}
+      {children}
+    </>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
+      onClick={onClick}
       className={cn(
         "p-4 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50 overflow-hidden",
+        onClick && "cursor-pointer hover:border-[var(--primary)]/50 hover:shadow-[0_0_0_1px_rgba(0,245,255,0.1)] transition-all",
         className
       )}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => e.key === "Enter" && onClick() : undefined}
     >
-      <h4 className="font-display font-semibold text-[var(--primary)] mb-1">{title}</h4>
-      {description && <p className="text-xs text-[var(--text-muted)] mb-3">{description}</p>}
-      {children}
+      {content}
     </motion.div>
   );
 }
 
+type DetailViewId =
+  | "pool-sets"
+  | "summary"
+  | "top-performers"
+  | "win-rate-dist"
+  | "win-loss-split"
+  | "dominance"
+  | "one-sided"
+  | "battles-per-matchup"
+  | "scatter"
+  | "radar"
+  | "loss-leaders"
+  | "heatmap"
+  | "battle-length"
+  | "top-moves"
+  | "type-effectiveness"
+  | "crits-misses"
+  | "status"
+  | "turns-by-pokemon"
+  | "matchup-detail"
+  | "matchup-table"
+  | "battle-logs"
+  | "rankings";
+
 export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrigger: number; smogonFormat?: string }) {
   const { data, loading, error } = useMatchupData(refreshTrigger);
   const { analytics: battleAnalytics, loading: analyticsLoading } = useBattleLogAnalytics(refreshTrigger);
+  const [activeDetail, setActiveDetail] = useState<DetailViewId | null>(null);
 
   if (loading) {
     return (
@@ -1659,58 +1776,88 @@ export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrig
           Matchup results exist but no battles completed (all 0 wins). This often happens when Pokemon lack proper movesets. Use Smogon presets below and re-run simulations.
         </div>
       )}
-      <div>
-        <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Pool Sets</h3>
+      <div
+        onClick={() => setActiveDetail("pool-sets")}
+        className="p-4 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50 cursor-pointer hover:border-[var(--primary)]/50 hover:shadow-[0_0_0_1px_rgba(0,245,255,0.1)] transition-all"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && setActiveDetail("pool-sets")}
+      >
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h3 className="font-display font-semibold text-[var(--primary)]">Pool Sets</h3>
+          <span className="text-xs text-[var(--primary)] font-medium flex items-center gap-1">
+            View details
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </span>
+        </div>
         <p className="text-sm text-[var(--text-muted)] mb-3">
           Pokemon in the pool and their Smogon sets. Simulations use these by default.
         </p>
-        <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} smogonFormat={smogonFormat} />
+        <div onClick={(e) => e.stopPropagation()}>
+          <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} smogonFormat={smogonFormat} />
+        </div>
       </div>
       {hasData && (
         <>
-          <div>
-            <h3 className="font-display font-semibold text-[var(--primary)] mb-3">Summary</h3>
+          <div
+            onClick={() => setActiveDetail("summary")}
+            className="p-4 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50 cursor-pointer hover:border-[var(--primary)]/50 hover:shadow-[0_0_0_1px_rgba(0,245,255,0.1)] transition-all"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setActiveDetail("summary")}
+          >
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <h3 className="font-display font-semibold text-[var(--primary)]">Summary</h3>
+              <span className="text-xs text-[var(--primary)] font-medium flex items-center gap-1">
+                View details
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </span>
+            </div>
             <SummaryStats data={data} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <ChartCard title="Top Performers" description="Pokemon with most total wins">
+        <ChartCard title="Top Performers" description="Pokemon with most total wins" onClick={() => setActiveDetail("top-performers")}>
           <TopPerformersChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Win Rate Distribution" description="P1 win rate buckets (0–10%, 10–20%, …)">
+        <ChartCard title="Win Rate Distribution" description="P1 win rate buckets (0–10%, 10–20%, …)" onClick={() => setActiveDetail("win-rate-dist")}>
           <WinRateDistributionChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Win / Loss Split" description="Overall battle outcomes">
+        <ChartCard title="Win / Loss Split" description="Overall battle outcomes" onClick={() => setActiveDetail("win-loss-split")}>
           <WinLossPieChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Dominance Score" description="Net wins per Pokemon (P1 wins − P2 wins)">
+        <ChartCard title="Dominance Score" description="Net wins per Pokemon (P1 wins − P2 wins)" onClick={() => setActiveDetail("dominance")}>
           <DominanceChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Most One-Sided Matchups" description="Largest win rate margins (min 3 battles)">
+        <ChartCard title="Most One-Sided Matchups" description="Largest win rate margins (min 3 battles)" onClick={() => setActiveDetail("one-sided")}>
           <MostOneSidedChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Battles per Matchup" description="Distribution of battle counts">
+        <ChartCard title="Battles per Matchup" description="Distribution of battle counts" onClick={() => setActiveDetail("battles-per-matchup")}>
           <BattlesPerMatchupChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Win Rate vs Battle Count" description="Scatter: P1 win % vs battles run">
+        <ChartCard title="Win Rate vs Battle Count" description="Scatter: P1 win % vs battles run" onClick={() => setActiveDetail("scatter")}>
           <ScatterWinRateVsBattles data={data} />
         </ChartCard>
 
-        <ChartCard title="Win Rate by Pokemon" description="Radar of top 6 by win rate (min 5 battles)">
+        <ChartCard title="Win Rate by Pokemon" description="Radar of top 6 by win rate (min 5 battles)" onClick={() => setActiveDetail("radar")}>
           <PokemonWinRateRadar data={data} />
         </ChartCard>
 
-        <ChartCard title="Most Losses" description="Pokemon with highest total losses">
+        <ChartCard title="Most Losses" description="Pokemon with highest total losses" onClick={() => setActiveDetail("loss-leaders")}>
           <LossLeadersChart data={data} />
         </ChartCard>
 
-        <ChartCard title="Matchup Heatmap" description="P1 vs P2 win rate matrix (first 12 Pokemon)" className="md:col-span-2 xl:col-span-3">
+        <ChartCard title="Matchup Heatmap" description="P1 vs P2 win rate matrix (first 12 Pokemon)" className="md:col-span-2 xl:col-span-3" onClick={() => setActiveDetail("heatmap")}>
           <MatchupHeatmapPreview data={data} />
         </ChartCard>
 
@@ -1723,42 +1870,258 @@ export function MatchupAnalytics({ refreshTrigger, smogonFormat }: { refreshTrig
                 Stats derived from turn-by-turn battle logs: move usage, type effectiveness, crits, status, and more.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <ChartCard title="Battle Length" description="Distribution of turns per battle">
+                <ChartCard title="Battle Length" description="Distribution of turns per battle" onClick={() => setActiveDetail("battle-length")}>
                   <BattleLengthChart analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Top Moves" description="Most used moves across all battles">
+                <ChartCard title="Top Moves" description="Most used moves across all battles" onClick={() => setActiveDetail("top-moves")}>
                   <TopMovesChart analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Type Effectiveness" description="Super effective vs resisted vs neutral">
+                <ChartCard title="Type Effectiveness" description="Super effective vs resisted vs neutral" onClick={() => setActiveDetail("type-effectiveness")}>
                   <TypeEffectivenessPie analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Crits & Misses" description="Critical hits, misses, boosts, heals">
+                <ChartCard title="Crits & Misses" description="Critical hits, misses, boosts, heals" onClick={() => setActiveDetail("crits-misses")}>
                   <CritMissStats analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Status Effects" description="Most common status conditions">
+                <ChartCard title="Status Effects" description="Most common status conditions" onClick={() => setActiveDetail("status")}>
                   <StatusBreakdownChart analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Turns by Pokemon" description="Avg turns when winning vs losing (min 2 battles)">
+                <ChartCard title="Turns by Pokemon" description="Avg turns when winning vs losing (min 2 battles)" onClick={() => setActiveDetail("turns-by-pokemon")}>
                   <AvgTurnsByPokemonChart analytics={battleAnalytics} />
                 </ChartCard>
-                <ChartCard title="Per-Matchup Details" description="Drill down into moves and stats for a specific matchup" className="md:col-span-2 xl:col-span-3">
-                  <MatchupDetailPanel analytics={battleAnalytics} />
+                <ChartCard title="Per-Matchup Details" description="Drill down into moves and stats for a specific matchup" className="md:col-span-2 xl:col-span-3" onClick={() => setActiveDetail("matchup-detail")}>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <MatchupDetailPanel analytics={battleAnalytics} />
+                  </div>
                 </ChartCard>
               </div>
             </>
           )}
         </>
       )}
-      <ChartCard title="Matchup Table" description="Search and sort all matchups" className="md:col-span-2 xl:col-span-3">
-        <SearchableMatchupTable data={data} />
+      <ChartCard title="Matchup Table" description="Search and sort all matchups" className="md:col-span-2 xl:col-span-3" onClick={() => setActiveDetail("matchup-table")}>
+        <div onClick={(e) => e.stopPropagation()}>
+          <SearchableMatchupTable data={data} />
+        </div>
       </ChartCard>
-      <ChartCard title="Battle Logs" description="Turn-by-turn logs for each fight" className="md:col-span-2 xl:col-span-3">
-        <BattleLogsViewer refreshTrigger={refreshTrigger} />
+      <ChartCard title="Battle Logs" description="Turn-by-turn logs for each fight" className="md:col-span-2 xl:col-span-3" onClick={() => setActiveDetail("battle-logs")}>
+        <div onClick={(e) => e.stopPropagation()}>
+          <BattleLogsViewer refreshTrigger={refreshTrigger} />
+        </div>
       </ChartCard>
       {hasData && (
-        <ChartCard title="Rankings" description="All Pokemon ranked by win rate (top to bottom)" className="md:col-span-2 xl:col-span-3">
+        <ChartCard title="Rankings" description="All Pokemon ranked by win rate (top to bottom)" className="md:col-span-2 xl:col-span-3" onClick={() => setActiveDetail("rankings")}>
           <RankingsCard data={data} />
         </ChartCard>
+      )}
+
+      <AnalyticsDetailModal
+        title="Pool Sets"
+        description="Pokemon in the pool and their Smogon sets. Simulations use these by default."
+        open={activeDetail === "pool-sets"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <PoolSetsWidget data={data} refreshTrigger={refreshTrigger} smogonFormat={smogonFormat} />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Summary"
+        description="Overview of matchup and battle statistics"
+        open={activeDetail === "summary"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <SummaryStats data={data} />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Top Performers"
+        description="Pokemon with most total wins"
+        open={activeDetail === "top-performers"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <TopPerformersChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Win Rate Distribution"
+        description="P1 win rate buckets (0–10%, 10–20%, …)"
+        open={activeDetail === "win-rate-dist"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <WinRateDistributionChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Win / Loss Split"
+        description="Overall battle outcomes"
+        open={activeDetail === "win-loss-split"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <WinLossPieChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Dominance Score"
+        description="Net wins per Pokemon (P1 wins − P2 wins)"
+        open={activeDetail === "dominance"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <DominanceChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Most One-Sided Matchups"
+        description="Largest win rate margins (min 3 battles)"
+        open={activeDetail === "one-sided"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <MostOneSidedChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Battles per Matchup"
+        description="Distribution of battle counts"
+        open={activeDetail === "battles-per-matchup"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <BattlesPerMatchupChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Win Rate vs Battle Count"
+        description="Scatter: P1 win % vs battles run"
+        open={activeDetail === "scatter"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <ScatterWinRateVsBattles data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Win Rate by Pokemon"
+        description="Radar of top Pokemon by win rate (min 5 battles)"
+        open={activeDetail === "radar"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <PokemonWinRateRadar data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Most Losses"
+        description="Pokemon with highest total losses"
+        open={activeDetail === "loss-leaders"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <LossLeadersChart data={data} expanded />
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Matchup Heatmap"
+        description="P1 vs P2 win rate matrix. Rows = P1 (attacker), Cols = P2 (defender). Value = P1 win %."
+        open={activeDetail === "heatmap"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <MatchupHeatmapPreview data={data} expanded />
+      </AnalyticsDetailModal>
+
+      {battleAnalytics && battleAnalytics.global.totalBattles > 0 && (
+        <>
+          <AnalyticsDetailModal
+            title="Battle Length"
+            description="Distribution of turns per battle"
+            open={activeDetail === "battle-length"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <BattleLengthChart analytics={battleAnalytics} expanded />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Top Moves"
+            description="Most used moves across all battles"
+            open={activeDetail === "top-moves"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <TopMovesChart analytics={battleAnalytics} expanded />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Type Effectiveness"
+            description="Super effective vs resisted vs neutral"
+            open={activeDetail === "type-effectiveness"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <TypeEffectivenessPie analytics={battleAnalytics} expanded />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Crits & Misses"
+            description="Critical hits, misses, boosts, heals, recoil, items"
+            open={activeDetail === "crits-misses"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <CritMissStats analytics={battleAnalytics} />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Status Effects"
+            description="Most common status conditions"
+            open={activeDetail === "status"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <StatusBreakdownChart analytics={battleAnalytics} expanded />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Turns by Pokemon"
+            description="Avg turns when winning vs losing (min 2 battles)"
+            open={activeDetail === "turns-by-pokemon"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <AvgTurnsByPokemonChart analytics={battleAnalytics} expanded />
+          </AnalyticsDetailModal>
+
+          <AnalyticsDetailModal
+            title="Per-Matchup Details"
+            description="Drill down into moves and stats for a specific matchup"
+            open={activeDetail === "matchup-detail"}
+            onClose={() => setActiveDetail(null)}
+          >
+            <MatchupDetailPanel analytics={battleAnalytics} />
+          </AnalyticsDetailModal>
+        </>
+      )}
+
+      <AnalyticsDetailModal
+        title="Matchup Table"
+        description="Search and sort all matchups"
+        open={activeDetail === "matchup-table"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <div className="max-h-[60vh]">
+          <SearchableMatchupTable data={data} />
+        </div>
+      </AnalyticsDetailModal>
+
+      <AnalyticsDetailModal
+        title="Battle Logs"
+        description="Turn-by-turn logs for each fight"
+        open={activeDetail === "battle-logs"}
+        onClose={() => setActiveDetail(null)}
+      >
+        <div className="max-h-[70vh] overflow-auto">
+          <BattleLogsViewer refreshTrigger={refreshTrigger} />
+        </div>
+      </AnalyticsDetailModal>
+
+      {hasData && (
+        <AnalyticsDetailModal
+          title="Rankings"
+          description="All Pokemon ranked by win rate (top to bottom)"
+          open={activeDetail === "rankings"}
+          onClose={() => setActiveDetail(null)}
+        >
+          <div className="max-h-[70vh] overflow-auto">
+            <RankingsCard data={data} />
+          </div>
+        </AnalyticsDetailModal>
       )}
     </div>
   );

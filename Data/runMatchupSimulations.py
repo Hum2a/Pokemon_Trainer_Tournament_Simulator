@@ -4,9 +4,17 @@ Runs battles between Pokemon (head-to-head or full matrix).
 Reads config from config.json (matchups section).
 Uses Smogon presets by default for proper movesets.
 Output: matchup_results.json, matchup_matrix.csv
+
+Simulation strategies (simulationStrategy):
+- full: Run every battle through Pokemon Showdown (most accurate, slowest)
+- quick: 1 battle per matchup (5x faster, less accurate)
+- sampled: Random sample of matchups (configurable fraction)
+- heuristic: Type/BST-based estimate, no battles (instant, approximate)
 """
 import json
+import math
 import os
+import random
 import re
 import subprocess
 import sys
@@ -33,6 +41,49 @@ NEWEST_FORMAT_PRIORITY = [
     "gen2ou", "gen2uu", "gen2nu", "gen2pu", "gen2zu", "gen2",
     "gen1ou", "gen1uu", "gen1nu", "gen1pu", "gen1zu", "gen1",
 ]
+
+# Type effectiveness: damageTaken 0=immune, 1=weak(2x), 2=resist(0.5x). Key: attacker_type -> defender_type
+TYPE_EFFECTIVENESS = {
+    "Normal": {"Rock": 0.5, "Ghost": 0, "Steel": 0.5},
+    "Fire": {"Fire": 0.5, "Water": 0.5, "Grass": 2, "Ice": 2, "Bug": 2, "Rock": 0.5, "Dragon": 0.5, "Steel": 2},
+    "Water": {"Fire": 2, "Water": 0.5, "Grass": 0.5, "Ground": 2, "Rock": 2, "Dragon": 0.5},
+    "Electric": {"Water": 2, "Electric": 0.5, "Grass": 0.5, "Ground": 0, "Flying": 2, "Dragon": 0.5},
+    "Grass": {"Fire": 0.5, "Water": 2, "Grass": 0.5, "Poison": 0.5, "Ground": 2, "Flying": 0.5, "Bug": 0.5, "Rock": 2, "Dragon": 0.5, "Steel": 0.5},
+    "Ice": {"Fire": 0.5, "Water": 0.5, "Grass": 2, "Ice": 0.5, "Ground": 2, "Flying": 2, "Dragon": 2, "Steel": 0.5},
+    "Fighting": {"Normal": 2, "Ice": 2, "Poison": 0.5, "Flying": 0.5, "Psychic": 0.5, "Bug": 0.5, "Rock": 2, "Ghost": 0, "Dark": 2, "Steel": 2, "Fairy": 0.5},
+    "Poison": {"Grass": 2, "Poison": 0.5, "Ground": 0.5, "Rock": 0.5, "Ghost": 0.5, "Steel": 0, "Fairy": 2},
+    "Ground": {"Fire": 2, "Electric": 2, "Grass": 0.5, "Poison": 2, "Flying": 0, "Bug": 0.5, "Rock": 2, "Steel": 2},
+    "Flying": {"Electric": 0.5, "Grass": 2, "Fighting": 2, "Bug": 2, "Rock": 0.5, "Steel": 0.5},
+    "Psychic": {"Fighting": 2, "Poison": 2, "Psychic": 0.5, "Dark": 0, "Steel": 0.5},
+    "Bug": {"Fire": 0.5, "Grass": 2, "Fighting": 0.5, "Poison": 0.5, "Flying": 0.5, "Psychic": 2, "Ghost": 0.5, "Dark": 2, "Steel": 0.5, "Fairy": 0.5},
+    "Rock": {"Fire": 2, "Ice": 2, "Fighting": 0.5, "Ground": 0.5, "Flying": 2, "Bug": 2, "Steel": 0.5},
+    "Ghost": {"Normal": 0, "Psychic": 2, "Ghost": 2, "Dark": 0.5},
+    "Dragon": {"Dragon": 2, "Steel": 0.5, "Fairy": 0},
+    "Dark": {"Fighting": 0.5, "Psychic": 2, "Ghost": 2, "Dark": 0.5, "Fairy": 0.5},
+    "Steel": {"Fire": 0.5, "Water": 0.5, "Electric": 0.5, "Ice": 2, "Rock": 2, "Steel": 0.5, "Fairy": 2},
+    "Fairy": {"Fire": 0.5, "Fighting": 2, "Poison": 0.5, "Dragon": 2, "Dark": 2, "Steel": 0.5},
+}
+
+
+def _type_effectiveness(attacker_type, defender_types):
+    """Multiplier for attacker_type vs defender_type(s). 1.0 = neutral."""
+    mult = 1.0
+    chart = TYPE_EFFECTIVENESS.get(attacker_type, {})
+    for dt in (defender_types or []):
+        mult *= chart.get(dt, 1.0)
+    return mult
+
+
+def _heuristic_win_rate(p1_types, p1_bst, p2_types, p2_bst):
+    """Estimate P1 win rate (0-1) from types and BST. Higher = P1 favored."""
+    p1_off = max(_type_effectiveness(t, p2_types) for t in (p1_types or ["Normal"])) if p1_types else 1.0
+    p2_off = max(_type_effectiveness(t, p1_types) for t in (p2_types or ["Normal"])) if p2_types else 1.0
+    p1_bst = p1_bst or 400
+    p2_bst = p2_bst or 400
+    type_diff = math.log2(p1_off + 0.1) - math.log2(p2_off + 0.1)
+    bst_diff = (p1_bst - p2_bst) / 600.0
+    raw = 0.5 + 0.15 * type_diff + 0.05 * bst_diff
+    return max(0.05, min(0.95, raw))
 
 
 def load_dex():
@@ -289,7 +340,11 @@ def load_smogon_sets(format_id="gen9ou"):
         with urllib.request.urlopen(req, timeout=15) as r:
             data = json.loads(r.read().decode())
     except Exception as e:
-        print(f"  Warning: Could not load Smogon sets from {url}: {e}", flush=True)
+        print(
+            f"  Info: Smogon sets for {format_id} unavailable ({e}). "
+            "Using default/learnset-based sets instead—simulation will run normally.",
+            flush=True,
+        )
         return {}
     # Generation-level formats (gen9, gen8, etc.) have tier structure
     if re.match(r"^gen\d+$", format_id):
@@ -499,28 +554,35 @@ def main():
     custom_sets = m.get("customSets") or {}
     pokemon1 = m.get("pokemon1", "").strip()
     pokemon2 = m.get("pokemon2", "").strip()
+    strategy = m.get("simulationStrategy", "full")
+    sample_fraction = max(0.05, min(1.0, float(m.get("sampleFraction", 0.2))))
 
-    print("Stage 0/5: Building pokemon-showdown...", flush=True)
-    ps_dir = Path(__file__).parent.parent / "pokemon-showdown"
-    build_result = subprocess.run(
-        ["node", "build"],
-        cwd=str(ps_dir),
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
-    if build_result.returncode != 0:
-        err = (build_result.stdout or "") + (build_result.stderr or "")
-        print(f"  Build failed: {err[:500]}", flush=True)
-        sys.exit(1)
-    print("  Build complete.", flush=True)
+    if strategy == "quick":
+        n_battles = 1
+        print("  Strategy: quick (1 battle per matchup)", flush=True)
+
+    if strategy != "heuristic":
+        print("Stage 0/5: Building pokemon-showdown...", flush=True)
+        ps_dir = Path(__file__).parent.parent / "pokemon-showdown"
+        build_result = subprocess.run(
+            ["node", "build"],
+            cwd=str(ps_dir),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if build_result.returncode != 0:
+            err = (build_result.stdout or "") + (build_result.stderr or "")
+            print(f"  Build failed: {err[:500]}", flush=True)
+            sys.exit(1)
+        print("  Build complete.", flush=True)
 
     print("Stage 1/5: Loading dex data (species, learnsets)...", flush=True)
     species_list, learnsets = load_dex()
     print(f"  Loaded {len(species_list)} species.", flush=True)
 
     smogon_sets = {}
-    if use_smogon:
+    if use_smogon and strategy != "heuristic":
         print(f"  Loading Smogon sets ({smogon_format})...", flush=True)
         smogon_sets = load_smogon_sets(smogon_format)
         print(f"  Loaded {len(smogon_sets)} species from Smogon.", flush=True)
@@ -543,42 +605,72 @@ def main():
         print("No matchups to run. For head-to-head, set pokemon1 and pokemon2. For matrix, check pool settings.", flush=True)
         return
 
+    if strategy == "sampled" and len(matchups) > 1:
+        k = max(1, int(len(matchups) * sample_fraction))
+        matchups = random.sample(matchups, k)
+        print(f"  Strategy: sampled ({sample_fraction:.0%} = {len(matchups)} matchups)", flush=True)
+
     total_battles = len(matchups) * n_battles
     sim_format = _format_to_gen(smogon_format)
-    print(f"Stage 3/5: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
-    print(f"  Threads: {threads}, Level: {level}, Sim format: {sim_format}", flush=True)
 
-    results = {}
-    battle_logs = {}
-    thread_names = list(range(1, threads + 1))
-    lock = threading.Lock()
+    if strategy == "heuristic":
+        print("Stage 3/5: Heuristic mode (type/BST estimate, no battles)", flush=True)
+        species_lookup = {s.get("name", s.get("id", "")): s for s in species_list if s.get("name") or s.get("id")}
+        results = {}
+        battle_logs = {}
+        for i, (p1, p2) in enumerate(matchups):
+            s1 = species_lookup.get(p1, {})
+            s2 = species_lookup.get(p2, {})
+            wr = _heuristic_win_rate(
+                s1.get("types"),
+                s1.get("bst"),
+                s2.get("types"),
+                s2.get("bst"),
+            )
+            total = n_battles
+            p1_wins = int(round(wr * total))
+            p2_wins = total - p1_wins
+            key = f"{p1} vs {p2}"
+            results[key] = {"p1": p1, "p2": p2, "p1_wins": p1_wins, "p2_wins": p2_wins, "total": total}
+            battle_logs[key] = [{"winner": "p1" if wr >= 0.5 else "p2", "log": "(heuristic estimate)"} for _ in range(total)]
+            if (i + 1) % 50 == 0 or i == 0:
+                print(f"  Estimated {i + 1}/{len(matchups)} matchups...", flush=True)
+    else:
+        print(f"Stage 3/5: Running {len(matchups)} matchup(s), {n_battles} battles each = {total_battles} total battles", flush=True)
+        print(f"  Threads: {threads}, Level: {level}, Sim format: {sim_format}", flush=True)
 
-    def run_one(m):
-        p1, p2 = m
-        with lock:
-            tn = thread_names.pop(0) if thread_names else 1
-        try:
-            w1, w2, logs = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon, custom_sets, sim_format)
-            return (p1, p2, w1, w2, logs)
-        finally:
+        results = {}
+        battle_logs = {}
+        thread_names = list(range(1, threads + 1))
+        lock = threading.Lock()
+
+        def run_one(args):
+            idx, matchup = args
+            p1, p2 = matchup
+            print(f"  Running {p1} vs {p2} ({idx + 1}/{len(matchups)})...", flush=True)
             with lock:
-                thread_names.append(tn)
-
-    with ThreadPoolExecutor(max_workers=threads) as ex:
-        futures = [ex.submit(run_one, m) for m in matchups]
-        done = 0
-        for f in as_completed(futures):
+                tn = thread_names.pop(0) if thread_names else 1
             try:
-                p1, p2, w1, w2, logs = f.result()
-                key = f"{p1} vs {p2}"
-                results[key] = {"p1": p1, "p2": p2, "p1_wins": w1, "p2_wins": w2, "total": w1 + w2}
-                battle_logs[key] = logs
-                done += 1
-                if done % 10 == 0 or done == len(matchups):
+                w1, w2, logs = run_matchup(p1, p2, n_battles, str(tn), species_list, learnsets, level, smogon_sets, use_smogon, custom_sets, sim_format)
+                return (p1, p2, w1, w2, logs)
+            finally:
+                with lock:
+                    thread_names.append(tn)
+
+        with ThreadPoolExecutor(max_workers=threads) as ex:
+            futures = [ex.submit(run_one, (i, matchup)) for i, matchup in enumerate(matchups)]
+            done = 0
+            for f in as_completed(futures):
+                try:
+                    p1, p2, w1, w2, logs = f.result()
+                    key = f"{p1} vs {p2}"
+                    results[key] = {"p1": p1, "p2": p2, "p1_wins": w1, "p2_wins": w2, "total": w1 + w2}
+                    battle_logs[key] = logs
+                    done += 1
                     pct = 100 * done // len(matchups)
-                    print(f"  Completed {done}/{len(matchups)} ({pct}%)", flush=True)
-            except Exception as e:
-                print(f"  Error: {e}", flush=True)
+                    print(f"  Completed {p1} vs {p2} — {done}/{len(matchups)} ({pct}%)", flush=True)
+                except Exception as e:
+                    print(f"  Error: {e}", flush=True)
 
     print("Stage 4/5: Writing results...", flush=True)
     OUTPUT_FILE.parent.mkdir(exist_ok=True)
@@ -600,7 +692,18 @@ def main():
             rate = v["p1_wins"] / total
             f.write(f"{v['p1']},{v['p2']},{v['p1_wins']},{v['p2_wins']},{rate:.3f}\n")
 
-    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}, {logs_path}", flush=True)
+    # Write simulation metadata (pool, pokemon sets) for saved simulations
+    pool = species_names
+    pokemon_sets = {}
+    for name in pool:
+        s = get_set_for_battle(name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
+        if s:
+            pokemon_sets[name] = s
+    metadata_path = Path(__file__).parent / "matchup_simulation_metadata.json"
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump({"pool": pool, "pokemon_sets": pokemon_sets}, f, indent=2)
+
+    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}, {logs_path}, {metadata_path}", flush=True)
 
 
 if __name__ == "__main__":

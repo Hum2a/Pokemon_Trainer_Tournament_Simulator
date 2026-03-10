@@ -1,0 +1,26 @@
+{
+  "pool": [
+    "Arceus-Dragon",
+    "Dialga",
+    "Dialga-Origin",
+    "Gabite",
+    "Garchomp",
+    "Gible",
+    "Giratina",
+    "Giratina-Origin",
+    "Palkia",
+    "Palkia-Origin"
+  ],
+  "pokemon_sets": {
+    "Arceus-Dragon": "Arceus-Dragon @ Draco Plate\nLevel: 100\nEVs: 252 ATK / 4 SpD / 252 SPE\nAdamant Nature\n- Dragon Claw\n- Flare Blitz\n- Recover\n- Dragon Dance",
+    "Dialga": "Dialga @ Leftovers\nLevel: 100\nEVs: 252 HP / 4 SpA / 252 SpD\nSassy Nature\n- Draco Meteor\n- Heavy Slam\n- Stealth Rock\n- Dragon Tail",
+    "Dialga-Origin": "Dialga-Origin @ Adamant Crystal\nLevel: 100\nEVs: 252 SpA / 4 SpD / 252 SPE\nTimid Nature\n- Draco Meteor\n- Flash Cannon\n- Flamethrower\n- Stealth Rock",
+    "Gabite": "Gabite @ Eviolite\nLevel: 100\nAbility: Rough Skin\nEVs: 252 ATK / 4 DEF / 252 SPE\nAdamant Nature\n- Swords Dance\n- Outrage\n- Earthquake\n- Substitute",
+    "Garchomp": "Garchomp @ Rocky Helmet\nLevel: 100\nAbility: Rough Skin\nEVs: 252 HP / 216 DEF / 40 SPE\nImpish Nature\n- Earthquake\n- Dragon Tail\n- Stealth Rock\n- Spikes",
+    "Gible": "Gible @ Eviolite\nLevel: 100\nAbility: Rough Skin\nEVs: 52 HP / 196 ATK / 76 DEF / 180 SPE\nJolly Nature\n- Swords Dance\n- Scale Shot\n- Earthquake\n- Endure",
+    "Giratina": "Giratina @ Heavy-Duty Boots\nLevel: 100\nImpish Nature\n- Dragon Tail\n- Defog\n- Will-O-Wisp\n- Hex",
+    "Giratina-Origin": "Giratina-Origin @ Griseous Core\nLevel: 100\nEVs: 4 HP / 252 SpA / 252 SPE\nTimid Nature\n- Draco Meteor\n- Hex\n- Pain Split\n- Will-O-Wisp",
+    "Palkia": "Palkia @ Choice Scarf\nLevel: 100\nEVs: 252 SpA / 4 SpD / 252 SPE\nModest Nature\n- Spacial Rend\n- Hydro Pump\n- Fire Blast\n- Trick",
+    "Palkia-Origin": "Palkia-Origin @ Lustrous Globe\nLevel: 100\nEVs: 252 SpA / 4 SpD / 252 SPE\nTimid Nature\n- Hydro Pump\n- Spacial Rend\n- Thunder Wave\n- Substitute"
+  }
+}

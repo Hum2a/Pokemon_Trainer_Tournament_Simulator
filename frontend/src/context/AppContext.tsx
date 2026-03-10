@@ -41,6 +41,8 @@ export interface Config {
     customSets?: Record<string, CustomSet>;
     pokemon1?: string;
     pokemon2?: string;
+    simulationStrategy?: "full" | "quick" | "sampled" | "heuristic";
+    sampleFraction?: number;
   };
 }
 

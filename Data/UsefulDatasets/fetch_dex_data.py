@@ -2,14 +2,26 @@
 Fetch Pokemon Showdown dex data from CDN for the team builder.
 Run once: python fetch_dex_data.py
 Outputs to dex-export/ in this directory.
+Also syncs to Supabase dex_data table when configured (fallback + future-proofing).
 """
 import json
+import sys
 import urllib.request
 from pathlib import Path
 
 CDN = "https://play.pokemonshowdown.com/data"
 OUT = Path(__file__).parent / "dex-export"
 OUT.mkdir(exist_ok=True)
+
+# Add project root for imports and load .env
+ROOT = Path(__file__).resolve().parent.parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+try:
+    from dotenv import load_dotenv
+    load_dotenv(ROOT / ".env")
+except ImportError:
+    pass
 
 REGIONS = [(1, "Kanto"), (152, "Johto"), (252, "Hoenn"), (387, "Sinnoh"),
            (494, "Unova"), (650, "Kalos"), (722, "Alola"), (810, "Galar"), (906, "Paldea")]
@@ -167,6 +179,28 @@ def main():
                "Timid","Hasty","Serious","Jolly","Naive","Modest","Mild","Quiet","Bashful","Rash",
                "Calm","Gentle","Sassy","Careful","Quirky"]
     (OUT / "natures.json").write_text(json.dumps(natures), encoding="utf-8")
+
+    # Sync to Supabase when configured (fallback + future-proofing for new generations)
+    try:
+        from src.supabase_client import sync_dex_data, get_supabase
+        if get_supabase():
+            for dtype, data in [
+                ("species", species),
+                ("moves", moves),
+                ("abilities", abilities),
+                ("items", items),
+                ("learnsets", simple),
+                ("natures", natures),
+            ]:
+                if sync_dex_data(dtype, data):
+                    print(f"  Synced {dtype} to database")
+                else:
+                    print(f"  Skip sync {dtype} (not configured or failed)")
+        else:
+            print("  Supabase not configured, skipping DB sync")
+    except Exception as e:
+        print(f"  DB sync skipped: {e}")
+
     print("Done.")
 
 if __name__ == "__main__":

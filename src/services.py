@@ -175,6 +175,8 @@ def write_matchup_config():
         "customSets": cfg.get("customSets", {}),
         "pokemon1": cfg.get("pokemon1", ""),
         "pokemon2": cfg.get("pokemon2", ""),
+        "simulationStrategy": cfg.get("simulationStrategy", "full"),
+        "sampleFraction": cfg.get("sampleFraction", 0.2),
     })
 
 

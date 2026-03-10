@@ -49,11 +49,11 @@ python app.py
 
 Open http://127.0.0.1:5000 in your browser.
 
-## Deployment
+## Auth & Deployment
 
-To deploy to a live site, use **Render** (recommended). Netlify and Cloudflare are not suitable for this app because it requires a Python backend, Node.js subprocesses, and long-running simulations.
+This app uses **Supabase** for authentication and per-user storage. See **[AUTH_SETUP.md](AUTH_SETUP.md)** for setup.
 
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for platform comparison and step-by-step Render instructions.
+To deploy to a live site, use **Render** (recommended). See **[DEPLOYMENT.md](DEPLOYMENT.md)** for platform comparison and step-by-step Render instructions.
 
 ## Running Simulations Yourself
 
@@ -120,7 +120,7 @@ The codebase is modular. See `.cursor/rules/` for conventions. Key directories:
 ```
 cd Data/UsefulDatasets && python fetch_dex_data.py
 ```
-This fetches dex data from Pokemon Showdown's CDN. Then build Pokemon in the UI and export to the editor.
+This fetches dex data from Pokemon Showdown's CDN. With Supabase configured, data is also synced to the database (API uses DB first, falls back to JSON files). Then build Pokemon in the UI and export to the editor.
 
 ### Command Line
 See [manual.md](https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/blob/main/manual.md).
