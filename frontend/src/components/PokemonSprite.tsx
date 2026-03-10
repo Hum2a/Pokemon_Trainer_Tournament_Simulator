@@ -71,7 +71,7 @@ export function PokemonSprite({
     const controller = new AbortController();
     abortRef.current = controller;
     fetchSpriteFromPokeApi(name, controller.signal)
-      .then((pokeUrl) => {
+      .then((pokeUrl: string | null) => {
         if (mountedRef.current) {
           if (pokeUrl) safeSetSrc(pokeUrl);
           else safeSetFailed(true);

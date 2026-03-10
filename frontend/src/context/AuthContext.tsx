@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Session, User } from "@supabase/supabase-js";
+import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
 export type UserRole = "user" | "admin" | "developer";
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } =     supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
       if (!session && event !== "SIGNED_OUT") {
         const { data } = await supabase.auth.getSession();
         if (data.session) {
