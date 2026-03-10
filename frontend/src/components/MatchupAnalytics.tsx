@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BarChart,
@@ -124,58 +125,51 @@ function AnalyticsDetailModal({
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
-  return (
+  const modalContent = open && typeof document !== "undefined" ? (
     <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      <motion.div
+        key="analytics-modal"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-2rem)] max-w-2xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-2xl overflow-hidden sm:max-w-3xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="analytics-detail-title"
+      >
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] shrink-0">
+          <div className="min-w-0">
+            <h2 id="analytics-detail-title" className="font-display font-semibold text-base text-[var(--primary)] truncate">
+              {title}
+            </h2>
+            {description && (
+              <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate">{description}</p>
+            )}
+          </div>
+          <button
+            type="button"
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
-            aria-hidden="true"
-          />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed left-1/2 top-1/2 z-50 flex w-[calc(100%-2rem)] max-w-2xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-2xl overflow-hidden sm:max-w-3xl"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="analytics-detail-title"
+            className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-input)] transition-colors shrink-0"
+            aria-label="Close"
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] shrink-0">
-              <div className="min-w-0">
-                <h2 id="analytics-detail-title" className="font-display font-semibold text-base text-[var(--primary)] truncate">
-                  {title}
-                </h2>
-                {description && (
-                  <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate">{description}</p>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={onClose}
-                className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-input)] transition-colors shrink-0"
-                aria-label="Close"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="flex-1 min-h-0 overflow-auto p-4">
-              {children ?? (
-                <p className="text-sm text-[var(--text-muted)] py-8 text-center">No data to display</p>
-              )}
-            </div>
-          </motion.div>
-        </>
-      )}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="flex-1 min-h-0 overflow-auto p-4">
+          {children ?? (
+            <p className="text-sm text-[var(--text-muted)] py-8 text-center">No data to display</p>
+          )}
+        </div>
+      </motion.div>
     </AnimatePresence>
-  );
+  ) : null;
+
+  return typeof document !== "undefined"
+    ? createPortal(modalContent, document.body)
+    : null;
 }
 
 function useMatchupData(refreshTrigger: number) {
