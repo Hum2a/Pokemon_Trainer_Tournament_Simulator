@@ -19,9 +19,16 @@ FROM node:20-slim AS ps-builder
 RUN apt-get update && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-# Copy repo (including .git) so we can init submodule
 COPY . ./
-RUN git submodule update --init --recursive
+# Render/CI often omit .git from build context; clone submodule manually if needed
+ARG POKEMON_SHOWDOWN_COMMIT=7bd3faaeee2e18edee0b994230bffa8d466c6f20
+RUN if [ -d .git ]; then \
+      git submodule update --init --recursive; \
+    else \
+      rm -rf pokemon-showdown && \
+      git clone https://github.com/cRz-Shadows/pokemon-showdown.git pokemon-showdown && \
+      cd pokemon-showdown && git checkout ${POKEMON_SHOWDOWN_COMMIT} && cd ..; \
+    fi
 WORKDIR /app/pokemon-showdown
 RUN npm install && node build
 
