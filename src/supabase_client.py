@@ -116,6 +116,8 @@ def save_simulation_results(
     matchup_results: Optional[dict] = None,
     matchup_matrix_csv: Optional[str] = None,
     matchup_battle_logs: Optional[dict] = None,
+    pool: Optional[list] = None,
+    pokemon_sets: Optional[dict] = None,
 ) -> bool:
     """Save simulation results. Returns True on success."""
     h = _headers()
@@ -123,15 +125,20 @@ def save_simulation_results(
         return False
     url, _ = _get_config()
     try:
+        payload: dict[str, Any] = {
+            "run_id": run_id,
+            "user_id": user_id,
+            "matchup_results": matchup_results,
+            "matchup_matrix_csv": matchup_matrix_csv,
+            "matchup_battle_logs": matchup_battle_logs,
+        }
+        if pool is not None:
+            payload["pool"] = pool
+        if pokemon_sets is not None:
+            payload["pokemon_sets"] = pokemon_sets
         r = requests.post(
             f"{url}/rest/v1/simulation_results",
-            json={
-                "run_id": run_id,
-                "user_id": user_id,
-                "matchup_results": matchup_results,
-                "matchup_matrix_csv": matchup_matrix_csv,
-                "matchup_battle_logs": matchup_battle_logs,
-            },
+            json=payload,
             headers=h,
             timeout=10,
         )
@@ -176,7 +183,8 @@ def list_user_simulations(user_id: str, limit: int = 50) -> list[dict]:
 
 
 def get_simulation_results(user_id: str, run_id: str) -> Optional[dict]:
-    """Get results for a simulation run. Returns dict or None."""
+    """Get results for a simulation run. Returns dict or None.
+    Includes config_snapshot from the run for filters/settings."""
     h = _headers()
     if not h:
         return None
@@ -187,7 +195,7 @@ def get_simulation_results(user_id: str, run_id: str) -> Optional[dict]:
             params={
                 "run_id": f"eq.{run_id}",
                 "user_id": f"eq.{user_id}",
-                "select": "*",
+                "select": "*,simulation_runs(config_snapshot)",
             },
             headers=h,
             timeout=10,
@@ -195,7 +203,13 @@ def get_simulation_results(user_id: str, run_id: str) -> Optional[dict]:
         if r.status_code == 200 and r.json():
             rows = r.json()
             if rows:
-                return rows[0]
+                row = rows[0]
+                run_data = row.pop("simulation_runs", None)
+                if isinstance(run_data, dict) and run_data:
+                    row["config_snapshot"] = run_data.get("config_snapshot")
+                elif isinstance(run_data, list) and run_data:
+                    row["config_snapshot"] = run_data[0].get("config_snapshot") if run_data[0] else None
+                return row
     except Exception:
         pass
     return None

@@ -605,7 +605,18 @@ def main():
             rate = v["p1_wins"] / total
             f.write(f"{v['p1']},{v['p2']},{v['p1_wins']},{v['p2_wins']},{rate:.3f}\n")
 
-    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}, {logs_path}", flush=True)
+    # Write simulation metadata (pool, pokemon sets) for saved simulations
+    pool = species_names
+    pokemon_sets = {}
+    for name in pool:
+        s = get_set_for_battle(name, learnsets, species_list, smogon_sets, use_smogon, level, custom_sets)
+        if s:
+            pokemon_sets[name] = s
+    metadata_path = Path(__file__).parent / "matchup_simulation_metadata.json"
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump({"pool": pool, "pokemon_sets": pokemon_sets}, f, indent=2)
+
+    print(f"Done. Results: {OUTPUT_FILE}, {csv_path}, {logs_path}, {metadata_path}", flush=True)
 
 
 if __name__ == "__main__":

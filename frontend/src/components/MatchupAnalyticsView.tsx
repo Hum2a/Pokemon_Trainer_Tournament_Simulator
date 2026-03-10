@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BarChart,
   Bar,
@@ -21,6 +22,10 @@ export interface MatchupResult {
 export interface MatchupAnalyticsData {
   matchup_results: Record<string, MatchupResult>;
   matchup_matrix_csv?: string;
+  matchup_battle_logs?: Record<string, Array<{ winner?: string; log?: string }>>;
+  pool?: string[];
+  pokemon_sets?: Record<string, string>;
+  config_snapshot?: Record<string, unknown>;
 }
 
 const CHART_COLORS = {
@@ -181,6 +186,99 @@ export function MatchupAnalyticsView({
           )}
         </div>
       )}
+
+      {(data.pool?.length ?? 0) > 0 && (
+        <SimulationDetailSection title="Pokemon pool" defaultOpen={false}>
+          <p className="text-sm text-[var(--text-muted)] mb-2">
+            {data.pool!.length} Pokemon in this simulation
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {data.pool!.map((name) => (
+              <span
+                key={name}
+                className="px-2 py-1 rounded-md bg-[var(--bg-input)] text-sm text-[var(--text)]"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </SimulationDetailSection>
+      )}
+
+      {data.pokemon_sets && Object.keys(data.pokemon_sets).length > 0 && (
+        <SimulationDetailSection title="Pokemon sets" defaultOpen={false}>
+          <p className="text-sm text-[var(--text-muted)] mb-2">
+            Sets used for each Pokemon (Showdown format)
+          </p>
+          <div className="space-y-4">
+            {Object.entries(data.pokemon_sets).map(([name, setStr]) => (
+              <div
+                key={name}
+                className="rounded-lg border border-[var(--border)] overflow-hidden"
+              >
+                <div className="px-3 py-2 bg-[var(--bg-input)] text-sm font-medium text-[var(--primary)]">
+                  {name}
+                </div>
+                <pre className="p-3 text-xs text-[var(--text)] overflow-x-auto whitespace-pre-wrap font-mono">
+                  {setStr}
+                </pre>
+              </div>
+            ))}
+          </div>
+        </SimulationDetailSection>
+      )}
+
+      {data.config_snapshot && Object.keys(data.config_snapshot).length > 0 && (
+        <SimulationDetailSection title="Simulation filters" defaultOpen={false}>
+          <p className="text-sm text-[var(--text-muted)] mb-2">
+            Settings used for this run
+          </p>
+          <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+            <pre className="p-3 text-xs text-[var(--text)] overflow-x-auto max-h-48 overflow-y-auto font-mono">
+              {JSON.stringify(data.config_snapshot, null, 2)}
+            </pre>
+          </div>
+        </SimulationDetailSection>
+      )}
     </motion.div>
+  );
+}
+
+function SimulationDetailSection({
+  title,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full px-3 py-2 flex items-center justify-between text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--bg-input)]/50"
+      >
+        {title}
+        <span className="text-[var(--text-muted)]">{open ? "▼" : "▶"}</span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-3 py-3 pt-0 border-t border-[var(--border)]">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

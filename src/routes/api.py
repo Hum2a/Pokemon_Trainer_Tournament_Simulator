@@ -212,6 +212,7 @@ def outputs_list():
         "matchup_results.json",
         "matchup_matrix.csv",
         "matchup_battle_logs.json",
+        "matchup_simulation_metadata.json",
     ]:
         p = DATA_DIR / name
         if p.exists():
@@ -405,6 +406,8 @@ def save_current_simulation():
         matchup_results = None
         matchup_matrix_csv = None
         matchup_battle_logs = None
+        pool = None
+        pokemon_sets = None
         try:
             p = DATA_DIR / "matchup_results.json"
             if p.exists():
@@ -425,7 +428,19 @@ def save_current_simulation():
                     matchup_battle_logs = json.load(f)
         except (json.JSONDecodeError, OSError):
             pass
-        if save_simulation_results(user_id, run_id, matchup_results, matchup_matrix_csv, matchup_battle_logs):
+        try:
+            p = DATA_DIR / "matchup_simulation_metadata.json"
+            if p.exists():
+                with open(p, encoding="utf-8") as f:
+                    meta = json.load(f)
+                pool = meta.get("pool")
+                pokemon_sets = meta.get("pokemon_sets")
+        except (json.JSONDecodeError, OSError):
+            pass
+        if save_simulation_results(
+            user_id, run_id, matchup_results, matchup_matrix_csv, matchup_battle_logs,
+            pool=pool, pokemon_sets=pokemon_sets,
+        ):
             return jsonify({"ok": True, "run_id": run_id})
         return jsonify({"error": "Failed to save results"}), 500
     except Exception as e:
