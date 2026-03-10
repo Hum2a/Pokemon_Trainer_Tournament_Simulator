@@ -8,6 +8,21 @@ from pathlib import Path
 from src.config import DATA_DIR, ALLOWED_OUTPUT_FILES, ALLOWED_DEX_TYPES, MAX_FILE_SIZE_BYTES, MAX_PATH_LENGTH
 
 
+def _is_safe_parse_output_path(path):
+    """Check parse output_file is safe (no path traversal). Must be under Data/."""
+    if not path or not isinstance(path, str) or len(path) > MAX_PATH_LENGTH:
+        return False
+    path = path.strip().replace("\\", "/")
+    if ".." in path or path.startswith("/") or "\\" in path:
+        return False
+    if re.search(r"[<>\"|?*]", path):
+        return False
+    # Allow simple filenames or paths under Outputs/
+    if "/" in path and not path.startswith("Outputs/"):
+        return False
+    return True
+
+
 def validate_config(config):
     """Validate config structure and values. Returns (valid, error_message)."""
     if not isinstance(config, dict):
@@ -21,6 +36,9 @@ def validate_config(config):
         n = trainer.get("n")
         if n is not None and (not isinstance(n, int) or n < 0):
             return False, "Trainer battle cap must be non-negative"
+        run_n = trainer.get("run_n_times")
+        if run_n is not None and (not isinstance(run_n, int) or run_n < 1 or run_n > 10000):
+            return False, "Trainer run_n_times must be 1-10000"
         filename = trainer.get("filename")
         if filename and not _is_safe_input_path(filename):
             return False, "Invalid trainer filename"
@@ -30,6 +48,27 @@ def validate_config(config):
         threads = pokemon.get("noOfThreads")
         if threads is not None and (not isinstance(threads, int) or threads < 1 or threads > 64):
             return False, "Pokemon threads must be 1-64"
+
+    matchups = config.get("matchups", {})
+    if isinstance(matchups, dict):
+        pool_limit = matchups.get("poolLimit")
+        if pool_limit is not None and (
+            not isinstance(pool_limit, int) or pool_limit < 1 or pool_limit > 500
+        ):
+            return False, "Matchups poolLimit must be 1-500"
+        for key in (
+            "poolEvolutionStages", "poolTypes", "poolRegions", "poolRoles",
+            "poolTags", "poolEggGroups", "poolColors", "poolGenerations",
+        ):
+            arr = matchups.get(key)
+            if isinstance(arr, list) and len(arr) > 50:
+                return False, f"Matchups {key} list too long (max 50)"
+
+    parse_cfg = config.get("parse", {})
+    if isinstance(parse_cfg, dict):
+        output_file = parse_cfg.get("output_file")
+        if output_file and not _is_safe_parse_output_path(output_file):
+            return False, "Invalid parse output_file (path traversal not allowed)"
 
     return True, None
 
