@@ -18,8 +18,9 @@ This app uses **split deployment**: backend (Flask API) and frontend (React SPA)
 3. Connect your repository
 4. Configure:
    - **Name:** `pokemon-simulator-api`
-   - **Runtime:** Docker
-   - **Dockerfile Path:** `./Dockerfile.backend`
+   - **Runtime:** Python (native)
+   - **Build command:** `./build.sh`
+   - **Start command:** `gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 300 app:app`
 5. Add environment variables:
    - `SUPABASE_URL`, `SUPABASE_JWT_SECRET`, `SUPABASE_SECRET_KEY` (see AUTH_SETUP.md)
    - `CORS_ORIGINS` = `https://your-frontend.netlify.app` (your frontend URL, no trailing slash)
@@ -93,6 +94,12 @@ cd frontend && VITE_API_URL=http://localhost:5000 npm run dev
 
 ---
 
+## Alternative: Docker Backend
+
+If native Python fails (e.g. submodule issues), use Docker instead. In Render, set:
+- **Runtime:** Docker
+- **Dockerfile Path:** `./Dockerfile.backend`
+
 ## Monolithic (Single Docker) Option
 
 To deploy the full stack in one container (frontend + backend), use the original Dockerfile:
@@ -101,4 +108,4 @@ To deploy the full stack in one container (frontend + backend), use the original
 docker build -f Dockerfile -t pokemon-simulator .
 ```
 
-Then set Render to use `./Dockerfile` instead of `./Dockerfile.backend`. No `CORS_ORIGINS` or `VITE_API_URL` needed.
+Then set Render to use `./Dockerfile` instead of native Python. No `CORS_ORIGINS` or `VITE_API_URL` needed.

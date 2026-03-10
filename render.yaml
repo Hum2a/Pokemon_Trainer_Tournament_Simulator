@@ -1,5 +1,5 @@
 # Render Blueprint - Pokemon Battle Simulator (split deployment)
-# Backend: Web Service. Frontend: deploy separately to Netlify/Vercel/Cloudflare Pages.
+# Backend: Native Python. Frontend: deploy separately to Netlify/Vercel/Cloudflare Pages.
 #
 # Required env vars (add in Render dashboard):
 #   SUPABASE_URL, SUPABASE_JWT_SECRET, SUPABASE_SECRET_KEY
@@ -8,8 +8,11 @@
 services:
   - type: web
     name: pokemon-simulator-api
-    runtime: docker
-    dockerfilePath: ./Dockerfile.backend
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 300 app:app
     envVars:
       - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: API_ONLY
         value: "1"
