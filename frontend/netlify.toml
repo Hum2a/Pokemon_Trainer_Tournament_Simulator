@@ -1,9 +1,13 @@
 # Netlify config for split deployment
-# Build: set VITE_API_URL in Netlify env vars to your backend URL (e.g. https://pokemon-simulator-api.onrender.com)
+# Build: set VITE_API_URL, VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars
 
 [build]
   command = "npm run build"
   publish = "dist"
+
+# Supabase publishable keys are intentionally in the client bundle; omit from secrets scan
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_PUBLISHABLE_KEY"
 
 # SPA routing: serve index.html for all routes
 [[redirects]]
