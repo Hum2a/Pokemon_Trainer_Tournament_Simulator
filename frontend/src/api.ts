@@ -34,6 +34,19 @@ export async function apiPost<T = unknown>(endpoint: string, body?: object): Pro
   return data as T;
 }
 
+export async function apiPatch<T = unknown>(endpoint: string, body?: object): Promise<T> {
+  const headers = await authHeaders();
+  const res = await fetch(`${API_BASE}${endpoint}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...headers },
+    body: body ? JSON.stringify(body) : undefined,
+    credentials: 'include',
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error((data as { error?: string }).error || res.statusText);
+  return data as T;
+}
+
 export async function apiDelete<T = unknown>(endpoint: string): Promise<T> {
   const headers = await authHeaders();
   const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE', headers, credentials: 'include' });
@@ -59,6 +72,7 @@ export async function downloadFile(endpoint: string, filename: string): Promise<
 export const api = {
   get: apiGet,
   post: apiPost,
+  patch: apiPatch,
   delete: apiDelete,
   downloadFile,
   base: API_BASE,

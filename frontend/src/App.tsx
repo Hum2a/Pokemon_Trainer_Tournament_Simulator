@@ -10,6 +10,7 @@ import { TournamentPage } from "./pages/TournamentPage";
 import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 import { MySimulationsPage } from "./pages/MySimulationsPage";
 import { UploadResultsPage } from "./pages/UploadResultsPage";
+import { AdminPanelPage } from "./pages/AdminPanelPage";
 
 const container = {
   hidden: { opacity: 0 },
@@ -48,7 +49,7 @@ function UserMenu({ onSignInClick }: { onSignInClick: () => void }) {
 
 function AppContent() {
   const { status, modal, hideModal } = useApp();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   return (
     <OpenAuthModalContext.Provider value={() => setAuthModalOpen(true)}>
@@ -132,6 +133,20 @@ function AppContent() {
                 >
                   Upload Results
                 </NavLink>
+                {(role === "admin" || role === "developer") && (
+                  <NavLink
+                    to="/admin"
+                    className={({ isActive }) =>
+                      `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                          : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    Admin
+                  </NavLink>
+                )}
               </nav>
             </div>
             <div className="flex items-center gap-4">
@@ -148,6 +163,7 @@ function AppContent() {
                 <Route path="/tournament" element={<TournamentPage />} />
                 <Route path="/simulations" element={<MySimulationsPage />} />
                 <Route path="/upload-results" element={<UploadResultsPage />} />
+                <Route path="/admin" element={<AdminPanelPage />} />
               </Routes>
             </main>
           </motion.div>

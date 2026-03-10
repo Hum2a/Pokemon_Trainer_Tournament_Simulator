@@ -42,6 +42,105 @@ def get_supabase():
     return bool(url and key)
 
 
+ALLOWED_ROLES = ("user", "admin", "developer")
+
+
+def get_user_role(user_id: str) -> str:
+    """Get role for user from user_profiles. Returns 'user' if not found."""
+    h = _headers()
+    if not h:
+        return "user"
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/user_profiles",
+            params={"user_id": f"eq.{user_id}", "select": "role"},
+            headers=h,
+            timeout=10,
+        )
+        if r.status_code == 200:
+            data = r.json()
+            if data and len(data) > 0:
+                role = data[0].get("role")
+                if role in ALLOWED_ROLES:
+                    return role
+    except Exception:
+        pass
+    return "user"
+
+
+def update_user_role(user_id: str, role: str) -> bool:
+    """Update user role. Returns True on success."""
+    if role not in ALLOWED_ROLES:
+        return False
+    h = _headers()
+    if not h:
+        return False
+    url, _ = _get_config()
+    try:
+        from datetime import datetime, timezone
+        r = requests.patch(
+            f"{url}/rest/v1/user_profiles",
+            params={"user_id": f"eq.{user_id}"},
+            json={"role": role, "updated_at": datetime.now(timezone.utc).isoformat()},
+            headers=h,
+            timeout=10,
+        )
+        return r.status_code in (200, 204)
+    except Exception:
+        pass
+    return False
+
+
+def list_users_with_roles() -> list[dict]:
+    """List all users with roles. Uses Auth Admin API + user_profiles. Returns list of {id, email, role}."""
+    url, key = _get_config()
+    if not url or not key:
+        return []
+    users: list[dict] = []
+    try:
+        # Fetch users from Auth Admin API (per_page for larger user bases)
+        r = requests.get(
+            f"{url}/auth/v1/admin/users",
+            params={"per_page": 1000},
+            headers={
+                "Authorization": f"Bearer {key}",
+                "apikey": key,
+            },
+            timeout=15,
+        )
+        if r.status_code != 200:
+            return []
+        auth_data = r.json()
+        auth_users = auth_data.get("users") or []
+        if not auth_users:
+            return []
+
+        # Fetch all profiles
+        h = _headers()
+        if not h:
+            return []
+        r2 = requests.get(
+            f"{url}/rest/v1/user_profiles",
+            params={"select": "user_id,role"},
+            headers=h,
+            timeout=10,
+        )
+        profiles = {p["user_id"]: p.get("role", "user") for p in (r2.json() or [])} if r2.status_code == 200 else {}
+
+        for u in auth_users:
+            uid = u.get("id")
+            if uid:
+                users.append({
+                    "id": uid,
+                    "email": u.get("email") or "",
+                    "role": profiles.get(uid, "user"),
+                })
+    except Exception:
+        pass
+    return users
+
+
 def get_user_config(user_id: str) -> Optional[dict]:
     """Load config for user from Supabase. Returns None if not found or disabled."""
     h = _headers()

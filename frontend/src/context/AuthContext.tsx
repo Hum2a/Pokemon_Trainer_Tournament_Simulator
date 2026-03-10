@@ -8,9 +8,12 @@ import {
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
+export type UserRole = "user" | "admin" | "developer";
+
 interface AuthState {
   user: User | null;
   session: Session | null;
+  role: UserRole;
   loading: boolean;
 }
 
@@ -31,10 +34,12 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 // Persist auth across React Strict Mode remounts and navigation
 let _cachedUser: User | null = null;
 let _cachedSession: Session | null = null;
+let _cachedRole: UserRole = "user";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(() => _cachedUser);
   const [session, setSession] = useState<Session | null>(() => _cachedSession);
+  const [role, setRole] = useState<UserRole>(() => _cachedRole);
   const [loading, setLoading] = useState(!_cachedUser);
 
   const updateAuth = useCallback((newSession: Session | null, newUser: User | null) => {
@@ -43,11 +48,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(newSession);
     setUser(newUser);
     setLoading(false);
+    if (!newUser) {
+      _cachedRole = "user";
+      setRole("user");
+    }
   }, []);
 
   const refreshAuth = useCallback(async () => {
     const { data } = await supabase.auth.getSession();
     updateAuth(data.session, data.session?.user ?? null);
+    if (data.session?.user) {
+      try {
+        const res = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${data.session.access_token}`,
+          },
+          credentials: "include",
+        });
+        if (res.ok) {
+          const { role: r } = await res.json();
+          if (r === "admin" || r === "developer" || r === "user") {
+            _cachedRole = r;
+            setRole(r);
+          }
+        }
+      } catch {
+        _cachedRole = "user";
+        setRole("user");
+      }
+    }
   }, [updateAuth]);
 
   useEffect(() => {
@@ -55,15 +84,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } =     supabase.auth.onAuthStateChange(async (event, session) => {
       if (!session && event !== "SIGNED_OUT") {
         const { data } = await supabase.auth.getSession();
         if (data.session) {
-          updateAuth(data.session, data.session.user);
+          await refreshAuth();
           return;
         }
       }
-      updateAuth(session, session?.user ?? null);
+      if (session) {
+        await refreshAuth();
+      } else {
+        updateAuth(null, null);
+      }
     });
 
     const onFocus = () => refreshAuth();
@@ -116,6 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         session,
+        role,
         loading,
         signIn,
         signUp,

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file
 
-from src.auth import get_user_id_from_request, require_auth
+from src.auth import get_user_id_from_request, require_auth, require_admin
 from src.config import get_config, save_config, DEX_DIR, DATA_DIR
 from src.supabase_client import (
     get_user_config,
@@ -16,6 +16,9 @@ from src.supabase_client import (
     save_simulation_results,
     list_user_simulations,
     get_simulation_results,
+    get_user_role,
+    list_users_with_roles,
+    update_user_role,
 )
 from src.security import (
     validate_config,
@@ -58,6 +61,38 @@ def auth_check():
             else "Auth OK"
         ),
     })
+
+
+@api_bp.route("/auth/me")
+@require_auth
+def auth_me():
+    """Return current user id and role. Requires auth."""
+    user_id = get_user_id_from_request()
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
+    role = get_user_role(user_id)
+    return jsonify({"user_id": user_id, "role": role})
+
+
+@api_bp.route("/admin/users")
+@require_admin
+def admin_list_users():
+    """List all users with roles. Admin/developer only."""
+    users = list_users_with_roles()
+    return jsonify(users)
+
+
+@api_bp.route("/admin/users/<user_id>/role", methods=["PATCH"])
+@require_admin
+def admin_update_role(user_id):
+    """Update user role. Admin/developer only."""
+    data = request.get_json(silent=True) or {}
+    role = data.get("role", "").strip().lower()
+    if role not in ("user", "admin", "developer"):
+        return jsonify({"error": "Invalid role"}), 400
+    if update_user_role(user_id, role):
+        return jsonify({"ok": True, "role": role})
+    return jsonify({"error": "Failed to update role"}), 500
 
 
 def _load_config_for_user(user_id):

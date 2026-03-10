@@ -81,3 +81,39 @@ def optional_auth(f):
     return wrapped
 
 
+def require_role(*allowed_roles: str):
+    """Decorator: require auth and one of the allowed roles (e.g. 'admin', 'developer')."""
+
+    def decorator(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not _auth_configured():
+                return (
+                    jsonify({
+                        "error": (
+                            "Server auth not configured. Add SUPABASE_URL and SUPABASE_ANON_KEY "
+                            "to your backend .env (see AUTH_SETUP.md)."
+                        ),
+                    }),
+                    503,
+                )
+            user_id = get_user_id_from_request()
+            if not user_id:
+                return jsonify({"error": "Authentication required"}), 401
+            from src.supabase_client import get_user_role
+
+            role = get_user_role(user_id)
+            if role not in allowed_roles:
+                return jsonify({"error": "Insufficient permissions"}), 403
+            return f(*args, **kwargs)
+
+        return wrapped
+
+    return decorator
+
+
+def require_admin(f):
+    """Decorator: require admin or developer role for admin panel access."""
+    return require_role("admin", "developer")(f)
+
+

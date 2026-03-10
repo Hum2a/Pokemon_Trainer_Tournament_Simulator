@@ -1,5 +1,8 @@
 -- User roles: user, admin, developer
 -- Admin and developer can access the admin panel
+--
+-- To create the first admin, run after migration:
+--   UPDATE user_profiles SET role = 'admin' WHERE user_id = (SELECT id FROM auth.users WHERE email = 'your@email.com');
 
 CREATE TABLE IF NOT EXISTS user_profiles (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
