@@ -389,3 +389,59 @@ def get_simulation_results(user_id: str, run_id: str) -> Optional[dict]:
     except Exception:
         pass
     return None
+
+
+# --- Dex data (pokedex reference, synced from fetch_dex_data.py) ---
+
+DEX_DATA_TYPES = ("species", "moves", "abilities", "items", "learnsets", "natures")
+
+
+def sync_dex_data(data_type: str, data: Any) -> bool:
+    """Upsert dex data into Supabase. Returns True on success."""
+    if data_type not in DEX_DATA_TYPES:
+        return False
+    h = _headers()
+    if not h:
+        return False
+    url, _ = _get_config()
+    try:
+        from datetime import datetime, timezone
+        payload = {
+            "data_type": data_type,
+            "data": data,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        r = requests.post(
+            f"{url}/rest/v1/dex_data",
+            json=payload,
+            headers={**h, "Prefer": "resolution=merge-duplicates,on_conflict=data_type"},
+            timeout=60,
+        )
+        return r.status_code in (200, 201, 204)
+    except Exception:
+        pass
+    return False
+
+
+def get_dex_data(data_type: str) -> Optional[Any]:
+    """Get dex data from Supabase. Returns parsed data or None."""
+    if data_type not in DEX_DATA_TYPES:
+        return None
+    h = _headers()
+    if not h:
+        return None
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/dex_data",
+            params={"data_type": f"eq.{data_type}", "select": "data"},
+            headers=h,
+            timeout=15,
+        )
+        if r.status_code == 200:
+            rows = r.json()
+            if rows:
+                return rows[0].get("data")
+    except Exception:
+        pass
+    return None

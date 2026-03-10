@@ -23,6 +23,7 @@ from src.supabase_client import (
     get_database_stats,
     update_user_role,
 )
+from src.supabase_client import get_dex_data, get_supabase
 from src.security import (
     validate_config,
     resolve_input_path,
@@ -705,6 +706,14 @@ def simulation_detail(run_id):
 def dex(data_type):
     if not validate_dex_type(data_type):
         return jsonify({"error": "Invalid type"}), 400
+
+    # Try database first (fallback to JSON files)
+    if get_supabase():
+        db_data = get_dex_data(data_type)
+        if db_data is not None:
+            return jsonify(db_data)
+
+    # Fallback: read from local JSON files
     path = DEX_DIR / f"{data_type}.json"
     if not path.exists():
         return jsonify({

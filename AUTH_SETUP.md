@@ -14,10 +14,13 @@ This app uses [Supabase](https://supabase.com) for authentication and per-user s
 In the Supabase Dashboard:
 
 1. Open **SQL Editor**
-2. Copy the contents of `supabase_migrations/migrations/001_initial_schema.sql`
-3. Paste and run it
+2. Run each migration in order:
+   - `001_initial_schema.sql` – user configs, simulation runs/results
+   - `002_add_simulation_metadata.sql` (if present)
+   - `003_user_roles.sql` – user profiles and roles
+   - `004_dex_data.sql` – pokedex reference data (optional; API falls back to JSON if empty)
 
-This creates `user_configs`, `simulation_runs`, and `simulation_results` tables with RLS.
+This creates `user_configs`, `simulation_runs`, `simulation_results`, `user_profiles`, and optionally `dex_data` tables.
 
 ## 3. Get Your API Keys
 
