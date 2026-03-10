@@ -420,15 +420,24 @@ export function MatchupSimulator() {
 
   const getEstimatedTimeSeconds = useCallback((): number | null => {
     const matchups = getMatchupCount();
-    const battlesPerMatchup = m.battlesPerMatchup ?? 5;
-    const threads = m.noOfThreads ?? 4;
-    const totalBattles = matchups * battlesPerMatchup;
+    const strategy = m.simulationStrategy ?? "full";
+    if (strategy === "heuristic") return 0;
+    let battlesPerMatchup = m.battlesPerMatchup ?? 5;
+    let effectiveMatchups = matchups;
+    if (strategy === "quick") battlesPerMatchup = 1;
+    if (strategy === "sampled") {
+      const frac = Math.max(0.05, Math.min(1, m.sampleFraction ?? 0.2));
+      effectiveMatchups = Math.max(1, Math.floor(matchups * frac));
+    }
+    const totalBattles = effectiveMatchups * battlesPerMatchup;
     if (totalBattles <= 0) return null;
     const SECONDS_PER_BATTLE = 2;
+    const threads = m.noOfThreads ?? 4;
     return Math.ceil((totalBattles / threads) * SECONDS_PER_BATTLE);
-  }, [getMatchupCount, m.battlesPerMatchup, m.noOfThreads]);
+  }, [getMatchupCount, m.battlesPerMatchup, m.noOfThreads, m.simulationStrategy, m.sampleFraction]);
 
   const formatEstimatedTime = (seconds: number): string => {
+    if (seconds <= 0) return "Instant (heuristic)";
     if (seconds < 60) return `~${seconds} sec`;
     if (seconds < 3600) return `~${Math.round(seconds / 60)} min`;
     const h = Math.floor(seconds / 3600);
@@ -833,6 +842,41 @@ export function MatchupSimulator() {
         <motion.div className="space-y-4 p-4 rounded-xl bg-black/20 border border-[var(--border)]/50" whileHover={{ borderColor: "rgba(0,245,255,0.15)" }}>
           <h3 className="font-display font-semibold text-[var(--primary)]">Battle Config</h3>
           <label className={labelCls}>
+            <span>Simulation strategy</span>
+            <select
+              value={m.simulationStrategy ?? "full"}
+              onChange={(e) => updateMatchup({ simulationStrategy: e.target.value as "full" | "quick" | "sampled" | "heuristic" })}
+              className="bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)]"
+            >
+              <option value="full">Full — All battles via Showdown (most accurate, slowest)</option>
+              <option value="quick">Quick — 1 battle per matchup (~5× faster)</option>
+              <option value="sampled">Sampled — Random subset of matchups</option>
+              <option value="heuristic">Heuristic — Type/BST estimate (instant, approximate)</option>
+            </select>
+            <span className="text-xs text-[var(--text-muted)]">
+              {m.simulationStrategy === "heuristic" && "No battles run; uses type chart + BST."}
+              {m.simulationStrategy === "quick" && "1 battle per matchup instead of 5."}
+              {m.simulationStrategy === "sampled" && "Runs a fraction of matchups for faster results."}
+              {(!m.simulationStrategy || m.simulationStrategy === "full") && "Runs every battle through Pokemon Showdown."}
+            </span>
+          </label>
+          {(m.simulationStrategy ?? "full") === "sampled" && (
+            <label className={labelCls}>
+              <span>Sample fraction</span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="range"
+                  min={5}
+                  max={100}
+                  value={(m.sampleFraction ?? 0.2) * 100}
+                  onChange={(e) => updateMatchup({ sampleFraction: parseInt(e.target.value) / 100 })}
+                  className="flex-1"
+                />
+                <span className="text-sm text-[var(--text)] w-12">{(m.sampleFraction ?? 0.2) * 100}%</span>
+              </div>
+            </label>
+          )}
+          <label className={labelCls}>
             <span>Level</span>
             <div className="flex gap-2">
               <input
@@ -940,8 +984,19 @@ export function MatchupSimulator() {
             <dd className="text-[var(--text)] font-medium">{m.setLevel ?? 100}</dd>
           </div>
           <div className="flex gap-2">
+            <dt className="text-[var(--text-muted)] min-w-[100px]">Strategy</dt>
+            <dd className="text-[var(--text)] font-medium">
+              {(m.simulationStrategy ?? "full") === "full" && "Full"}
+              {(m.simulationStrategy ?? "full") === "quick" && "Quick (1 battle)"}
+              {(m.simulationStrategy ?? "full") === "sampled" && `Sampled (${((m.sampleFraction ?? 0.2) * 100).toFixed(0)}%)`}
+              {(m.simulationStrategy ?? "full") === "heuristic" && "Heuristic"}
+            </dd>
+          </div>
+          <div className="flex gap-2">
             <dt className="text-[var(--text-muted)] min-w-[100px]">Battles/matchup</dt>
-            <dd className="text-[var(--text)] font-medium">{m.battlesPerMatchup ?? 5}</dd>
+            <dd className="text-[var(--text)] font-medium">
+              {(m.simulationStrategy ?? "full") === "quick" ? 1 : (m.battlesPerMatchup ?? 5)}
+            </dd>
           </div>
           <div className="flex gap-2">
             <dt className="text-[var(--text-muted)] min-w-[100px]">Threads</dt>
