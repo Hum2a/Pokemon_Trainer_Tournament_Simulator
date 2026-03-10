@@ -136,7 +136,10 @@ export function MySimulationsPage() {
                 </span>
               </div>
               {selectedId === run.id && (
-                <div className="border-t border-[var(--border)] p-4">
+                <div
+                  className="border-t border-[var(--border)] p-4"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <SavedSimulationDetail runId={run.id} onClose={() => setSelectedId(null)} />
                 </div>
               )}
