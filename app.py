@@ -4,6 +4,7 @@ Entry point for the Flask application.
 Serves the React SPA from frontend/dist when not in API-only mode.
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -12,16 +13,23 @@ from dotenv import load_dotenv
 # Load .env from project root (directory containing app.py)
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 
 from src.routes import register_blueprints
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
 
 
 def create_app():
     app = Flask(__name__)
     app.config["JSON_SORT_KEYS"] = False
     app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024  # 12 MB max request
+
+    @app.before_request
+    def log_request():
+        logger.info("%s %s", request.method, request.path)
 
     # CORS for split deployment (frontend on different origin)
     cors_origins = os.environ.get("CORS_ORIGINS", "")
