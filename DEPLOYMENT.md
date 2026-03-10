@@ -1,86 +1,104 @@
-# Deployment Guide
+# Deployment Guide (Split Deployment)
 
-This app is a **Flask backend + React frontend** that runs Pokemon Showdown simulations via subprocesses. It requires Python, Node.js, and long-running processes.
+This app uses **split deployment**: backend (Flask API) and frontend (React SPA) deploy separately.
 
-## Platform Comparison
+## Architecture
 
-| Platform | Suitability | Notes |
-|----------|-------------|-------|
-| **Render** | ✅ **Recommended** | Supports Docker, Python, Node, long-running processes. Free tier available (spins down after 15 min inactivity). |
-| **Netlify** | ❌ Not suitable | Static sites + serverless functions only. 10–26s function timeout. No Python subprocess support. |
-| **Cloudflare Pages** | ❌ Not suitable | Static hosting only. Workers are serverless JS with strict CPU limits. No Python. |
-
-**Conclusion:** Use **Render** for this project.
+| Component | Host | URL example |
+|-----------|------|--------------|
+| **Backend** | Render (Docker) | `https://pokemon-simulator-api.onrender.com` |
+| **Frontend** | Netlify / Vercel / Cloudflare Pages | `https://pokemon-simulator.netlify.app` |
 
 ---
 
-## Deploy to Render (Recommended)
-
-### Prerequisites
-
-- GitHub/GitLab/Bitbucket repo with your code
-- Ensure `pokemon-showdown` submodule is committed (or Render will fetch it during Docker build)
-
-### Option A: One-Click with Blueprint
-
-1. Go to [dashboard.render.com](https://dashboard.render.com/)
-2. **New** → **Blueprint**
-3. Connect your repository
-4. Render will detect `render.yaml` and create the web service
-5. Click **Apply**
-
-### Option B: Manual Setup
+## 1. Deploy Backend (Render)
 
 1. Go to [dashboard.render.com](https://dashboard.render.com/)
 2. **New** → **Web Service**
 3. Connect your repository
 4. Configure:
-   - **Name:** `pokemon-simulator` (or any name)
-   - **Region:** Choose closest to you
-   - **Language:** Select **Docker** from the dropdown (Render may auto-detect Python—change it to Docker)
-   - **Dockerfile Path:** `./Dockerfile` (default; under Advanced if not visible)
-   - Leave Build/Start commands empty (Dockerfile defines them)
-5. Click **Create Web Service**
+   - **Name:** `pokemon-simulator-api`
+   - **Runtime:** Docker
+   - **Dockerfile Path:** `./Dockerfile.backend`
+5. Add environment variables:
+   - `SUPABASE_URL`, `SUPABASE_JWT_SECRET`, `SUPABASE_SECRET_KEY` (see AUTH_SETUP.md)
+   - `CORS_ORIGINS` = `https://your-frontend.netlify.app` (your frontend URL, no trailing slash)
+6. Deploy
 
-### After Deploy
-
-- Your app will be at `https://<service-name>.onrender.com`
-- **Free tier:** Service spins down after ~15 minutes of inactivity. First request after spin-down may take 30–60 seconds.
-- **Dex data:** Run `Data/UsefulDatasets/fetch_dex_data.py` locally and commit the `dex-export/` files, or the Team Builder will show "Dex data not found" until you add them.
-
-### Important Notes for Render
-
-- **Ephemeral disk:** On free tier, `Data/` is ephemeral. Config and outputs reset on redeploy. For persistent data, use a [Render Disk](https://render.com/docs/disks) (paid).
-- **Simulation timeouts:** Long simulations (hours) may be interrupted if the service spins down. Consider a paid plan for always-on behavior.
-- **Build time:** First deploy takes 5–10 minutes (installs Node, Python, builds pokemon-showdown and frontend).
+Your API will be at `https://<service-name>.onrender.com`. Note this URL for the frontend.
 
 ---
 
-## Local Docker Build (Optional)
+## 2. Deploy Frontend (Netlify)
 
-To test the production image locally:
+1. Go to [app.netlify.com](https://app.netlify.com/)
+2. **Add new site** → **Import an existing project** → Connect GitHub
+3. Configure:
+   - **Base directory:** `frontend`
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. Add environment variables:
+   - `VITE_API_URL` = `https://pokemon-simulator-api.onrender.com` (your backend URL)
+   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (see AUTH_SETUP.md)
+5. Deploy
 
-```bash
-# Ensure submodule is initialized
-git submodule update --init --recursive
+---
 
-# Build
-docker build -t pokemon-simulator .
+## Alternative: Vercel Frontend
 
-# Run (port 5000)
-docker run -p 5000:5000 -e PORT=5000 pokemon-simulator
+1. Import repo at [vercel.com](https://vercel.com)
+2. Set **Root Directory** to `frontend`
+3. Build and output settings are auto-detected from `vercel.json`
+4. Add environment variables: `VITE_API_URL`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`
+
+---
+
+## Alternative: Cloudflare Pages Frontend
+
+1. Connect repo at [dash.cloudflare.com](https://dash.cloudflare.com/) → Pages
+2. **Build configuration:** Framework preset = None, or Vite
+3. **Build command:** `npm run build`
+4. **Build output:** `dist`
+5. Add environment variables in Settings → Environment variables
+
+---
+
+## CORS
+
+The backend must allow your frontend origin. Set `CORS_ORIGINS` to your frontend URL (comma-separated for multiple):
+
+```
+CORS_ORIGINS=https://pokemon-simulator.netlify.app,https://pokemon-simulator.vercel.app
 ```
 
-Then open http://localhost:5000
+---
+
+## Local Development
+
+Both together (same origin, no CORS):
+
+```bash
+npm run dev
+```
+
+Or run separately:
+
+```bash
+# Terminal 1: backend
+python app.py
+
+# Terminal 2: frontend (with API proxy or VITE_API_URL)
+cd frontend && VITE_API_URL=http://localhost:5000 npm run dev
+```
 
 ---
 
-## Alternative: Netlify + Cloudflare (Static Only)
+## Monolithic (Single Docker) Option
 
-If you only need to host the **frontend** (no simulations), you can:
+To deploy the full stack in one container (frontend + backend), use the original Dockerfile:
 
-1. Build: `cd frontend && npm run build`
-2. Deploy `frontend/dist/` to Netlify or Cloudflare Pages
-3. Configure a **backend URL** in the frontend (e.g. `VITE_API_URL`) and point API calls to a separately hosted Flask backend (e.g. on Render)
+```bash
+docker build -f Dockerfile -t pokemon-simulator .
+```
 
-This requires splitting the app and hosting the API elsewhere. The current setup keeps both together for simplicity.
+Then set Render to use `./Dockerfile` instead of `./Dockerfile.backend`. No `CORS_ORIGINS` or `VITE_API_URL` needed.

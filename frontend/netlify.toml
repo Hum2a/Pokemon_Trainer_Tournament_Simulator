@@ -1,0 +1,12 @@
+# Netlify config for split deployment
+# Build: set VITE_API_URL in Netlify env vars to your backend URL (e.g. https://pokemon-simulator-api.onrender.com)
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA routing: serve index.html for all routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

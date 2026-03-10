@@ -1,0 +1,41 @@
+# Backend-only Dockerfile for split deployment
+# Frontend deploys separately (Netlify, Vercel, Cloudflare Pages)
+# Set API_ONLY=1 and CORS_ORIGINS=https://your-frontend.onrender.com
+
+# Stage 1: Build pokemon-showdown (git submodule)
+FROM node:20-slim AS ps-builder
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY . ./
+ARG POKEMON_SHOWDOWN_COMMIT=7bd3faaeee2e18edee0b994230bffa8d466c6f20
+RUN if [ -d .git ]; then \
+      git submodule update --init --recursive; \
+    else \
+      rm -rf pokemon-showdown && \
+      git clone https://github.com/cRz-Shadows/pokemon-showdown.git pokemon-showdown && \
+      cd pokemon-showdown && git checkout ${POKEMON_SHOWDOWN_COMMIT} && cd ..; \
+    fi
+WORKDIR /app/pokemon-showdown
+RUN npm install && node build
+
+# Stage 2: Python runtime
+FROM python:3.11-slim
+WORKDIR /app
+
+ENV API_ONLY=1
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
+
+COPY app.py ./
+COPY src/ ./src/
+COPY --from=ps-builder /app/pokemon-showdown ./pokemon-showdown
+COPY Data/ ./Data/
+
+RUN mkdir -p Data/WorkerFiles Data/Inputs Data/UsefulDatasets/dex-export
+
+ENV PORT=5000
+EXPOSE 5000
+
+CMD gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 4 --timeout 300 app:app

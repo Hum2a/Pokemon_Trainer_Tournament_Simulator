@@ -1,6 +1,8 @@
 import { supabase } from './lib/supabase';
 
-const API_BASE = '/api';
+// For split deployment: set VITE_API_URL to backend base (e.g. https://api.example.com)
+const API_BASE =
+  (import.meta.env.VITE_API_URL?.toString().replace(/\/$/, '') ?? '') + '/api';
 
 async function authHeaders(): Promise<HeadersInit> {
   const headers: Record<string, string> = {};

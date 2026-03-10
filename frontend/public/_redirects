@@ -1,0 +1,2 @@
+# Netlify fallback - SPA routing (also works as backup if netlify.toml redirects fail)
+/*    /index.html   200

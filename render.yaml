@@ -1,16 +1,15 @@
-# Render Blueprint - Pokemon Battle Simulator
-# Deploy: Connect repo at dashboard.render.com, or use "New > Blueprint"
-# Docs: https://render.com/docs/infrastructure-as-code
+# Render Blueprint - Pokemon Battle Simulator (split deployment)
+# Backend: Web Service. Frontend: deploy separately to Netlify/Vercel/Cloudflare Pages.
 #
 # Required env vars (add in Render dashboard):
 #   SUPABASE_URL, SUPABASE_JWT_SECRET, SUPABASE_SECRET_KEY
-#   VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY (for frontend build)
+#   CORS_ORIGINS = https://your-frontend.netlify.app (comma-separated for multiple)
 
 services:
   - type: web
-    name: pokemon-simulator
+    name: pokemon-simulator-api
     runtime: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./Dockerfile.backend
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
