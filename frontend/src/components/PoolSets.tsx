@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../api";
+import { PokemonSprite } from "./PokemonSprite";
 import type { CustomSet } from "../context/AppContext";
 
 export type SmogonSetData = {
@@ -300,8 +301,10 @@ function PokemonSetCard({
         onClick={onToggle}
         className="w-full px-4 py-3 flex items-center justify-between gap-2 text-left hover:bg-[var(--primary)]/5 transition-colors"
       >
-        <div className="min-w-0">
-          <div className="font-semibold text-[var(--text)] truncate">{name}</div>
+        <div className="flex items-center gap-3 min-w-0">
+          <PokemonSprite name={name} size={40} className="shrink-0" />
+          <div className="min-w-0">
+            <div className="font-semibold text-[var(--text)] truncate">{name}</div>
           <div className="text-xs text-[var(--text-muted)] mt-0.5">
             {display ? (
               <>
@@ -313,6 +316,7 @@ function PokemonSetCard({
             ) : (
               <span className="italic">Default (no Smogon set)</span>
             )}
+          </div>
           </div>
         </div>
         <div className="shrink-0 flex items-center gap-1">

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Panel } from "./Panel";
+import { PokemonSprite } from "./PokemonSprite";
 import { useApp } from "../context/AppContext";
 import { api } from "../api";
 import { cn } from "../lib/utils";
@@ -44,6 +45,7 @@ interface Species {
   types?: string[];
   region?: string;
   role?: string;
+  num?: number;
   baseStats?: Record<string, number>;
   abilities?: Record<string, string>;
 }
@@ -411,6 +413,7 @@ export function TeamBuilder() {
                       className="px-4 py-2.5 cursor-pointer hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] transition-colors flex items-center gap-2"
                       onMouseDown={(e) => { e.preventDefault(); selectSpecies(s); }}
                     >
+                      <PokemonSprite name={s.name} num={s.num} size={24} />
                       <span>{s.name}</span>
                       {s.types && s.types.length > 0 && (
                         <span className={cn("text-xs px-2 py-0.5 rounded-full font-medium", TYPE_COLORS[s.types[0]] || "bg-gray-500/80 text-white")}>
