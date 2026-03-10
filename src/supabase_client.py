@@ -312,7 +312,7 @@ def get_database_stats() -> dict:
         return {"configured": False, "tables": {}}
     url, _ = _get_config()
     stats: dict = {"configured": True, "tables": {}}
-    for table in ["user_profiles", "user_configs", "simulation_runs", "simulation_results"]:
+    for table in ["user_profiles", "user_configs", "simulation_runs", "simulation_results", "dex_data"]:
         try:
             r = requests.get(
                 f"{url}/rest/v1/{table}",
@@ -442,6 +442,30 @@ def get_dex_data(data_type: str) -> Optional[Any]:
             rows = r.json()
             if rows:
                 return rows[0].get("data")
+    except Exception:
+        pass
+    return None
+
+
+def get_dex_data_with_meta(data_type: str) -> Optional[dict]:
+    """Get dex data and updated_at from Supabase. Returns {data, updated_at} or None."""
+    if data_type not in DEX_DATA_TYPES:
+        return None
+    h = _headers()
+    if not h:
+        return None
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/dex_data",
+            params={"data_type": f"eq.{data_type}", "select": "data,updated_at"},
+            headers=h,
+            timeout=15,
+        )
+        if r.status_code == 200:
+            rows = r.json()
+            if rows:
+                return rows[0]
     except Exception:
         pass
     return None

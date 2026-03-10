@@ -23,7 +23,7 @@ from src.supabase_client import (
     get_database_stats,
     update_user_role,
 )
-from src.supabase_client import get_dex_data, get_supabase
+from src.supabase_client import get_dex_data, get_dex_data_with_meta, get_supabase, DEX_DATA_TYPES
 from src.security import (
     validate_config,
     resolve_input_path,
@@ -289,6 +289,38 @@ def admin_simulation_detail(run_id):
 def admin_database_stats():
     """Get database table row counts. Admin/developer only."""
     return jsonify(get_database_stats())
+
+
+@api_bp.route("/admin/dex-status")
+@require_admin
+def admin_dex_status():
+    """Get dex data status: source (DB vs file), counts, updated_at. Admin/developer only."""
+    result = {"source": "file", "types": {}, "configured": get_supabase()}
+    for data_type in DEX_DATA_TYPES:
+        entry = {"count": 0, "updated_at": None}
+        # Try database first
+        if get_supabase():
+            row = get_dex_data_with_meta(data_type)
+            if row:
+                data = row.get("data")
+                if data is not None:
+                    entry["count"] = len(data) if isinstance(data, (list, dict)) else 0
+                    entry["updated_at"] = row.get("updated_at")
+                    result["source"] = "database"
+        # Fallback: file
+        if entry["count"] == 0:
+            path = DEX_DIR / f"{data_type}.json"
+            if path.exists():
+                try:
+                    with open(path, encoding="utf-8") as f:
+                        data = json.load(f)
+                    entry["count"] = len(data) if isinstance(data, (list, dict)) else 0
+                    if result["source"] != "database":
+                        result["source"] = "file"
+                except (json.JSONDecodeError, OSError):
+                    pass
+        result["types"][data_type] = entry
+    return jsonify(result)
 
 
 def _load_config_for_user(user_id):

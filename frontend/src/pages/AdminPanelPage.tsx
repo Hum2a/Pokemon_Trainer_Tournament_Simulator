@@ -33,7 +33,18 @@ interface DatabaseStats {
   tables: Record<string, number>;
 }
 
-type AdminTab = "users" | "health" | "simulations" | "database";
+interface DexTypeStatus {
+  count: number;
+  updated_at: string | null;
+}
+
+interface DexStatus {
+  source: "database" | "file";
+  types: Record<string, DexTypeStatus>;
+  configured: boolean;
+}
+
+type AdminTab = "users" | "health" | "simulations" | "database" | "dex";
 
 export function AdminPanelPage() {
   const { user, role, loading: authLoading } = useAuth();
@@ -51,6 +62,9 @@ export function AdminPanelPage() {
   const [databaseStats, setDatabaseStats] = useState<DatabaseStats | null>(null);
   const [databaseLoading, setDatabaseLoading] = useState(false);
   const [databaseError, setDatabaseError] = useState<string | null>(null);
+  const [dexStatus, setDexStatus] = useState<DexStatus | null>(null);
+  const [dexLoading, setDexLoading] = useState(false);
+  const [dexError, setDexError] = useState<string | null>(null);
   const [selectedSimulationId, setSelectedSimulationId] = useState<string | null>(null);
 
   const canAccess = role === "admin" || role === "developer";
@@ -139,6 +153,26 @@ export function AdminPanelPage() {
     }
   }, [activeTab, canAccess, loadDatabaseStats]);
 
+  const loadDexStatus = useCallback(async () => {
+    setDexLoading(true);
+    setDexError(null);
+    try {
+      const data = await api.get<DexStatus>("/admin/dex-status");
+      setDexStatus(data ?? null);
+    } catch (e) {
+      setDexError((e as Error).message);
+      setDexStatus(null);
+    } finally {
+      setDexLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "dex" && canAccess) {
+      loadDexStatus();
+    }
+  }, [activeTab, canAccess, loadDexStatus]);
+
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     setUpdating(userId);
     try {
@@ -184,6 +218,7 @@ export function AdminPanelPage() {
     { id: "users", label: "User management" },
     { id: "simulations", label: "Simulations" },
     { id: "database", label: "Database" },
+    { id: "dex", label: "Pokedex" },
     { id: "health", label: "API health" },
   ];
 
@@ -482,7 +517,7 @@ export function AdminPanelPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-3 mb-4">
             <p className="text-sm text-[var(--text-muted)]">
-              Row counts for Supabase tables (user_profiles, user_configs, simulation_runs, simulation_results).
+              Row counts for Supabase tables (user_profiles, user_configs, simulation_runs, simulation_results, dex_data).
             </p>
             <button
               type="button"
@@ -536,6 +571,103 @@ export function AdminPanelPage() {
           {!databaseStats && !databaseLoading && (
             <p className="py-6 text-center text-[var(--text-muted)] text-sm">
               Click &quot;Refresh&quot; to load database stats.
+            </p>
+          )}
+        </div>
+      )}
+
+      {activeTab === "dex" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <p className="text-sm text-[var(--text-muted)]">
+              Pokedex data (species, moves, abilities, items, learnsets, natures). API uses database first, falls back to JSON files. Run <code className="px-1.5 py-0.5 rounded bg-[var(--bg-input)] text-xs">Data/UsefulDatasets/fetch_dex_data.py</code> to sync.
+            </p>
+            <button
+              type="button"
+              onClick={loadDexStatus}
+              disabled={dexLoading}
+              className="px-4 py-2 rounded-lg bg-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/30 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {dexLoading ? "Loading…" : "Refresh"}
+            </button>
+          </div>
+
+          {dexError && (
+            <div className="p-3 rounded-lg bg-[var(--danger)]/20 text-[var(--danger)] text-sm">
+              {dexError}
+            </div>
+          )}
+
+          {dexStatus && (
+            <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+              <div className="px-4 py-3 bg-[var(--bg-input)] border-b border-[var(--border)] flex items-center justify-between">
+                <span className="text-sm font-medium text-[var(--text)]">
+                  Source:{" "}
+                  <span
+                    className={cn(
+                      "px-2 py-0.5 rounded text-xs font-medium",
+                      dexStatus.source === "database"
+                        ? "bg-[var(--success)]/30 text-[var(--success)]"
+                        : "bg-[var(--amber)]/30 text-[var(--amber)]"
+                    )}
+                  >
+                    {dexStatus.source}
+                  </span>
+                  {!dexStatus.configured && (
+                    <span className="ml-2 text-xs text-[var(--text-muted)]">
+                      (Supabase not configured)
+                    </span>
+                  )}
+                </span>
+              </div>
+              <table className="w-full text-sm">
+                <thead className="bg-[var(--bg-input)]">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">
+                      Data type
+                    </th>
+                    <th className="px-4 py-3 text-right text-[var(--text-muted)] font-medium">
+                      Count
+                    </th>
+                    <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">
+                      Last updated
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(dexStatus.types ?? {}).map(([type, info], idx) => (
+                    <tr
+                      key={type}
+                      className={cn(
+                        "border-t border-[var(--border)]",
+                        idx % 2 === 1 && "bg-[var(--bg-input)]/30"
+                      )}
+                    >
+                      <td className="px-4 py-3 text-[var(--text)] font-mono text-xs">
+                        {type}
+                      </td>
+                      <td className="px-4 py-3 text-right text-[var(--text-muted)]">
+                        {info.count >= 0 ? info.count.toLocaleString() : "—"}
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-muted)]">
+                        {info.updated_at
+                          ? new Date(info.updated_at).toLocaleString()
+                          : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {Object.keys(dexStatus.types ?? {}).length === 0 && (
+                <p className="px-4 py-6 text-center text-[var(--text-muted)] text-sm">
+                  No dex data found. Run fetch_dex_data.py first.
+                </p>
+              )}
+            </div>
+          )}
+          {!dexStatus && !dexLoading && (
+            <p className="py-6 text-center text-[var(--text-muted)] text-sm">
+              Click &quot;Refresh&quot; to load dex status.
             </p>
           )}
         </div>
