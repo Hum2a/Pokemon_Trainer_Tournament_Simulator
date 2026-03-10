@@ -11,6 +11,7 @@ import { MatchupSimulatorPage } from "./pages/MatchupSimulatorPage";
 import { MySimulationsPage } from "./pages/MySimulationsPage";
 import { UploadResultsPage } from "./pages/UploadResultsPage";
 import { AdminPanelPage } from "./pages/AdminPanelPage";
+import { PokedexPage } from "./pages/PokedexPage";
 
 const container = {
   hidden: { opacity: 0 },
@@ -52,7 +53,7 @@ function UserMenu({ onSignInClick }: { onSignInClick: () => void }) {
 
 function AppContent() {
   const { status, modal, hideModal } = useApp();
-  const { user, role } = useAuth();
+  const { role } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   return (
     <OpenAuthModalContext.Provider value={() => setAuthModalOpen(true)}>
@@ -139,6 +140,18 @@ function AppContent() {
                 >
                   Upload
                 </NavLink>
+                <NavLink
+                  to="/pokedex"
+                  className={({ isActive }) =>
+                    `px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+                      isActive
+                        ? "bg-[var(--primary)]/20 text-[var(--primary)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-white/5"
+                    }`
+                  }
+                >
+                  Pokedex
+                </NavLink>
                 {(role === "admin" || role === "developer") && (
                   <NavLink
                     to="/admin"
@@ -170,6 +183,7 @@ function AppContent() {
                 <Route path="/simulations" element={<MySimulationsPage />} />
                 <Route path="/upload-results" element={<UploadResultsPage />} />
                 <Route path="/admin" element={<AdminPanelPage />} />
+                <Route path="/pokedex" element={<PokedexPage />} />
               </Routes>
             </main>
           </motion.div>

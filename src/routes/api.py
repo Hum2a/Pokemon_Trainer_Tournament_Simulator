@@ -16,8 +16,11 @@ from src.supabase_client import (
     save_simulation_results,
     list_user_simulations,
     get_simulation_results,
+    get_simulation_results_admin,
     get_user_role,
     list_users_with_roles,
+    list_all_simulations,
+    get_database_stats,
     update_user_role,
 )
 from src.security import (
@@ -257,6 +260,34 @@ def admin_health():
         })
 
     return jsonify({"checks": results})
+
+
+@api_bp.route("/admin/simulations")
+@require_admin
+def admin_list_simulations():
+    """List all simulation runs across users. Admin/developer only."""
+    runs = list_all_simulations(limit=100)
+    users = {u["id"]: u["email"] for u in list_users_with_roles()}
+    for r in runs:
+        r["user_email"] = users.get(r.get("user_id", ""), "(unknown)")
+    return jsonify(runs)
+
+
+@api_bp.route("/admin/simulations/<run_id>")
+@require_admin
+def admin_simulation_detail(run_id):
+    """Get a simulation's results (any user). Admin/developer only."""
+    results = get_simulation_results_admin(run_id)
+    if not results:
+        return jsonify({"error": "Simulation not found"}), 404
+    return jsonify(results)
+
+
+@api_bp.route("/admin/database-stats")
+@require_admin
+def admin_database_stats():
+    """Get database table row counts. Admin/developer only."""
+    return jsonify(get_database_stats())
 
 
 def _load_config_for_user(user_id):

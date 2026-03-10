@@ -1,8 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { api } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { cn } from "../lib/utils";
+import { SavedSimulationDetail } from "../components/SavedSimulationDetail";
 import type { UserRole } from "../context/AuthContext";
 
 interface AdminUser {
@@ -18,7 +19,21 @@ interface HealthCheck {
   ms?: number;
 }
 
-type AdminTab = "users" | "health";
+interface AdminSimulation {
+  id: string;
+  user_id: string;
+  user_email: string;
+  type: string;
+  status: string;
+  created_at: string;
+}
+
+interface DatabaseStats {
+  configured: boolean;
+  tables: Record<string, number>;
+}
+
+type AdminTab = "users" | "health" | "simulations" | "database";
 
 export function AdminPanelPage() {
   const { user, role, loading: authLoading } = useAuth();
@@ -30,6 +45,13 @@ export function AdminPanelPage() {
   const [healthChecks, setHealthChecks] = useState<HealthCheck[]>([]);
   const [healthLoading, setHealthLoading] = useState(false);
   const [healthError, setHealthError] = useState<string | null>(null);
+  const [simulations, setSimulations] = useState<AdminSimulation[]>([]);
+  const [simulationsLoading, setSimulationsLoading] = useState(false);
+  const [simulationsError, setSimulationsError] = useState<string | null>(null);
+  const [databaseStats, setDatabaseStats] = useState<DatabaseStats | null>(null);
+  const [databaseLoading, setDatabaseLoading] = useState(false);
+  const [databaseError, setDatabaseError] = useState<string | null>(null);
+  const [selectedSimulationId, setSelectedSimulationId] = useState<string | null>(null);
 
   const canAccess = role === "admin" || role === "developer";
 
@@ -77,6 +99,46 @@ export function AdminPanelPage() {
     }
   }, [activeTab, canAccess, runHealthCheck]);
 
+  const loadSimulations = useCallback(async () => {
+    setSimulationsLoading(true);
+    setSimulationsError(null);
+    try {
+      const data = await api.get<AdminSimulation[]>("/admin/simulations");
+      setSimulations(data ?? []);
+    } catch (e) {
+      setSimulationsError((e as Error).message);
+      setSimulations([]);
+    } finally {
+      setSimulationsLoading(false);
+    }
+  }, []);
+
+  const loadDatabaseStats = useCallback(async () => {
+    setDatabaseLoading(true);
+    setDatabaseError(null);
+    try {
+      const data = await api.get<DatabaseStats>("/admin/database-stats");
+      setDatabaseStats(data);
+    } catch (e) {
+      setDatabaseError((e as Error).message);
+      setDatabaseStats(null);
+    } finally {
+      setDatabaseLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "simulations" && canAccess) {
+      loadSimulations();
+    }
+  }, [activeTab, canAccess, loadSimulations]);
+
+  useEffect(() => {
+    if (activeTab === "database" && canAccess) {
+      loadDatabaseStats();
+    }
+  }, [activeTab, canAccess, loadDatabaseStats]);
+
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     setUpdating(userId);
     try {
@@ -120,6 +182,8 @@ export function AdminPanelPage() {
 
   const tabs: { id: AdminTab; label: string }[] = [
     { id: "users", label: "User management" },
+    { id: "simulations", label: "Simulations" },
+    { id: "database", label: "Database" },
     { id: "health", label: "API health" },
   ];
 
@@ -132,11 +196,11 @@ export function AdminPanelPage() {
       <div>
         <h2 className="text-xl font-semibold text-[var(--primary)]">Admin panel</h2>
         <p className="text-sm text-[var(--text-muted)] mt-1">
-          Manage user roles, check API health. Your role: <span className="text-[var(--text)]">{role}</span>
+          Users, simulations, database stats, API health. Your role: <span className="text-[var(--text)]">{role}</span>
         </p>
       </div>
 
-      <div className="flex gap-2 border-b border-[var(--border)] pb-2">
+      <div className="flex flex-wrap gap-2 border-b border-[var(--border)] pb-2">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -307,6 +371,173 @@ export function AdminPanelPage() {
               </p>
             )}
           </div>
+        </div>
+      )}
+
+      {activeTab === "simulations" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <p className="text-sm text-[var(--text-muted)]">
+              All saved simulations across users (matchup, trainer, pokemon).
+            </p>
+            <button
+              type="button"
+              onClick={loadSimulations}
+              disabled={simulationsLoading}
+              className="px-4 py-2 rounded-lg bg-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/30 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {simulationsLoading ? "Loading…" : "Refresh"}
+            </button>
+          </div>
+
+          {simulationsError && (
+            <div className="p-3 rounded-lg bg-[var(--danger)]/20 text-[var(--danger)] text-sm">
+              {simulationsError}
+            </div>
+          )}
+
+          <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-[var(--bg-input)]">
+                <tr>
+                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">User</th>
+                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">Type</th>
+                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">Status</th>
+                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">Created</th>
+                  <th className="px-4 py-3 text-right text-[var(--text-muted)] font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {simulations.map((s, idx) => (
+                  <React.Fragment key={s.id}>
+                    <tr
+                      className={cn(
+                        "border-t border-[var(--border)]",
+                        idx % 2 === 1 && "bg-[var(--bg-input)]/30"
+                      )}
+                    >
+                      <td className="px-4 py-3 text-[var(--text)]">{s.user_email}</td>
+                      <td className="px-4 py-3">
+                        <span className="px-2 py-0.5 rounded text-xs font-medium bg-[var(--primary)]/20 text-[var(--primary)]">
+                          {s.type}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={cn(
+                            "px-2 py-0.5 rounded text-xs font-medium",
+                            s.status === "completed" && "bg-[var(--success)]/30 text-[var(--success)]",
+                            s.status === "running" && "bg-[var(--amber)]/30 text-[var(--amber)]",
+                            (s.status === "failed" || s.status === "cancelled") &&
+                              "bg-[var(--danger)]/30 text-[var(--danger)]"
+                          )}
+                        >
+                          {s.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-muted)]">
+                        {s.created_at
+                          ? new Date(s.created_at).toLocaleString()
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setSelectedSimulationId(selectedSimulationId === s.id ? null : s.id)
+                          }
+                          className="px-2 py-1 rounded text-xs font-medium bg-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/30 transition-colors"
+                        >
+                          {selectedSimulationId === s.id ? "Hide" : "View"}
+                        </button>
+                      </td>
+                    </tr>
+                    {selectedSimulationId === s.id && (
+                      <tr>
+                        <td colSpan={5} className="p-0 bg-[var(--bg-panel)]/50">
+                          <div className="p-4 border-t border-[var(--border)]">
+                            <SavedSimulationDetail
+                              runId={s.id}
+                              onClose={() => setSelectedSimulationId(null)}
+                              admin
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+            {simulations.length === 0 && !simulationsLoading && (
+              <p className="px-4 py-6 text-center text-[var(--text-muted)] text-sm">
+                No simulations saved yet.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "database" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <p className="text-sm text-[var(--text-muted)]">
+              Row counts for Supabase tables (user_profiles, user_configs, simulation_runs, simulation_results).
+            </p>
+            <button
+              type="button"
+              onClick={loadDatabaseStats}
+              disabled={databaseLoading}
+              className="px-4 py-2 rounded-lg bg-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)]/30 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {databaseLoading ? "Loading…" : "Refresh"}
+            </button>
+          </div>
+
+          {databaseError && (
+            <div className="p-3 rounded-lg bg-[var(--danger)]/20 text-[var(--danger)] text-sm">
+              {databaseError}
+            </div>
+          )}
+
+          {databaseStats && (
+            <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-[var(--bg-input)]">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">Table</th>
+                    <th className="px-4 py-3 text-right text-[var(--text-muted)] font-medium">Rows</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(databaseStats.tables ?? {}).map(([table, count], idx) => (
+                    <tr
+                      key={table}
+                      className={cn(
+                        "border-t border-[var(--border)]",
+                        idx % 2 === 1 && "bg-[var(--bg-input)]/30"
+                      )}
+                    >
+                      <td className="px-4 py-3 text-[var(--text)] font-mono text-xs">{table}</td>
+                      <td className="px-4 py-3 text-right text-[var(--text-muted)]">
+                        {count >= 0 ? count.toLocaleString() : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {!databaseStats.configured && (
+                <p className="px-4 py-3 text-sm text-[var(--amber)]">
+                  Supabase not configured. Add SUPABASE_URL and keys to .env.
+                </p>
+              )}
+            </div>
+          )}
+          {!databaseStats && !databaseLoading && (
+            <p className="py-6 text-center text-[var(--text-muted)] text-sm">
+              Click &quot;Refresh&quot; to load database stats.
+            </p>
+          )}
         </div>
       )}
     </motion.div>

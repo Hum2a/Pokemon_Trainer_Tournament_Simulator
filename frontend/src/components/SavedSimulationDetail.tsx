@@ -5,20 +5,25 @@ import { MatchupAnalyticsView, type MatchupAnalyticsData } from "./MatchupAnalyt
 export function SavedSimulationDetail({
   runId,
   onClose,
+  admin = false,
 }: {
   runId: string;
   onClose: () => void;
+  /** When true, fetches from admin endpoint (any user's simulation). */
+  admin?: boolean;
 }) {
   const [result, setResult] = useState<MatchupAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const endpoint = admin ? `/admin/simulations/${runId}` : `/simulations/${runId}`;
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
     api
-      .get<MatchupAnalyticsData>(`/simulations/${runId}`)
+      .get<MatchupAnalyticsData>(endpoint)
       .then((d) => {
         if (!cancelled) setResult(d);
       })
@@ -31,7 +36,7 @@ export function SavedSimulationDetail({
     return () => {
       cancelled = true;
     };
-  }, [runId]);
+  }, [endpoint]);
 
   if (loading) {
     return <p className="text-[var(--text-muted)] py-4">Loading…</p>;

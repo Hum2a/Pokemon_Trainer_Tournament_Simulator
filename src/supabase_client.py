@@ -281,6 +281,83 @@ def list_user_simulations(user_id: str, limit: int = 50) -> list[dict]:
     return []
 
 
+def list_all_simulations(limit: int = 100) -> list[dict]:
+    """List all simulation runs across all users (admin). Returns list of {id, user_id, type, status, created_at}."""
+    h = _headers()
+    if not h:
+        return []
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/simulation_runs",
+            params={
+                "select": "id,user_id,type,status,created_at",
+                "order": "created_at.desc",
+                "limit": str(limit),
+            },
+            headers=h,
+            timeout=10,
+        )
+        if r.status_code == 200:
+            return r.json() or []
+    except Exception:
+        pass
+    return []
+
+
+def get_database_stats() -> dict:
+    """Get row counts for admin tables (admin). Uses Supabase REST."""
+    h = _headers()
+    if not h:
+        return {"configured": False, "tables": {}}
+    url, _ = _get_config()
+    stats: dict = {"configured": True, "tables": {}}
+    for table in ["user_profiles", "user_configs", "simulation_runs", "simulation_results"]:
+        try:
+            r = requests.get(
+                f"{url}/rest/v1/{table}",
+                params={"select": "id", "limit": "0"},
+                headers={**h, "Prefer": "count=exact"},
+                timeout=10,
+            )
+            count = r.headers.get("Content-Range", "").split("/")[-1]
+            stats["tables"][table] = int(count) if count.isdigit() else 0
+        except Exception:
+            stats["tables"][table] = -1
+    return stats
+
+
+def get_simulation_results_admin(run_id: str) -> Optional[dict]:
+    """Get results for any simulation run (admin). Returns dict or None."""
+    h = _headers()
+    if not h:
+        return None
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/simulation_results",
+            params={
+                "run_id": f"eq.{run_id}",
+                "select": "*,simulation_runs(config_snapshot)",
+            },
+            headers=h,
+            timeout=10,
+        )
+        if r.status_code == 200 and r.json():
+            rows = r.json()
+            if rows:
+                row = rows[0]
+                run_data = row.pop("simulation_runs", None)
+                if isinstance(run_data, dict) and run_data:
+                    row["config_snapshot"] = run_data.get("config_snapshot")
+                elif isinstance(run_data, list) and run_data:
+                    row["config_snapshot"] = run_data[0].get("config_snapshot") if run_data[0] else None
+                return row
+    except Exception:
+        pass
+    return None
+
+
 def get_simulation_results(user_id: str, run_id: str) -> Optional[dict]:
     """Get results for a simulation run. Returns dict or None.
     Includes config_snapshot from the run for filters/settings."""
