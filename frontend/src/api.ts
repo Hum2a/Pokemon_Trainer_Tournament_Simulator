@@ -13,15 +13,40 @@ async function authHeaders(): Promise<HeadersInit> {
   return headers;
 }
 
-export async function apiGet<T = unknown>(endpoint: string): Promise<T> {
-  const headers = await authHeaders();
-  const res = await fetch(`${API_BASE}${endpoint}`, { headers, credentials: 'include' });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error((data as { error?: string }).error || res.statusText);
+export async function apiGet<T = unknown>(
+  endpoint: string,
+  options?: { timeoutMs?: number; skipAuth?: boolean }
+): Promise<T> {
+  const timeoutMs = options?.timeoutMs ?? 60000;
+  const skipAuth = options?.skipAuth ?? false;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const headers = skipAuth ? {} : await authHeaders();
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      headers,
+      credentials: 'include',
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error((data as { error?: string }).error || res.statusText);
+    }
+    return res.json();
+  } catch (e) {
+    if (e instanceof Error && e.name === 'AbortError') {
+      throw new Error(`Request timed out after ${timeoutMs / 1000}s. Is the backend running?`);
+    }
+    throw e;
+  } finally {
+    clearTimeout(timeoutId);
   }
-  return res.json();
 }
+
+/** Public dex/smogon endpoints - no auth, 30s timeout. Use for initial data load. */
+export const dexOpts = { skipAuth: true, timeoutMs: 30000 } as const;
 
 export async function apiPost<T = unknown>(endpoint: string, body?: object): Promise<T> {
   const headers = await authHeaders();

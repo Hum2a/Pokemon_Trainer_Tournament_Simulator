@@ -23,7 +23,13 @@ from src.supabase_client import (
     get_database_stats,
     update_user_role,
 )
-from src.supabase_client import get_dex_data, get_dex_data_with_meta, get_supabase, DEX_DATA_TYPES
+from src.supabase_client import (
+    get_dex_data,
+    get_dex_data_with_meta,
+    get_smogon_sets,
+    get_supabase,
+    DEX_DATA_TYPES,
+)
 from src.security import (
     validate_config,
     resolve_input_path,
@@ -562,14 +568,16 @@ TIER_PRIORITY = ("ou", "uu", "ru", "nu", "pu", "zu")
 @api_bp.route("/smogon/formats")
 @require_auth
 def smogon_formats():
-    """Return list of available Smogon format IDs from data.pkmn.cc/sets/index.json."""
+    """Return list of available Smogon format IDs. DB first, then data.pkmn.cc."""
     import urllib.request
+    formats = get_smogon_sets("index")
+    if formats is not None and isinstance(formats, list):
+        return jsonify(formats)
     try:
         url = f"{SMOGON_SETS_URL}/index.json"
         req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
         with urllib.request.urlopen(req, timeout=10) as r:
             index = json.loads(r.read().decode())
-        # Format IDs are keys without .json, sorted by gen then tier
         formats = sorted(k.replace(".json", "") for k in index.keys())
         return jsonify(formats)
     except Exception as e:
@@ -630,12 +638,13 @@ def _fetch_and_flatten_format(fmt):
 
 @api_bp.route("/smogon/sets/newest")
 def smogon_sets_newest():
-    """Return merged sets using the most recent format that has each Pokemon (gen9 first, then gen8, etc.)."""
-    import urllib.request
+    """Return merged sets using the most recent format that has each Pokemon. DB first, then remote."""
     merged = {}
     for fmt in NEWEST_FORMAT_PRIORITY:
         try:
-            data = _fetch_and_flatten_format(fmt)
+            data = get_smogon_sets(fmt)
+            if data is None or not isinstance(data, dict):
+                data = _fetch_and_flatten_format(fmt)
             for species, sets in data.items():
                 if species not in merged and isinstance(sets, dict) and sets:
                     set_names = list(sets.keys())
@@ -647,20 +656,22 @@ def smogon_sets_newest():
 
 @api_bp.route("/smogon/sets/<format_id>")
 def smogon_sets(format_id):
-    """Proxy Smogon sets. format_id: any valid format from data.pkmn.cc (gen1ou, gen8uu, etc.), or 'newest'."""
-    import urllib.request
+    """Return Smogon sets. format_id: gen1ou, gen8uu, etc., or 'newest'. DB first, then data.pkmn.cc."""
     import re
     fmt = format_id.lower().strip()
     if fmt == "newest":
         return smogon_sets_newest()
     if not re.match(r"^gen\d+[a-z0-9]*$", fmt):
         return jsonify({"error": "Invalid format ID"}), 400
+    data = get_smogon_sets(fmt)
+    if data is not None:
+        return jsonify(data)
     try:
+        import urllib.request
         url = f"{SMOGON_SETS_URL}/{fmt}.json"
         req = urllib.request.Request(url, headers={"User-Agent": "PokemonSimulator/1.0"})
         with urllib.request.urlopen(req, timeout=15) as r:
             data = json.loads(r.read().decode())
-        # Generation-level formats (gen9, gen8, etc.) have tier structure
         if re.match(r"^gen\d+$", fmt):
             data = _flatten_tier_format(data)
         return jsonify(data)

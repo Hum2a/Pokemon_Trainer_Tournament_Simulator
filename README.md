@@ -122,6 +122,12 @@ cd Data/UsefulDatasets && python fetch_dex_data.py
 ```
 This fetches dex data from Pokemon Showdown's CDN. With Supabase configured, data is also synced to the database (API uses DB first, falls back to JSON files). Then build Pokemon in the UI and export to the editor.
 
+**Smogon sets (optional):** For faster Smogon format/set loading in the Matchup Simulator, run once (requires Supabase):
+```
+cd Data/UsefulDatasets && python fetch_smogon_data.py
+```
+This fetches Smogon sets from data.pkmn.cc and syncs to the database. The API uses DB first and falls back to remote fetch if empty.
+
 ### Command Line
 See [manual.md](https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/blob/main/manual.md).
 Since there is a submodule in the repo, make sure to clone using `git clone --recursive https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator`. If you wish to run a set of simulations, everything you need is located in the 'Data' directory.

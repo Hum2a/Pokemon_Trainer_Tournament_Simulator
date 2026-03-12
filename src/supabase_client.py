@@ -312,7 +312,7 @@ def get_database_stats() -> dict:
         return {"configured": False, "tables": {}}
     url, _ = _get_config()
     stats: dict = {"configured": True, "tables": {}}
-    for table in ["user_profiles", "user_configs", "simulation_runs", "simulation_results", "dex_data"]:
+    for table in ["user_profiles", "user_configs", "simulation_runs", "simulation_results", "dex_data", "smogon_sets"]:
         try:
             r = requests.get(
                 f"{url}/rest/v1/{table}",
@@ -466,6 +466,56 @@ def get_dex_data_with_meta(data_type: str) -> Optional[dict]:
             rows = r.json()
             if rows:
                 return rows[0]
+    except Exception:
+        pass
+    return None
+
+
+# --- Smogon sets (synced from fetch_smogon_data.py) ---
+
+
+def sync_smogon_sets(format_id: str, data: Any) -> bool:
+    """Upsert Smogon sets into Supabase. format_id: 'index' for formats list, or gen9ou, etc."""
+    h = _headers()
+    if not h:
+        return False
+    url, _ = _get_config()
+    try:
+        from datetime import datetime, timezone
+        payload = {
+            "format_id": format_id,
+            "data": data,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        r = requests.post(
+            f"{url}/rest/v1/smogon_sets",
+            json=payload,
+            headers={**h, "Prefer": "resolution=merge-duplicates,on_conflict=format_id"},
+            timeout=60,
+        )
+        return r.status_code in (200, 201, 204)
+    except Exception:
+        pass
+    return False
+
+
+def get_smogon_sets(format_id: str) -> Optional[Any]:
+    """Get Smogon sets from Supabase. Returns data or None."""
+    h = _headers()
+    if not h:
+        return None
+    url, _ = _get_config()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/smogon_sets",
+            params={"format_id": f"eq.{format_id}", "select": "data"},
+            headers=h,
+            timeout=15,
+        )
+        if r.status_code == 200:
+            rows = r.json()
+            if rows:
+                return rows[0].get("data")
     except Exception:
         pass
     return None

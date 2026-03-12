@@ -3,6 +3,7 @@ Background services: script execution
 """
 
 import subprocess
+import sys
 import threading
 from pathlib import Path
 
@@ -22,6 +23,7 @@ def run_script(script_name, args=None, capture=True):
     if args:
         cmd.extend(str(a) for a in args)
     cwd = str(DATA_DIR)
+    print(f"[Simulation] Running {script_name}...", flush=True)
     try:
         result = subprocess.run(
             cmd,
@@ -31,10 +33,17 @@ def run_script(script_name, args=None, capture=True):
             timeout=86400,
         )
         out = (result.stdout or "") + (result.stderr or "")
+        if out:
+            for line in out.splitlines():
+                print(f"  {line}", flush=True)
+        status = "OK" if result.returncode == 0 else f"exit {result.returncode}"
+        print(f"[Simulation] {script_name} finished ({status})", flush=True)
         return result.returncode == 0, out
     except subprocess.TimeoutExpired:
+        print(f"[Simulation] {script_name} timed out", flush=True)
         return False, "Task timed out"
     except Exception as e:
+        print(f"[Simulation] {script_name} error: {e}", flush=True)
         return False, str(e)
 
 
@@ -49,6 +58,7 @@ def run_script_background(script_name, args=None):
             current_task = script_name
             current_proc = None
 
+        print(f"[Simulation] Starting background task: {script_name}", flush=True)
         cmd = ["python", script_name]
         if args:
             cmd.extend(str(a) for a in args)
@@ -67,11 +77,15 @@ def run_script_background(script_name, args=None):
             for line in iter(proc.stdout.readline, ""):
                 with task_lock:
                     task_output.append(line)
+                sys.stdout.write(line)
+                sys.stdout.flush()
         finally:
             proc.wait()
         with task_lock:
             current_proc = None
             current_task = None
+        rc = proc.returncode if proc else -1
+        print(f"[Simulation] Background task finished: {script_name} (exit {rc})", flush=True)
 
     t = threading.Thread(target=run, daemon=True)
     t.start()
@@ -100,7 +114,7 @@ def get_task_status():
         return {
             "running": current_task is not None,
             "task": current_task,
-            "output": "".join(task_output[-500:]),
+            "output": "".join(task_output[-10000:]),
         }
 
 
