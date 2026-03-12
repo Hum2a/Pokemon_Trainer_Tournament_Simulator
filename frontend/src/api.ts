@@ -82,6 +82,36 @@ export async function apiDelete<T = unknown>(endpoint: string): Promise<T> {
   return data as T;
 }
 
+/** Fetch admin health from a specific API base URL (for local/live server checks). */
+export async function fetchHealthFrom(
+  baseUrl: string,
+  options?: { timeoutMs?: number }
+): Promise<{ checks: HealthCheck[] }> {
+  const timeoutMs = options?.timeoutMs ?? 15000;
+  const headers = await authHeaders();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${baseUrl}/admin/health`, {
+      headers,
+      credentials: 'include',
+      signal: controller.signal,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error((data as { error?: string }).error || res.statusText);
+    return data as { checks: HealthCheck[] };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+export interface HealthCheck {
+  name: string;
+  status: 'ok' | 'warn' | 'error';
+  message: string;
+  ms?: number;
+}
+
 /** Fetch a file and trigger browser download. */
 export async function downloadFile(endpoint: string, filename: string): Promise<void> {
   const headers = await authHeaders();
@@ -95,6 +125,15 @@ export async function downloadFile(endpoint: string, filename: string): Promise<
   a.click();
   URL.revokeObjectURL(url);
 }
+
+/** Local backend URL for admin health check (dev: 127.0.0.1:5000). */
+export const LOCAL_API_BASE =
+  (import.meta.env.VITE_LOCAL_API_URL?.toString().replace(/\/$/, '') ?? 'http://127.0.0.1:5000') +
+  '/api';
+
+/** Live/production backend URL for admin health check. Empty if not configured. */
+const liveBase = (import.meta.env.VITE_LIVE_API_URL ?? import.meta.env.VITE_API_URL)?.toString().replace(/\/$/, '');
+export const LIVE_API_BASE = liveBase ? liveBase + '/api' : '';
 
 export const api = {
   get: apiGet,

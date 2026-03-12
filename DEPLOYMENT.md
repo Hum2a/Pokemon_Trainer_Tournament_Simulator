@@ -41,6 +41,7 @@ Your API will be at `https://<service-name>.onrender.com`. Note this URL for the
 4. Add environment variables:
    - `VITE_API_URL` = `https://pokemon-simulator-api.onrender.com` (your backend URL)
    - `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (see AUTH_SETUP.md)
+   - `VITE_LIVE_API_URL` = production API URL (optional; for Admin health to check live server when developing locally)
 5. Deploy
 
 ---
@@ -71,6 +72,8 @@ The backend must allow your frontend origin. Set `CORS_ORIGINS` to your frontend
 ```
 CORS_ORIGINS=https://pokemon-simulator.netlify.app,https://pokemon-simulator.vercel.app
 ```
+
+To check live API health from local dev (Admin panel), add `http://localhost:5173` to `CORS_ORIGINS`.
 
 ---
 

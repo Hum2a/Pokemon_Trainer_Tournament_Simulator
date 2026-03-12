@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { api } from "../api";
+import { api, fetchHealthFrom, LOCAL_API_BASE, LIVE_API_BASE, type HealthCheck } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { cn } from "../lib/utils";
 import { SavedSimulationDetail } from "../components/SavedSimulationDetail";
@@ -12,12 +12,7 @@ interface AdminUser {
   role: UserRole;
 }
 
-interface HealthCheck {
-  name: string;
-  status: "ok" | "warn" | "error";
-  message: string;
-  ms?: number;
-}
+type ServerHealthResult = { checks: HealthCheck[] } | { error: string };
 
 interface AdminSimulation {
   id: string;
@@ -53,7 +48,8 @@ export function AdminPanelPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
-  const [healthChecks, setHealthChecks] = useState<HealthCheck[]>([]);
+  const [localHealth, setLocalHealth] = useState<ServerHealthResult | null>(null);
+  const [liveHealth, setLiveHealth] = useState<ServerHealthResult | null>(null);
   const [healthLoading, setHealthLoading] = useState(false);
   const [healthError, setHealthError] = useState<string | null>(null);
   const [simulations, setSimulations] = useState<AdminSimulation[]>([]);
@@ -96,15 +92,23 @@ export function AdminPanelPage() {
   const runHealthCheck = useCallback(async () => {
     setHealthLoading(true);
     setHealthError(null);
-    try {
-      const data = await api.get<{ checks: HealthCheck[] }>("/admin/health");
-      setHealthChecks(data.checks ?? []);
-    } catch (e) {
-      setHealthError((e as Error).message);
-      setHealthChecks([]);
-    } finally {
-      setHealthLoading(false);
-    }
+    setLocalHealth(null);
+    setLiveHealth(null);
+    const fetchOne = async (base: string): Promise<ServerHealthResult> => {
+      try {
+        const data = await fetchHealthFrom(base);
+        return { checks: data.checks ?? [] };
+      } catch (e) {
+        return { error: (e as Error).message };
+      }
+    };
+    const [local, live] = await Promise.all([
+      fetchOne(LOCAL_API_BASE),
+      LIVE_API_BASE ? fetchOne(LIVE_API_BASE) : Promise.resolve<ServerHealthResult | null>(null),
+    ]);
+    setLocalHealth(local);
+    setLiveHealth(live);
+    setHealthLoading(false);
   }, []);
 
   useEffect(() => {
@@ -331,10 +335,10 @@ export function AdminPanelPage() {
       )}
 
       {activeTab === "health" && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex items-center justify-between gap-3 mb-4">
             <p className="text-sm text-[var(--text-muted)]">
-              Check health of backend, Supabase, Smogon, Showdown CDN, PokéAPI, and local dex data.
+              Check health of local and live backends: Supabase, Smogon, Showdown CDN, PokéAPI, dex data.
             </p>
             <button
               type="button"
@@ -352,60 +356,66 @@ export function AdminPanelPage() {
             </div>
           )}
 
-          <div className="rounded-lg border border-[var(--border)] overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-[var(--bg-input)]">
-                <tr>
-                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">
-                    Integration
-                  </th>
-                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-[var(--text-muted)] font-medium">
-                    Details
-                  </th>
-                  <th className="px-4 py-3 text-right text-[var(--text-muted)] font-medium">
-                    Latency
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {healthChecks.map((c, idx) => (
-                  <tr
-                    key={c.name}
-                    className={cn(
-                      "border-t border-[var(--border)]",
-                      idx % 2 === 1 && "bg-[var(--bg-input)]/30"
-                    )}
-                  >
-                    <td className="px-4 py-3 text-[var(--text)] font-medium">{c.name}</td>
-                    <td className="px-4 py-3">
-                      <span
+          {[
+            { label: "Local server", url: LOCAL_API_BASE.replace(/\/api$/, ""), result: localHealth },
+            { label: "Live server", url: LIVE_API_BASE.replace(/\/api$/, "") || "(not configured)", result: liveHealth },
+          ].map(({ label, url, result }) => (
+            <div key={label} className="rounded-lg border border-[var(--border)] overflow-hidden">
+              <div className="px-4 py-2 bg-[var(--bg-input)] border-b border-[var(--border)] text-sm font-medium text-[var(--text)]">
+                {label}
+                <span className="ml-2 text-xs font-normal text-[var(--text-muted)]">{url}</span>
+              </div>
+              {result === null ? (
+                <p className="px-4 py-6 text-center text-[var(--text-muted)] text-sm">
+                  {label === "Live server" && !LIVE_API_BASE
+                    ? "Set VITE_LIVE_API_URL or VITE_API_URL to check live server."
+                    : "Click &quot;Run check&quot; to verify."}
+                </p>
+              ) : "error" in result ? (
+                <div className="p-4 text-[var(--danger)] text-sm">{result.error}</div>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead className="bg-[var(--bg-input)]/50">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-[var(--text-muted)] font-medium">Integration</th>
+                      <th className="px-4 py-2 text-left text-[var(--text-muted)] font-medium">Status</th>
+                      <th className="px-4 py-2 text-left text-[var(--text-muted)] font-medium">Details</th>
+                      <th className="px-4 py-2 text-right text-[var(--text-muted)] font-medium">Latency</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.checks.map((c, idx) => (
+                      <tr
+                        key={c.name}
                         className={cn(
-                          "px-2 py-0.5 rounded text-xs font-medium",
-                          c.status === "ok" && "bg-[var(--success)]/30 text-[var(--success)]",
-                          c.status === "warn" && "bg-[var(--amber)]/30 text-[var(--amber)]",
-                          c.status === "error" && "bg-[var(--danger)]/30 text-[var(--danger)]"
+                          "border-t border-[var(--border)]",
+                          idx % 2 === 1 && "bg-[var(--bg-input)]/30"
                         )}
                       >
-                        {c.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-[var(--text-muted)]">{c.message}</td>
-                    <td className="px-4 py-3 text-right text-[var(--text-muted)]">
-                      {c.ms != null ? `${c.ms} ms` : "—"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {healthChecks.length === 0 && !healthLoading && (
-              <p className="px-4 py-6 text-center text-[var(--text-muted)] text-sm">
-                Click &quot;Run check&quot; to verify integrations.
-              </p>
-            )}
-          </div>
+                        <td className="px-4 py-2 text-[var(--text)] font-medium">{c.name}</td>
+                        <td className="px-4 py-2">
+                          <span
+                            className={cn(
+                              "px-2 py-0.5 rounded text-xs font-medium",
+                              c.status === "ok" && "bg-[var(--success)]/30 text-[var(--success)]",
+                              c.status === "warn" && "bg-[var(--amber)]/30 text-[var(--amber)]",
+                              c.status === "error" && "bg-[var(--danger)]/30 text-[var(--danger)]"
+                            )}
+                          >
+                            {c.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2 text-[var(--text-muted)]">{c.message}</td>
+                        <td className="px-4 py-2 text-right text-[var(--text-muted)]">
+                          {c.ms != null ? `${c.ms} ms` : "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
         </div>
       )}
 
