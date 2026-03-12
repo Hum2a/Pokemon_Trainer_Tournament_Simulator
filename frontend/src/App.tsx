@@ -22,7 +22,12 @@ const container = {
 };
 
 function UserMenu({ onSignInClick }: { onSignInClick: () => void }) {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
+  if (loading) {
+    return (
+      <span className="text-xs text-[var(--text-muted)] animate-pulse">…</span>
+    );
+  }
   if (user) {
     return (
       <div className="flex items-center gap-2 shrink-0">

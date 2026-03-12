@@ -65,6 +65,18 @@ To enable "Sign in with Google":
    - Production: `https://your-domain.com`
 3. In **Google Cloud Console**: add the Supabase callback URL to Authorized redirect URIs: `https://<your-project-ref>.supabase.co/auth/v1/callback`
 
+## 5b. Auth Persistence on Production (Required for Live Site)
+
+For auth to persist across page refreshes on your live site:
+
+1. In **Supabase Dashboard** → **Authentication** → **URL Configuration**:
+   - **Site URL**: Set to your production frontend URL (e.g. `https://pokemon-simulator.netlify.app`)
+   - **Redirect URLs**: Add your production URL(s), e.g. `https://pokemon-simulator.netlify.app`, `https://pokemon-simulator.netlify.app/**`
+
+2. Ensure your frontend build has the correct env vars: `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` must match your Supabase project.
+
+3. Sessions are stored in `localStorage` and persist across refreshes. If users still lose auth on refresh, verify the Site URL matches the domain they're visiting (no www vs non-www mismatch).
+
 ## 6. Enable Email Auth (Optional)
 
 By default Supabase allows email signup. To customize:
