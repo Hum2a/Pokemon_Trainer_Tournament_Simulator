@@ -66,6 +66,7 @@ export interface ModalState {
 
 interface AppState {
   logEntries: LogEntry[];
+  taskOutput: string;
   status: { running: boolean; text: string };
   taskStartTime: number | null;
   taskEndTime: number | null;
@@ -78,6 +79,7 @@ interface AppState {
 interface AppContextValue extends AppState {
   appendLog: (text: string, type?: "info" | "error") => void;
   clearLog: () => void;
+  setTaskOutput: (output: string) => void;
   setStatus: (running: boolean, text: string) => void;
   setEditorContent: (content: string | ((prev: string) => string)) => void;
   setEditorPath: (path: string) => void;
@@ -93,6 +95,7 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+  const [taskOutput, setTaskOutputState] = useState("");
   const [status, setStatusState] = useState({ running: false, text: "Ready" });
   const [taskStartTime, setTaskStartTime] = useState<number | null>(null);
   const [taskEndTime, setTaskEndTime] = useState<number | null>(null);
@@ -116,9 +119,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const clearLog = useCallback(() => {
     setLogEntries([]);
+    setTaskOutputState("");
     setTaskStartTime(null);
     setTaskEndTime(null);
   }, []);
+
+  const setTaskOutput = useCallback((output: string) => setTaskOutputState(output), []);
 
   const setStatus = useCallback((running: boolean, text: string) => {
     setStatusState({ running, text });
@@ -154,7 +160,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AppContext.Provider
-      value={{ logEntries, status, taskStartTime, taskEndTime, editorContent, editorPath, config, modal, refreshOutputsTrigger, appendLog, clearLog, setStatus, setEditorContent, setEditorPath, setConfig, saveConfig, triggerOutputsRefresh, showModal, hideModal }}
+      value={{ logEntries, taskOutput, status, taskStartTime, taskEndTime, editorContent, editorPath, config, modal, refreshOutputsTrigger, appendLog, clearLog, setTaskOutput, setStatus, setEditorContent, setEditorPath, setConfig, saveConfig, triggerOutputsRefresh, showModal, hideModal }}
     >
       {children}
     </AppContext.Provider>

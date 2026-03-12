@@ -148,7 +148,7 @@ interface DexItem {
 }
 
 export function MatchupSimulator() {
-  const { appendLog, setStatus, saveConfig, triggerOutputsRefresh, config, setConfig, status } = useApp();
+  const { appendLog, setStatus, setTaskOutput, saveConfig, triggerOutputsRefresh, config, setConfig, status } = useApp();
   const [species, setSpecies] = useState<Species[]>([]);
   const [abilities, setAbilities] = useState<DexItem[]>([]);
   const [moves, setMoves] = useState<DexItem[]>([]);
@@ -178,7 +178,6 @@ export function MatchupSimulator() {
   const inputRef1 = useRef<HTMLInputElement>(null);
   const inputRef2 = useRef<HTMLInputElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const lastOutputLengthRef = useRef(0);
 
   const m = config.matchups ?? {};
   const updateMatchup = (updates: Record<string, unknown>) => {
@@ -293,18 +292,14 @@ export function MatchupSimulator() {
     await saveConfig();
     setStatus(true, "Running matchup simulations...");
     appendLog("Starting matchup simulations.");
-    lastOutputLengthRef.current = 0;
+    setTaskOutput("");
     try {
       await api.post("/run-matchups");
       pollRef.current = setInterval(async () => {
         try {
           const data = await api.get<{ running?: boolean; output?: string }>("/status");
           const output = data.output ?? "";
-          if (output.length > lastOutputLengthRef.current) {
-            const newContent = output.slice(lastOutputLengthRef.current);
-            appendLog(newContent.trimEnd());
-            lastOutputLengthRef.current = output.length;
-          }
+          setTaskOutput(output);
           if (!data.running) {
             if (pollRef.current) clearInterval(pollRef.current);
             pollRef.current = null;
@@ -318,7 +313,7 @@ export function MatchupSimulator() {
       appendLog("Error: " + (e as Error).message, "error");
       setStatus(false, "Ready");
     }
-  }, [appendLog, saveConfig, setStatus, triggerOutputsRefresh]);
+  }, [appendLog, saveConfig, setStatus, setTaskOutput, triggerOutputsRefresh]);
 
   const inputCls = "bg-[var(--bg-input)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--text)] transition-all focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]";
   const labelCls = "flex flex-col gap-1.5 text-sm font-medium text-[var(--text)]";

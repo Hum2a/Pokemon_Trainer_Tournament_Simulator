@@ -5,7 +5,7 @@ import { useApp } from "../context/AppContext";
 import { api } from "../api";
 
 export function Actions() {
-  const { appendLog, setStatus, saveConfig, triggerOutputsRefresh } = useApp();
+  const { appendLog, setStatus, setTaskOutput, saveConfig, triggerOutputsRefresh } = useApp();
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -31,9 +31,11 @@ export function Actions() {
 
   const startPolling = () => {
     if (pollRef.current) return;
+    setTaskOutput("");
     pollRef.current = setInterval(async () => {
       try {
         const data = await api.get<{ running?: boolean; output?: string }>("/status");
+        setTaskOutput(data.output ?? "");
         if (!data.running) {
           if (pollRef.current) {
             clearInterval(pollRef.current);

@@ -15,29 +15,48 @@ function formatDuration(ms: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-function parseProgress(logEntries: { text: string }[]): { current: number; total: number } | null {
-  const full = logEntries.map((e) => e.text).join("\n");
-  const completedMatch = full.match(/Completed\s+(\d+)\/(\d+)/g);
-  if (completedMatch?.length) {
-    const last = completedMatch[completedMatch.length - 1];
+function parseProgress(source: string): { current: number; total: number } | null {
+  // Match "Completed X vs Y — 1/2485 (0%)" or "— 1/2485 (0%)"
+  const progressMatch = source.match(/(\d+)\/(\d+)\s*\(\d+%\)/g);
+  if (progressMatch?.length) {
+    const last = progressMatch[progressMatch.length - 1];
     const m = last.match(/(\d+)\/(\d+)/);
     if (m) return { current: parseInt(m[1], 10), total: parseInt(m[2], 10) };
   }
-  const tqdmMatch = full.match(/(\d+)\/(\d+)\s+\d+%/);
+  const tqdmMatch = source.match(/(\d+)\/(\d+)\s+\d+%/);
   if (tqdmMatch) return { current: parseInt(tqdmMatch[1], 10), total: parseInt(tqdmMatch[2], 10) };
   return null;
 }
 
+function parseBattleStatus(source: string): { inProgress: string[]; completed: string[] } {
+  const inProgressSet = new Set<string>();
+  const completed: string[] = [];
+  const lines = source.split("\n");
+  for (const line of lines) {
+    const runMatch = line.match(/Running\s+([\w'-]+)\s+vs\s+([\w'-]+)/);
+    if (runMatch) inProgressSet.add(`${runMatch[1]} vs ${runMatch[2]}`);
+    const doneMatch = line.match(/Completed\s+([\w'-]+)\s+vs\s+([\w'-]+)/);
+    if (doneMatch) {
+      const key = `${doneMatch[1]} vs ${doneMatch[2]}`;
+      inProgressSet.delete(key);
+      completed.push(key);
+    }
+  }
+  return { inProgress: [...inProgressSet], completed: completed.slice(-50) };
+}
+
 export function Log() {
-  const { logEntries, clearLog, status, taskStartTime, taskEndTime } = useApp();
+  const { logEntries, taskOutput, clearLog, status, taskStartTime, taskEndTime } = useApp();
   const preRef = useRef<HTMLPreElement>(null);
   const [elapsed, setElapsed] = useState(0);
+
+  const displaySource = status.running && taskOutput ? taskOutput : logEntries.map((e) => e.text).join("\n");
 
   useEffect(() => {
     if (preRef.current) {
       preRef.current.scrollTop = preRef.current.scrollHeight;
     }
-  }, [logEntries]);
+  }, [displaySource]);
 
   useEffect(() => {
     if (!status.running || !taskStartTime) return;
@@ -47,7 +66,8 @@ export function Log() {
     return () => clearInterval(id);
   }, [status.running, taskStartTime]);
 
-  const progress = useMemo(() => parseProgress(logEntries), [logEntries]);
+  const progress = useMemo(() => parseProgress(displaySource), [displaySource]);
+  const battleStatus = useMemo(() => parseBattleStatus(displaySource), [displaySource]);
   const lastEstimatedTotalRef = useRef<number | null>(null);
   const estimatedTotal = useMemo(() => {
     if (!progress || progress.current <= 0 || !taskStartTime) return null;
@@ -122,24 +142,51 @@ export function Log() {
           )}
         </div>
       ) : null}
+      {status.running && (battleStatus.inProgress.length > 0 || battleStatus.completed.length > 0) && (
+        <div className="mb-3 p-3 rounded-xl bg-[var(--bg-input)] border border-[var(--border)]/50">
+          <div className="text-xs font-medium text-[var(--text-muted)] mb-2">Battle status</div>
+          <div className="flex flex-wrap gap-2">
+            {battleStatus.inProgress.slice(-8).map((m, i) => (
+              <span
+                key={`run-${i}-${m}`}
+                className="px-2 py-1 rounded text-xs bg-[var(--primary)]/20 text-[var(--primary)] border border-[var(--primary)]/40"
+              >
+                {m} <span className="opacity-70">started</span>
+              </span>
+            ))}
+            {battleStatus.completed.slice(-12).reverse().map((m, i) => (
+              <span
+                key={`done-${i}-${m}`}
+                className="px-2 py-1 rounded text-xs bg-[var(--success)]/20 text-[var(--success)] border border-[var(--success)]/40"
+              >
+                {m} <span className="opacity-70">finished</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
       <pre
         ref={preRef}
         className="bg-[var(--bg-input)] rounded-xl p-4 text-sm font-mono overflow-auto max-h-52 mb-4 whitespace-pre-wrap border border-[var(--border)]/50 focus-within:border-[var(--primary)]/30 transition-colors"
       >
-        {logEntries.map((e, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.02 }}
-            className={cn(
-              "py-0.5",
-              e.type === "error" && "text-[var(--danger)] font-medium"
-            )}
-          >
-            {e.text}
-          </motion.div>
-        ))}
+        {status.running && taskOutput ? (
+          taskOutput
+        ) : (
+          logEntries.map((e, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: Math.min(i * 0.02, 0.5) }}
+              className={cn(
+                "py-0.5",
+                e.type === "error" && "text-[var(--danger)] font-medium"
+              )}
+            >
+              {e.text}
+            </motion.div>
+          ))
+        )}
       </pre>
       <motion.button
         type="button"
