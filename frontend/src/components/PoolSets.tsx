@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../api";
@@ -296,42 +296,40 @@ function PokemonSetCard({
 
   return (
     <div className="rounded-xl border border-[var(--border)]/50 bg-[var(--bg-input)] overflow-hidden">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full px-4 py-3 flex items-center justify-between gap-2 text-left hover:bg-[var(--primary)]/5 transition-colors"
-      >
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="w-full px-4 py-3 flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={onToggle}
+          className="flex-1 flex items-center gap-3 min-w-0 text-left hover:bg-[var(--primary)]/5 transition-colors rounded-lg -m-1 p-1"
+        >
           <PokemonSprite name={name} size={40} className="shrink-0" />
           <div className="min-w-0">
             <div className="font-semibold text-[var(--text)] truncate">{name}</div>
-          <div className="text-xs text-[var(--text-muted)] mt-0.5">
-            {display ? (
-              <>
-                <span className={customSet ? "text-amber-400" : "text-[var(--primary)]"}>{label}</span>
-                {(getSetAbility(display) || getSetItem(display)) && (
-                  <> · {getSetAbility(display) || "—"} · {getSetItem(display) || "—"}</>
-                )}
-              </>
-            ) : (
-              <span className="italic">Default (no Smogon set)</span>
-            )}
+            <div className="text-xs text-[var(--text-muted)] mt-0.5">
+              {display ? (
+                <>
+                  <span className={customSet ? "text-amber-400" : "text-[var(--primary)]"}>{label}</span>
+                  {(getSetAbility(display) || getSetItem(display)) && (
+                    <> · {getSetAbility(display) || "—"} · {getSetItem(display) || "—"}</>
+                  )}
+                </>
+              ) : (
+                <span className="italic">Default (no Smogon set)</span>
+              )}
+            </div>
           </div>
-          </div>
-        </div>
-        <div className="shrink-0 flex items-center gap-1">
-          {editable && (
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); onEdit?.(); }}
-              className="px-2 py-1 rounded text-xs font-medium text-[var(--primary)] hover:bg-[var(--primary)]/20 border border-[var(--primary)]/50"
-            >
-              Edit
-            </button>
-          )}
-          <span className="text-[var(--primary)] text-sm">{isExpanded ? "▲" : "▼"}</span>
-        </div>
-      </button>
+          <span className="text-[var(--primary)] text-sm shrink-0">{isExpanded ? "▲" : "▼"}</span>
+        </button>
+        {editable && (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="shrink-0 px-2 py-1 rounded text-xs font-medium text-[var(--primary)] hover:bg-[var(--primary)]/20 border border-[var(--primary)]/50"
+          >
+            Edit
+          </button>
+        )}
+      </div>
       {isExpanded && (
         <div className="px-4 pb-4 pt-1 border-t border-[var(--border)]/30 bg-[var(--bg-panel)]/50">
           {display ? (
@@ -422,11 +420,13 @@ export function PoolSets({
   } | null>(null);
 
   useEffect(() => {
-    api.get<string[]>("/smogon/formats").then(setFormats).catch(() => setFormats([]));
+    console.log("[PoolSets] Fetching Smogon formats...");
+    api.get<string[]>("/smogon/formats").then((f) => { setFormats(f ?? []); console.log("[PoolSets] Formats loaded", (f ?? []).length); }).catch((e) => { setFormats([]); console.warn("[PoolSets] Formats failed", e); });
   }, []);
 
   useEffect(() => {
     if (editable && editingPokemon) {
+      console.log("[PoolSets] Fetching dex data for set editor (moves, abilities, items, natures)...");
       Promise.all([
         api.get<{ id: string; name: string }[]>("/dex/moves"),
         api.get<{ id: string; name: string }[]>("/dex/abilities"),
@@ -434,6 +434,7 @@ export function PoolSets({
         api.get<string[] | { name: string }[]>("/dex/natures"),
       ])
         .then(([moves, abilities, items, natures]) => {
+          console.log("[PoolSets] Dex data for editor loaded");
           const n = Array.isArray(natures)
             ? natures.map((x) => (typeof x === "string" ? x : (x as { name: string }).name))
             : ["Hardy", "Adamant", "Modest", "Jolly", "Timid", "Bold", "Impish", "Calm", "Careful"];
@@ -444,23 +445,26 @@ export function PoolSets({
             natures: n,
           });
         })
-        .catch(() => setDexData(null));
+        .catch((e) => { console.warn("[PoolSets] Dex data for editor failed", e); setDexData(null); });
     }
   }, [editable, editingPokemon]);
 
   useEffect(() => {
     let cancelled = false;
     setIsLoadingSets(true);
+    console.log("[PoolSets] Fetching Smogon sets for format:", format);
     api
       .get<SmogonSets>(`/smogon/sets/${format}`)
       .then((s) => {
         if (!cancelled) {
+          console.log("[PoolSets] Smogon sets loaded for", format, Object.keys(s ?? {}).length, "species");
           setSmogonSets(s);
           setIsLoadingSets(false);
         }
       })
-      .catch(() => {
+      .catch((e) => {
         if (!cancelled) {
+          console.warn("[PoolSets] Smogon sets failed for", format, e);
           setSmogonSets(null);
           setIsLoadingSets(false);
         }
@@ -470,17 +474,86 @@ export function PoolSets({
 
   const getSetForPokemon = (name: string): { setName: string; set: SmogonSetData } | null => {
     if (!smogonSets) return null;
-    const normalized = name.replace(/[\s-]/g, "");
+    const normalized = name.replace(/[\s-]/g, "").toLowerCase();
+    const tryMatch = (s: string) => s.replace(/[\s-]/g, "").toLowerCase() === normalized;
+
     for (const [species, sets] of Object.entries(smogonSets)) {
-      const speciesNorm = species.replace(/[\s-]/g, "");
-      if (speciesNorm === normalized || speciesNorm.toLowerCase() === normalized.toLowerCase()) {
+      if (tryMatch(species)) {
         const setNames = Object.keys(sets);
         if (setNames.length === 0) return null;
         return { setName: setNames[0], set: sets[setNames[0]] ?? {} };
       }
     }
+    // Fallback: try base species (e.g. "Garchomp-Mega" -> "Garchomp")
+    const base = name.split("-")[0];
+    if (base !== name) {
+      for (const [species, sets] of Object.entries(smogonSets)) {
+        if (species.replace(/[\s-]/g, "").toLowerCase() === base.replace(/[\s-]/g, "").toLowerCase()) {
+          const setNames = Object.keys(sets);
+          if (setNames.length === 0) return null;
+          return { setName: setNames[0], set: sets[setNames[0]] ?? {} };
+        }
+      }
+    }
     return null;
   };
+
+  // Log every set found/selected for each Pokemon when data is ready (once per unique state to avoid loops)
+  const lastLogKeyRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!smogonSets || !pokemon.length) return;
+    const key = `${format}\0${pokemon.length}\0${pokemon.join(",")}`;
+    if (lastLogKeyRef.current === key) return;
+    lastLogKeyRef.current = key;
+
+    const rows = pokemon.map((p, i) => {
+      const info = getSetForPokemon(p);
+      const custom = customSets?.[p];
+      const display = custom ?? (info ? info.set : null);
+      const label = custom ? "Custom" : (info ? info.setName : "Default");
+      const moves = getSetMoves(display);
+      const ability = getSetAbility(display);
+      const item = getSetItem(display);
+      const nature = getSetNature(display);
+      return { "#": i + 1, Pokemon: p, Set: label, Ability: ability || "—", Item: item || "—", Nature: nature || "—", Moves: moves.join(", ") };
+    });
+
+    const formatStyle = "color: #f59e0b; font-weight: bold;";
+    const countStyle = "color: #3b82f6; font-weight: bold;";
+    console.groupCollapsed(
+      "%c[PoolSets] %cResolved sets for %c" + pokemon.length + " %cPokemon (format: %c" + format + "%c)",
+      "color: #64748b; font-weight: bold;",
+      "color: #e2e8f0;",
+      countStyle,
+      "color: #e2e8f0;",
+      formatStyle,
+      "color: #64748b;"
+    );
+    console.table(rows);
+    console.log("%c" + "─".repeat(60), "color: #334155;");
+    rows.forEach((r, i) => {
+      const isCustom = r.Set === "Custom";
+      const isDefault = r.Set === "Default";
+      const nameStyle = isDefault ? "color: #94a3b8; font-style: italic;" : "color: #e2e8f0; font-weight: 500;";
+      const setStyle = isCustom ? "color: #fbbf24;" : isDefault ? "color: #64748b;" : "color: #34d399;";
+      console.log(
+        "%c" + String(i + 1).padStart(2) + "%c │ %c" + r.Pokemon + "%c │ %c" + r.Set + "%c │ %c" + r.Ability + "%c · %c" + r.Item + "%c · %c" + r.Nature,
+        "color: #64748b;",
+        "color: #475569;",
+        nameStyle,
+        "color: #475569;",
+        setStyle,
+        "color: #475569;",
+        "color: #a78bfa;",
+        "color: #475569;",
+        "color: #60a5fa;",
+        "color: #475569;",
+        "color: #f472b6;"
+      );
+    });
+    console.log("%c" + "─".repeat(60), "color: #334155;");
+    console.groupEnd();
+  }, [smogonSets, pokemon, format, customSets]);
 
   const toggleExpanded = (p: string) => {
     setExpanded((prev) => {
