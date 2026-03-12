@@ -55,7 +55,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const refreshAuth = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
+    const timeoutMs = 5000;
+    let data: { session: Session | null };
+    try {
+      data = await Promise.race([
+        supabase.auth.getSession().then((r) => r.data),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Auth check timed out")), timeoutMs)
+        ),
+      ]);
+    } catch {
+      updateAuth(null, null);
+      return;
+    }
     updateAuth(data.session, data.session?.user ?? null);
     if (data.session?.user) {
       try {

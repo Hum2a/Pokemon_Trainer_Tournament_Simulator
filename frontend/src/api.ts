@@ -126,10 +126,12 @@ export async function downloadFile(endpoint: string, filename: string): Promise<
   URL.revokeObjectURL(url);
 }
 
-/** Local backend URL for admin health check (dev: 127.0.0.1:5000). */
+/** Local backend URL for admin health check. On localhost, uses same-origin /api (Vite proxy) to avoid CORS. */
 export const LOCAL_API_BASE =
-  (import.meta.env.VITE_LOCAL_API_URL?.toString().replace(/\/$/, '') ?? 'http://127.0.0.1:5000') +
-  '/api';
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? window.location.origin + '/api'
+    : (import.meta.env.VITE_LOCAL_API_URL?.toString().replace(/\/$/, '') ?? 'http://127.0.0.1:5000') + '/api';
 
 /** Live/production backend URL for admin health check. Empty if not configured. */
 const liveBase = (import.meta.env.VITE_LIVE_API_URL ?? import.meta.env.VITE_API_URL)?.toString().replace(/\/$/, '');
