@@ -4,7 +4,7 @@ import { Panel } from "./Panel";
 import { PoolSets } from "./PoolSets";
 import { PokemonSprite } from "./PokemonSprite";
 import { useApp, type Config } from "../context/AppContext";
-import { api } from "../api";
+import { api, dexOpts } from "../api";
 import { cn } from "../lib/utils";
 
 const TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
@@ -205,27 +205,40 @@ export function MatchupSimulator() {
     setDexLoadError(null);
     setLoading(true);
     setLoadingStep("species");
+    console.log("[Matchup] Data gathering: starting");
     try {
+      // Dex endpoints are public; skip auth to avoid Supabase getSession() hanging
+      console.log("[Matchup] Data gathering: 1/4 fetching species...");
       setLoadingStep("species");
-      const speciesData = await api.get<Species[]>("/dex/species");
+      const speciesData = await api.get<Species[]>("/dex/species", dexOpts);
       setSpecies(Array.isArray(speciesData) ? speciesData : []);
+      console.log("[Matchup] Data gathering: 1/4 species done", Array.isArray(speciesData) ? speciesData.length : 0, "items");
       if (!Array.isArray(speciesData) || speciesData.length === 0) {
         setDexLoadError("Dex data empty or invalid. Run Data/UsefulDatasets/fetch_dex_data.py first.");
       }
 
+      console.log("[Matchup] Data gathering: 2/4 fetching abilities...");
       setLoadingStep("abilities");
-      const abilitiesData = await api.get<DexItem[]>("/dex/abilities");
+      const abilitiesData = await api.get<DexItem[]>("/dex/abilities", dexOpts);
       setAbilities(Array.isArray(abilitiesData) ? abilitiesData : []);
+      console.log("[Matchup] Data gathering: 2/4 abilities done", Array.isArray(abilitiesData) ? abilitiesData.length : 0, "items");
 
+      console.log("[Matchup] Data gathering: 3/4 fetching moves...");
       setLoadingStep("moves");
-      const movesData = await api.get<DexItem[]>("/dex/moves");
+      const movesData = await api.get<DexItem[]>("/dex/moves", dexOpts);
       setMoves(Array.isArray(movesData) ? movesData : []);
+      console.log("[Matchup] Data gathering: 3/4 moves done", Array.isArray(movesData) ? movesData.length : 0, "items");
 
+      console.log("[Matchup] Data gathering: 4/4 fetching learnsets...");
       setLoadingStep("learnsets");
-      const learnsetsData = await api.get<Record<string, string[]>>("/dex/learnsets");
+      const learnsetsData = await api.get<Record<string, string[]>>("/dex/learnsets", dexOpts);
       setLearnsets(learnsetsData && typeof learnsetsData === "object" ? learnsetsData : {});
+      console.log("[Matchup] Data gathering: 4/4 learnsets done", learnsetsData && typeof learnsetsData === "object" ? Object.keys(learnsetsData).length : 0, "species");
+
+      console.log("[Matchup] Data gathering: complete");
     } catch (e) {
       const msg = (e as Error).message;
+      console.error("[Matchup] Data gathering failed:", msg);
       setDexLoadError(msg || "Failed to load dex data");
       appendLog("Failed to load dex data: " + msg, "error");
       setSpecies([]);
